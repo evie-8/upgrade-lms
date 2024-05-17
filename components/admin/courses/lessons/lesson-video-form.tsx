@@ -3,13 +3,10 @@
 import { FileUploader } from "@/components/ui/file-uploader";
 import { Chapter, Course, Lesson, MuxData } from "@prisma/client";
 import axios from "axios";
-import { ImageIcon, Pencil, PlusCircle, VideoIcon } from "lucide-react";
-import Image from "next/image";
-import Video from 'next-video'
+import {  Pencil, PlusCircle, VideoIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-
-
+import MuxPlayer from "@mux/mux-player-react"
 import toast from "react-hot-toast";
 import * as z from "zod";
 
@@ -91,9 +88,10 @@ const onSubmit = (values: z.infer<typeof formschema>) => {
             ) : 
                 (
                   lesson.videoUrl? 
-                  <div className="relative aspect-video rounded-xl overflow-hidden mt-2">
+                  <div className="relative aspect-video mt-2">
                   
-                   <Video src={lesson.videoUrl} controls className="w-full h-full rounded-xl"/>
+                  <MuxPlayer playbackId={lesson.muxData?.placybackId || ""}/>
+                  
                   </div>
                   : (
                     <div className="flex items-center justify-center h-60 bg-white1 rounded-md mt-4">

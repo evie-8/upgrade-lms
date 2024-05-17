@@ -5,9 +5,10 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 interface Props {
     children: React.ReactNode;
     onConfirm: () => void;
+    action?: string
 }
 
-const ConfirmAction: React.FC<Props> = ({children, onConfirm}) => {
+const ConfirmAction: React.FC<Props> = ({children, onConfirm, action='Delete'}) => {
   return (
     <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -27,7 +28,7 @@ const ConfirmAction: React.FC<Props> = ({children, onConfirm}) => {
                     Cancel
                 </AlertDialogCancel>
                 <AlertDialogAction onClick={onConfirm} className='bg-destructive hover:bg-destructive hover:opacity-90'>
-                    Continue
+                    {action}
                 </AlertDialogAction>
             </AlertDialogFooter>
         </AlertDialogContent>

@@ -1,5 +1,3 @@
-const { withNextVideo } = require('next-video/process')
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -23,4 +21,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withNextVideo(nextConfig);
+module.exports = nextConfig

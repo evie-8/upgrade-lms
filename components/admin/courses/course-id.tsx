@@ -59,7 +59,7 @@ const CourseId: React.FC<Props> = async ({courseId}) => {
     course.name,
     course.description,
     course.categoryId,
-    course.price,
+    course.price?.toString(),
     course.imageUrl,
    course.chapter.some(chapters => chapters.isAvailable)
   ];
