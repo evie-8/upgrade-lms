@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import ConfirmAction from '@/components/ui/confirm-action';
+import { Chapter, Lesson } from '@prisma/client';
 import axios from 'axios';
 import { Trash } from 'lucide-react'
 import { useRouter } from 'next-nprogress-bar';
@@ -13,9 +14,10 @@ interface Props {
     courseId: string;
     chapterId: string;
     disabled: boolean;
+    chapter: Chapter & {Lesson: Lesson[]}
 }
 
-const ChapterActions = ({isAvailable, courseId, chapterId, disabled}: Props) => {
+const ChapterActions = ({isAvailable, courseId, chapterId, disabled, chapter}: Props) => {
   const router = useRouter();
   const router1 = useRouter1();
   const [isLoading, setIsLoading] = useState(false);
@@ -24,10 +26,21 @@ const ChapterActions = ({isAvailable, courseId, chapterId, disabled}: Props) => 
     try {
       
       setIsLoading(true);
-      await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}/`);
+      if (chapter.Lesson.length) {
+        for(const lesson of chapter.Lesson) {
+            try {
+                const res = await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}/lessons/${lesson.id}`);
+                console.log("finished", res)
+            } catch (error) {
+                console.error(`Failed to delete lesson ${lesson.id}:`, error);
+                throw new Error(`Failed to delete lesson ${lesson.id}`);
+            }   }    
+     }
+      await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
       toast.success("Chapter deleted");
       router1.refresh();
       router.push(`/tutor/courses/${courseId}`)
+      router1.refresh();
       
     } catch {
       toast.error("Something went wrong")

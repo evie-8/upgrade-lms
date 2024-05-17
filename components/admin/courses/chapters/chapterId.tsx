@@ -103,7 +103,7 @@ const ChapterIdCard = async ({chapterId, courseId}: Props) => {
                     <h1 className="text-2xl font-bold">Chapter Creation </h1>
                     <span className="text-sm text-gray/60">Completed fields {`(${completedFields}/${totalFields})`}</span>
                 </div>
-                <ChapterActions disabled={!isComplete} isAvailable={chapter.isAvailable} courseId={courseId} chapterId={chapterId}/>
+                <ChapterActions chapter={chapter} disabled={!isComplete} isAvailable={chapter.isAvailable} courseId={courseId} chapterId={chapterId}/>
             </div>
 
         </div>

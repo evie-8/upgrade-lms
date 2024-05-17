@@ -1,16 +1,17 @@
 import { currentRole, currentUser } from "@/lib/auth";
 import prismadb from "@/lib/db";
+import axios from "axios";
+import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 
 export async function DELETE(
-    req: Request,
+    req: NextApiRequest,
      {params}: {params: {courseId: string, chapterId: string}}
     ) {
 
         try {
             const role = await currentRole();
             const user = await currentUser();
-            const {isAvailable, ...values} = await req.json();
             
          if (!user) {
             return new NextResponse("Unauthorized", {status: 401});
@@ -35,7 +36,9 @@ export async function DELETE(
             where: {
                 id: params.chapterId,
                 courseId: params.courseId
-            },
+            }, include: {
+                Lesson: true
+            }
            
          });
 
@@ -69,7 +72,7 @@ export async function DELETE(
          return NextResponse.json(deleteChapter)
             
         } catch (error) {
-            console.log('[CHAPTER_DELETE]', JSON.stringify(error))
+            console.log('[CHAPTER_DELETE]', JSON.stringify(error));
         return new NextResponse("Internal Error", {status:500})
             
         }

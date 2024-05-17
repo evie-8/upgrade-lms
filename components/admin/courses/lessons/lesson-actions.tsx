@@ -27,8 +27,8 @@ const LessonActions = ({ courseId, chapterId, lessonId, isDraft, disabled}: Prop
       setIsLoading(true);
       await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}/lessons/${lessonId}`);
       toast.success("Lesson deleted");
+      router.push(`/tutor/courses/${courseId}/chapters/${chapterId}`);
       router1.refresh();
-      router.push(`/tutor/courses/${courseId}/chapters/${chapterId}`)
       
     } catch {
       toast.error("Something went wrong")
