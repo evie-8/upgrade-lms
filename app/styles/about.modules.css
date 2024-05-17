@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+    .steps-container {
+        @apply flex flex-col gap-6 md:items-start md:justify-start items-center justify-center
+    }
+
+    .step-wrapper {
+        @apply flex items-start justify-start gap-4
+    }
+
+    .step-wrapper button {
+        @apply p-4 rounded-full border border-transparent  mx-auto flex items-center justify-center bg-gradient-to-r from-primary to-blue
+    }
+
+    .step-wrapper button .icon {
+        @apply text-white w-5 h-5
+    }
+
+    .step-wrapper .contents {
+        @apply flex flex-col items-start justify-start my-auto
+    }
+
+    .step-wrapper .contents .title {
+        @apply text-[16px] font-semibold
+    }
+
+    .step-wrapper .contents .description {
+        @apply text-sm 
+    }
+}

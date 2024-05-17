@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+    .hover-button {
+        @apply hover:text-primary hover:bg-transparent hover:border-primary
+      }
+     /* course card grid and course card list*/
+
+      .course-item {
+        @apply bg-white rounded-lg min-w-[250px] border border-transparent shadow-custom transition-all ease-in duration-[0.5s]
+      }
+    
+    
+      .course-item-list {
+        @apply flex bg-white sm:max-w-[660px] xl:max-w-[800px] rounded-lg max-h-[200px] border border-transparent shadow-custom transition-all ease-in duration-[0.5s] gap-2
+      }
+    
+      .image-wrapper {
+        @apply  relative m-2 rounded-xl aspect-square overflow-hidden shrink-0 basis-1/2 
+      }
+      .img-wrapper {
+        @apply relative m-2 rounded-xl aspect-video overflow-hidden 
+      }
+    
+      .course-item img, .course-item-list img {
+        @apply rounded-xl object-cover w-full h-full transition-all ease-in duration-[0.5s]
+      }
+    
+      .status {
+        @apply absolute text-white  text-center text-sm px-3 py-1 left-0 top-[20%] rounded-r-md 
+      }
+      .content {
+        @apply flex flex-col gap-3 m-4
+      }
+    
+      .course-item .category, .course-item-list .category  {
+        @apply flex items-start justify-start
+      }
+
+      .course-item .category span, .course-item-list .category span {
+        @apply text-xs  bg-primary/10 text-primary rounded-full py-[2px] px-[15px] 
+      }
+    
+    
+      .course-item .course-title, .course-item-list .course-title {
+        @apply text-sm font-semibold hover:text-primary
+      }
+    
+      .course-item .icon-wrapper {
+        @apply flex justify-between items-center gap-2
+      }
+
+     .course-item-list .icon-wrapper {
+      @apply flex items-center gap-2
+     }
+      .icon-wrapper p {
+        @apply flex items-center gap-2  flex-nowrap
+      }
+    
+      .icon-wrapper p span {
+        @apply text-sm
+      }
+    
+      .course-pay {
+        @apply border-t border-grey flex justify-between items-center flex-nowrap p-3
+      }
+    
+      .course-pay p {
+        @apply  text-primary font-extrabold
+      }
+    
+      .course-pay .link {
+        @apply rounded-md border border-transparent bg-primary text-white text-sm whitespace-nowrap px-4 py-2 hover:bg-transparent hover-button transition-all ease-in duration-75
+      }
+    
+      .course-item:hover, .course-item-list:hover{
+        @apply shadow-custom-2
+      }
+    
+      .course-item:hover img, .course-item-list:hover img{
+        @apply transform scale-110 
+      }
+    
+      .course-item:hover img{
+        @apply rotate-3
+      }
+
+      /*filters*/
+
+      .filters-container {
+        @apply flex flex-col m-3 gap-4
+      }
+
+      .filter-wrapper .filter-title {
+        @apply flex items-center justify-between gap-3
+      }
+
+      .filter-title p {
+        @apply font-bold text-[16px]
+      }
+
+      .filter-title .icon {
+        @apply w-5 h-5 text-primary transition-all ease-in duration-[0.3s]
+      }
+
+      .filter-wrapper ul {
+        @apply flex-col gap-3 my-3 transition-all duration-[0.5s]
+      }
+    
+      .filter-wrapper ul li {
+        @apply flex gap-4
+      }
+
+      .filter-wrapper ul li label {
+        @apply text-sm  my-auto
+      }
+
+      /* courses page*/
+
+      /* banner*/
+      .courses-banner {
+        @apply h-full
+      }
+
+      .courses-banner  .heading {
+        @apply flex items-center justify-center gap-2 flex-wrap my-8 lg:my-20
+      }
+
+      .courses-banner .heading h3 {
+        @apply text-white text-center text-3xl md:text-4xl lg:text-5xl font-extrabold
+      }  
+      
+      /* main contents*/
+
+
+      .overlay {
+        @apply z-30 absolute top-0  bg-black/80   w-full h-full
+      }
+      .all-courses-container {
+        @apply grid grid-cols-1 lg:grid-cols-12 gap-12 my-12
+      }
+      
+      /* nav sidebar*/
+      .all-courses-container nav {
+        @apply static  min-w-[290px] sm:min-w-[350px] md:min-w-[450px] lg:min-w-[260px] max-lg:overflow-y-auto max-lg:bg-white max-lg:shadow-2xl max-lg:fixed top-0 max-lg:h-screen h-full max-lg:z-40 col-span-1  transition-all duration-[0.5s] 
+      }
+
+      .all-courses-container nav.show {
+          @apply lg:block lg:col-span-4
+      }
+
+      .all-courses-container nav .sidebar {
+        @apply flex flex-col   lg:shadow-md static lg:sticky lg:top-[17.4%] bg-white px-6 py-4 rounded-lg max-lg:rounded-none  z-30
+      }
+
+      .sidebar .search {
+        @apply relative rounded-lg  border border-grey p-3 m-3 w-full mx-auto shadow-md
+      }
+
+      .search input {
+        @apply outline-none
+      }
+
+      .search .icon {
+        @apply w-5 h-5 text-primary absolute bottom-4 left-[87%]
+      }
+
+      nav .sidebar .title-area {
+      @apply  flex justify-between border-b border-grey m-3
+     }
+
+     .title-area .heading-wrapper {
+      @apply flex gap-4 items-center
+     }
+
+     .heading-wrapper span {
+      @apply text-lg font-bold
+     }
+
+     /*main section*/
+    
+     .all-courses-container main {
+      @apply relative col-span-1 lg:col-span-8 mx-auto gap-3 
+     }
+
+
+     .all-courses-container main.show {
+      @apply lg:col-span-12
+     }
+     .all-courses-container main .title-bar {
+      @apply flex items-center justify-between shadow-md bg-white rounded-lg  py-2 px-4 
+     }
+
+     .title-bar .title {
+      @apply  flex items-center gap-2 font-semibold text-[16px]
+     }
+
+     .title button {
+      @apply flex items-center  sm:hidden lg:block text-primary
+     }
+
+     .title-bar .menu-items {
+      @apply flex gap-3
+     }
+
+     .menu-items .select-wrapper {
+      @apply  hidden sm:flex  gap-1
+     }
+
+     .select-wrapper p {
+      @apply text-sm p-2 whitespace-nowrap flex items-center justify-center font-medium
+     }
+
+     .select-wrapper select {
+      @apply p-2 border text-sm border-grey w-[100px] rounded-md
+     }
+
+     .select-wrapper select option {
+      @apply text-sm p-2 m-2
+     }
+
+     .menu-items .icon-1 {
+      @apply flex lg:hidden items-center  p-2 border border-primary rounded-md 
+     }
+
+     .menu-items .icon-2 {
+      @apply  flex items-center max-sm:hidden p-2 border border-primary rounded-md 
+     }
+
+     .menu-items .icon {
+      @apply  w-5 h-5 text-primary
+     }
+
+     .all-courses-container main section.grid-view, .all-courses-container main section.list-view{
+      @apply grid grid-cols-1 gap-8 my-8
+     }
+
+     .all-courses-container main section.grid-view {
+      @apply sm:grid-cols-2
+     }
+
+     .all-courses-container main.show section.list-view {
+      @apply grid-cols-1  xl:grid-cols-2
+     }
+
+     .all-courses-container main.show section.grid-view {
+      @apply lg:grid-cols-3
+     }
+  
+
+}

@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+   
+  .button1 {
+    @apply inline-flex items-center justify-center whitespace-nowrap font-medium  px-4 py-2 h-10 border text-sm  border-transparent bg-primary text-white rounded-md hover:opacity-80 transition-all ease-in duration-75   disabled:pointer-events-none disabled:opacity-50
+  }
+
+  .button2 {
+    @apply inline-flex items-center justify-center whitespace-nowrap font-medium  px-4 h-10 py-2 border  text-sm  border-grey bg-white1 text-gray rounded-md hover:opacity-80 transition-all ease-in duration-75   disabled:pointer-events-none disabled:opacity-50
+  }
+
+    
+}
+.MuiTooltip-tooltipPlacementRight {
+    background-color:  #fff !important; 
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2) !important;
+   
+}
+.MuiTooltip-tooltipArrow, .MuiTooltip-arrow, .MuiTooltip-popperArrow {
+    
+    color: #fff !important;
+}
+
+.ql-container .ql-bubble, .ql-container .ql-snow, .ql-editor{
+  
+  font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  font-family: 'Poppins';
+}
+

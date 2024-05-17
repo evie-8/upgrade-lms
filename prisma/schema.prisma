@@ -1,0 +1,227 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  TUTOR
+  USER
+}
+
+enum CourseStatus {
+  Open
+  Closed
+  Coming_Soon @map("Coming Soon")
+}
+
+enum SkillLevel {
+  Beginner
+  Intermediate
+  Expert
+}
+
+enum PaymentStatus {
+  Free
+  Paid
+  All
+}
+
+model User {
+  id                    String                 @id @default(uuid())
+  name                  String?
+  email                 String                 @unique
+  emailVerified         DateTime?
+  image                 String?
+  password              String?
+  accounts              Account[]
+  role                  Role                   @default(USER)
+  isTwoFactorEnabled    Boolean                @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
+  Course                Course[]
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+}
+
+model Account {
+  id                String  @id @default(uuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model ResetPasswordToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id      String   @id @default(uuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  image     String?
+  courses   Course[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Quiz {
+  id        String     @id @default(uuid())
+  name      String
+  Question  Question[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  Chapter Chapter?
+}
+
+model Question {
+  id         String   @id @default(uuid())
+  question   String
+  quizId     String
+  quiz       Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options    Json?
+  answer     String
+  isCorrect  Boolean?
+  userAnswer String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Resource {
+  id        String   @id @default(uuid())
+  name      String
+  url       String
+  courseId  String
+  courses   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lesson {
+  id        String   @id @default(uuid())
+  name      String
+  videoUrl  String?
+  chapterId String
+  chapter   Chapter  @relation(fields: [chapterId], references: [id])
+  position  Int
+  isDraft   Boolean  @default(true)
+  muxData   MuxData?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Chapter {
+  id           String         @id @default(uuid())
+  name         String
+  description  String?
+  courseId     String
+  courses      Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  Lesson       Lesson[]
+  quizId       String?
+  quiz         Quiz?          @relation(fields: [quizId], references: [id])
+  position     Int
+  isAvailable  Boolean        @default(false)
+  isFree       Boolean        @default(false)
+  userProgress UserProgress[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@unique([quizId])
+}
+
+model MuxData {
+  id          String   @id @default(uuid())
+  assetId     String
+  lessonId    String   @unique
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  placybackId String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model UserProgress {
+  id          String   @id @default(uuid())
+  userId      String
+  chapterId   String
+  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, chapterId])
+}
+
+model Course {
+  id            String        @id @default(uuid())
+  tutorId       String
+  tutor         User          @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  name          String
+  description   String?
+  imageUrl      String?
+  difficulty    SkillLevel    @default(Beginner)
+  paymentStatus PaymentStatus @default(Free)
+  duration      String
+  courseStatus  CourseStatus  @default(Coming_Soon)
+  categoryId    String?
+  category      Category?     @relation(fields: [categoryId], references: [id])
+  isAvailable   Boolean       @default(false)
+  price         Float?
+  chapter       Chapter[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  resources     Resource[]
+}
