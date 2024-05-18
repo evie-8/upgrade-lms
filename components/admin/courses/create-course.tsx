@@ -176,13 +176,14 @@ const CreateCourseCard = () => {
                             </Button>
                         </Link>
 
-                       <ConfirmAction  onConfirm={() =>form.handleSubmit(onSubmit)()} action="Continue" 
+                    
+                      <ConfirmAction  onConfirm={() =>form.handleSubmit(onSubmit)()} action="Continue" 
                        description="You will not be able to change skill level, payment status and course duration fields once you submit">
                        <Button type='button'  disabled={pending} >
                                     Continue
                         </Button>
                        </ConfirmAction>
-
+                     
                     
                 </div>
             </form>

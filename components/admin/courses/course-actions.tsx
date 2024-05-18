@@ -13,7 +13,7 @@ interface Props {
 const CourseActions = ({isAvailable, courseId, disabled}: Props) => {
   return (
     <div className='flex items-center gap-x-2'>
-         <Button size={"sm"} variant={"outline"} disabled={disabled } className='font-normal bg-black2 border-transparent text-white'>
+         <Button size={"sm"} variant={"outline"} disabled={disabled } className='font-normal bg-black2 border-transparent text-white hover:bg-black2/90'>
             {isAvailable ? 'Unpublish': 'Publish'}
         </Button>
        <ConfirmAction onConfirm={() => {}}>

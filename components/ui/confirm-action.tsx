@@ -15,7 +15,8 @@ const ConfirmAction: React.FC<Props> = ({children, onConfirm, action='Delete', d
         <AlertDialogTrigger asChild>
             {children}
         </AlertDialogTrigger>
-        <AlertDialogContent>
+    
+       <AlertDialogContent className='max-sm:max-w-[330px]'>
             <AlertDialogHeader>
                 <AlertDialogTitle>
                     Are you sure?
@@ -33,6 +34,7 @@ const ConfirmAction: React.FC<Props> = ({children, onConfirm, action='Delete', d
                 </AlertDialogAction>
             </AlertDialogFooter>
         </AlertDialogContent>
+       
     </AlertDialog>
   )
 }

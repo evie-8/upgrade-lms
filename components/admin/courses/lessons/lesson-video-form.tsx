@@ -81,7 +81,7 @@ const onSubmit = (values: z.infer<typeof formschema>) => {
                   }
                 } } />
 
-                  <div className="text-xs text-gray/60 mt-4 italic">Upload a video for this chapter's lesson</div>
+                  <div className="text-xs text-gray/60 mt-4 italic">Upload a video for this lesson</div>
                </div>
              
                 

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Trash } from 'lucide-react'
 import { useRouter } from 'next-nprogress-bar';
 import { useRouter as useRouter1 } from 'next/navigation';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast';
 interface Props {
     disabled: boolean;
@@ -20,6 +20,29 @@ const LessonActions = ({ courseId, chapterId, lessonId, isDraft, disabled}: Prop
   const router = useRouter();
   const router1 = useRouter1();
   const [isLoading, setIsLoading] = useState(false);
+
+  const onClick = async() => {
+    try {
+      setIsLoading(true);
+       
+        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/lessons/${lessonId}/publish`, {
+          isDraft
+        });
+        if (isDraft) {
+          toast.success("Lesson published");
+          router1.refresh();
+        } else {
+          toast.success('Lesson unpublished');
+          router1.refresh();
+        }
+       
+    } catch  {
+      toast.error("Something went wrong");
+      
+    }   finally{
+      setIsLoading(false);
+    }
+  }
 
   const onDelete = async() => {
     try {
@@ -39,7 +62,7 @@ const LessonActions = ({ courseId, chapterId, lessonId, isDraft, disabled}: Prop
   }
   return (
     <div className='flex items-center gap-x-2'>
-          <Button size={"sm"} variant={"outline"} disabled={disabled || isLoading} className='font-normal bg-black2 border-transparent text-white'>
+          <Button size={"sm"} variant={"outline"} onClick={onClick} disabled={disabled || isLoading} className='font-normal bg-black2 border-transparent text-white hover:bg-black2/90'>
             {isDraft ? 'Publish': 'Unpublish'}
         </Button>
         <ConfirmAction onConfirm={onDelete}>

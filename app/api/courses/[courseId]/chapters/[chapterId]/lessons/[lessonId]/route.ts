@@ -105,7 +105,7 @@ export async function PATCH(
         try {
             const role = await currentRole();
             const user = await currentUser();
-            const {isFree, ...values} = await req.json();
+            const {isDraft, ...values} = await req.json();
             
          if (!user) {
             return new NextResponse("Unauthorized", {status: 401});

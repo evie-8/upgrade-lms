@@ -1,6 +1,5 @@
 import { currentRole, currentUser } from "@/lib/auth";
 import prismadb from "@/lib/db";
-import axios from "axios";
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 

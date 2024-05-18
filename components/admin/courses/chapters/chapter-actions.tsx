@@ -22,6 +22,29 @@ const ChapterActions = ({isAvailable, courseId, chapterId, disabled, chapter}: P
   const router1 = useRouter1();
   const [isLoading, setIsLoading] = useState(false);
 
+  const onClick = async() => {
+    try {
+      setIsLoading(true);
+       
+        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/publish`, {
+          isAvailable
+        });
+        if (isAvailable) {
+          toast.success("Lesson unpublished");
+          router1.refresh();
+        } else {
+          toast.success('Lesson published');
+          router1.refresh();
+        }
+       
+    } catch  {
+      toast.error("Something went wrong");
+      
+    }   finally{
+      setIsLoading(false);
+    }
+  }
+
   const onDelete = async() => {
     try {
       
@@ -51,7 +74,7 @@ const ChapterActions = ({isAvailable, courseId, chapterId, disabled, chapter}: P
   }
   return (
     <div className='flex items-center gap-x-2'>
-         <Button size={"sm"} variant={"outline"} disabled={disabled || isLoading } className='font-normal bg-black2 border-transparent text-white'>
+         <Button size={"sm"} variant={"outline"} disabled={disabled || isLoading } onClick={onClick} className='font-normal bg-black2 border-transparent text-white hover:bg-black2/90'>
             {isAvailable ? 'Unpublish': 'Publish'}
         </Button>
        <ConfirmAction onConfirm={onDelete}>
