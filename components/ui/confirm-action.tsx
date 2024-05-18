@@ -5,10 +5,11 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 interface Props {
     children: React.ReactNode;
     onConfirm: () => void;
-    action?: string
+    action?: string;
+    description?: string;
 }
 
-const ConfirmAction: React.FC<Props> = ({children, onConfirm, action='Delete'}) => {
+const ConfirmAction: React.FC<Props> = ({children, onConfirm, action='Delete', description=' This action cannot be undone.'}) => {
   return (
     <AlertDialog>
         <AlertDialogTrigger asChild>
@@ -20,7 +21,7 @@ const ConfirmAction: React.FC<Props> = ({children, onConfirm, action='Delete'}) 
                     Are you sure?
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                    This action cannot be undone.
+                   {description}
                 </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

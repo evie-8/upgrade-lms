@@ -15,8 +15,9 @@ import { PaymentStatus, SkillLevel } from "@prisma/client";
 import axios from 'axios';
 import { useRouter } from "next-nprogress-bar";
 import toast from "react-hot-toast";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import Container from "@/components/ui/container";
+import { Button } from "@/components/ui/button";
+import ConfirmAction from "@/components/ui/confirm-action";
 
 const CreateCourseCard = () => {
 
@@ -169,15 +170,18 @@ const CreateCourseCard = () => {
                 </div>
                      
                 <div className='flex items-center gap-x-2 mt-8'>
-                        <Link href={"/tutor/dashboard"}>
-                            <button type='button' className='button2' disabled={pending}>
+                        <Link href={"/tutor/courses"}>
+                            <Button type='button' variant="outline" disabled={pending}>
                                 Cancel
-                            </button>
+                            </Button>
                         </Link>
 
-                        <button type='submit' className='button1' disabled={pending}>
+                       <ConfirmAction  onConfirm={() =>form.handleSubmit(onSubmit)()} action="Continue" 
+                       description="You will not be able to change skill level, payment status and course duration fields once you submit">
+                       <Button type='button'  disabled={pending} >
                                     Continue
-                        </button>
+                        </Button>
+                       </ConfirmAction>
 
                     
                 </div>
