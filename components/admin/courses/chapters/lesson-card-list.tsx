@@ -71,7 +71,7 @@ const onDragEnd = (result: DropResult) => {
                                             </span>
                                             {lesson.name}
                                             <div className="ml-auto pr-2 flex items-center gap-x-2">
-                                            <Badge className={cn("text-white cursor-pointer transition" , !lesson.isDraft ? 'bg-success hover:bg-success/60': 'bg-danger hover:bg-danger/60')}>
+                                            <Badge className={cn(" pointer-events-none transition" , !lesson.isDraft ? 'bg-success/10 text-success': ' text-danger bg-danger/10')}>
                                                     {lesson.isDraft?  'draft':'published'}
                                                
                                                 

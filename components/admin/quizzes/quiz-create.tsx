@@ -10,18 +10,21 @@ import { Input } from '@/components/ui/input'
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { QuizShema } from '@/schemas';
-import { useTransition } from 'react';
+import { useContext, useTransition } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useRouter } from 'next-nprogress-bar';
 import { LinearProgress } from '@mui/material';
 import Container from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
+import { themeContext } from '@/components/theme';
 
 
 const QuizCreateCard = () => {
   const [pending, setPending] = useTransition();
   const router = useRouter();
+  const {theme} = useContext(themeContext);
+
   const form = useForm<z.infer<typeof QuizShema>>({
     resolver: zodResolver(QuizShema),
     defaultValues: {
@@ -54,7 +57,7 @@ const QuizCreateCard = () => {
         <Dialog>
          
          <DialogTrigger asChild  className='ml-auto'>
-               <button className='button1 bg-success'><PlusCircle className='w-4 h-4 mr-2'/> <span>New quiz</span></button>
+               <button className={`button1 bg-success ${theme === 'dark' && 'text-gray'}`}><PlusCircle className='w-4 h-4 mr-2'/> <span>New quiz</span></button>
          </DialogTrigger>
          
          <DialogContent className='max-sm:max-w-[330px]'>

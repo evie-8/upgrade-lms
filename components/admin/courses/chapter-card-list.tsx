@@ -71,13 +71,13 @@ const onDragEnd = (result: DropResult) => {
                                             <div className="ml-auto pr-2 flex items-center gap-x-2">
                                                 {
                                                     chapter.isFree && (
-                                                        <Badge className="pointer-events-none text-white bg-purple2 hover:bg-purple">
+                                                        <Badge className="pointer-events-none text-purple2 bg-purple2/10">
                                                             free
                                                         </Badge>
                                                     )
                                                 }
                                               
-                                                <Badge className={cn("text-white cursor-pointer transition" , chapter.isAvailable ? 'bg-success hover:bg-success/60': 'bg-danger hover:bg-danger/60')}>
+                                                <Badge className={cn("pointer-events-none transition" , chapter.isAvailable ? 'bg-success/10 text-success ': 'bg-danger/10 text-danger')}>
                                                     {chapter.isAvailable ? 'published': 'draft'}
                                                
                                                 

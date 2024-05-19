@@ -4,6 +4,8 @@ import { Tooltip } from "@mui/material";
 import { LucideIcon } from "lucide-react"
 import { useRouter } from "next-nprogress-bar";
 import { usePathname } from "next/navigation";
+import { useContext } from "react";
+import { themeContext } from "@/components/theme";
 
 interface Props {
     icon: LucideIcon;
@@ -16,6 +18,7 @@ interface Props {
 const MenuItem: React.FC<Props> = ({icon: Icon, label, href, collapse, signout=false}) => {
    const pathname = usePathname();
    const router = useRouter();
+   const {theme} = useContext(themeContext);
    
    const isActive =  pathname === href || pathname.startsWith(`${href}`);
    const onClick = () => {
@@ -26,7 +29,8 @@ const MenuItem: React.FC<Props> = ({icon: Icon, label, href, collapse, signout=f
     }
    }
   return (
-    <Tooltip title={collapse ? <span className="text-gray text-xs">{label}</span>: ''} arrow={true} placement="right" >
+    <Tooltip title={collapse ? <span className={`${theme === 'dark' ? 'text-gray' : 'text-white'} text-xs`}>{label}</span>: ''} 
+    arrow={true} placement="right">
           <button onClick={onClick} type="button" className={cn(`relative group flex items-center  gap-x-2 text-gray text-sm font-normal transition-all rounded-lg hover:text-primary hover:bg-primary/10 border border-transparent `, isActive &&  `text-primary bg-primary/10`, `${collapse ? 'justify-center': 'pl-6'}` )}>    
         <div className="flex items-center gap-x-2 py-4">
             <Icon size={22} className={cn("group-hover:text-primary text-gray font-light", isActive && "text-primary")}/>

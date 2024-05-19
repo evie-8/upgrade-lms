@@ -1,7 +1,15 @@
 import { currentRole, currentUser } from "@/lib/auth";
 import prismadb from "@/lib/db";
+import Mux from "@mux/mux-node";
+import { Prisma } from "@prisma/client";
 import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
+
+
+const mux = new Mux({
+    tokenId: process.env.MUX_TOKEN_ID,
+    tokenSecret: process.env.MUX_TOKEN_SECRET
+});
 
 export async function DELETE(
     req: NextApiRequest,
@@ -36,13 +44,23 @@ export async function DELETE(
                 id: params.chapterId,
                 courseId: params.courseId
             }, include: {
-                Lesson: true
+                Lesson: {
+                    include: {
+                        muxData: true
+                    }
+                }
             }
            
          });
 
          if (!chapter) {
             return new NextResponse("Not found", {status: 404})
+         }
+
+         for (const lesson of chapter.Lesson) {
+            if (lesson.muxData?.assetId) {
+                await mux.video.assets.delete(lesson.muxData.assetId);
+            }
          }
 
          const deleteChapter = await prismadb.chapter.delete({
@@ -71,6 +89,13 @@ export async function DELETE(
          return NextResponse.json(deleteChapter)
             
         } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                if (error.code === 'P2003') {
+                  console.log("prisma", error.message)
+                }
+              }
+            
+          
             console.log('[CHAPTER_DELETE]', JSON.stringify(error));
         return new NextResponse("Internal Error", {status:500})
             

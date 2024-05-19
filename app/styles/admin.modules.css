@@ -15,15 +15,6 @@
 
     
 }
-.MuiTooltip-tooltipPlacementRight {
-    background-color:  #fff !important; 
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2) !important;
-   
-}
-.MuiTooltip-tooltipArrow, .MuiTooltip-arrow, .MuiTooltip-popperArrow {
-    
-    color: #fff !important;
-}
 
 .ql-container .ql-bubble, .ql-container .ql-snow, .ql-editor{
   
@@ -31,4 +22,3 @@
     line-height: 1.25rem !important;
   font-family: 'Poppins';
 }
-

@@ -1,7 +1,7 @@
 import { IconTag } from "@/components/ui/icon";
 import { currentUser } from "@/lib/auth"
 import prismadb from "@/lib/db";
-import { CircleDollarSign, DollarSign, File, LayoutDashboard, ListChecks } from "lucide-react";
+import { CircleDollarSign, File, LayoutDashboard, ListChecks } from "lucide-react";
 import { redirect } from "next/navigation";
 import TitleForm from "@/components/admin/courses/title-form";
 import DescriptionForm from "@/components/admin/courses/description-form";
@@ -128,7 +128,7 @@ const CourseId: React.FC<Props> = async ({courseId}) => {
         {/**price */}
         <div>
           <div className="flex items-center gap-x-2">
-                  <IconTag icon={DollarSign}/>
+                  <IconTag icon={CircleDollarSign}/>
                   <h2 className="font-medium">Sell your course</h2>
             </div>
             <PriceForm data={course}/>

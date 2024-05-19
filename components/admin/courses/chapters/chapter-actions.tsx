@@ -30,10 +30,10 @@ const ChapterActions = ({isAvailable, courseId, chapterId, disabled, chapter}: P
           isAvailable
         });
         if (isAvailable) {
-          toast.success("Lesson unpublished");
+          toast.success("Chapter unpublished");
           router1.refresh();
         } else {
-          toast.success('Lesson published');
+          toast.success('Chapter published');
           router1.refresh();
         }
        
@@ -49,7 +49,9 @@ const ChapterActions = ({isAvailable, courseId, chapterId, disabled, chapter}: P
     try {
       
       setIsLoading(true);
-      if (chapter.Lesson.length) {
+     {/**
+    
+         if (chapter.Lesson.length) {
         for(const lesson of chapter.Lesson) {
             try {
                 const res = await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}/lessons/${lesson.id}`);
@@ -59,6 +61,7 @@ const ChapterActions = ({isAvailable, courseId, chapterId, disabled, chapter}: P
                 throw new Error(`Failed to delete lesson ${lesson.id}`);
             }   }    
      }
+    */}
       await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
       toast.success("Chapter deleted");
       router1.refresh();

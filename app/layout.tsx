@@ -4,6 +4,8 @@ import "./styles/auth.modules.css"
 
 import ProgressLoader from "@/components/progress-bar";
 import {Toaster} from "react-hot-toast"
+import { ThemeProvider } from "@/components/theme";
+
 
 
 export default function RootLayout({
@@ -12,6 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <ThemeProvider>
     <html lang="en">
       <body >
         <SessionProvider>
@@ -24,5 +27,6 @@ export default function RootLayout({
        
       </body>
     </html>
+    </ThemeProvider>
   );
 }

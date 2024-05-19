@@ -221,7 +221,7 @@ model Course {
   isAvailable   Boolean       @default(false)
   price         Float?
   chapter       Chapter[]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
   resources     Resource[]
+   createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }

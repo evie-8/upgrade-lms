@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from 'react'
-import SideBar from './admin-sidebar'
-import Header from './header'
+import { useContext, useState } from 'react'
+import SideBar from '@/components/admin/admin-sidebar'
+import Header from '@/components/admin/header'
 import { ChevronRight } from 'lucide-react';
 import Container from '@/components/ui/container';
-import Animation from '../ui/animation';
-
+import Animation from '@/components/ui/animation';
+import { themeContext } from '@/components/theme';
 
 
 interface Props {
@@ -15,11 +15,12 @@ interface Props {
   }
 const Content: React.FC<Props> = ({children}) => {
     const [collapse, setCollapse] = useState(false);
+    const {theme} = useContext(themeContext)
   return (
     <>
       <div className={`hidden h-full sm:flex flex-col fixed z-20 inset-y-0 bg-white transition-all  ${collapse ?'w-20':'w-56' }`}>
       <SideBar collapse={collapse} />
-      <button className="hidden absolute -right-2 sm:top-[3%] lg:top-[4%] w-5 h-5 sm:flex items-center justify-center rounded-full border bg-white border-transparent shadow-xs z-30" onClick={() => setCollapse((prev: boolean) => !prev)}>
+      <button className={`hidden absolute -right-2 sm:top-[3%] lg:top-[4%] w-5 h-5 sm:flex items-center justify-center rounded-full border bg-white border-transparent ${ theme === 'light' ? 'shadow-xs' : 'shadow-xs-dark'} z-30`} onClick={() => setCollapse((prev: boolean) => !prev)}>
           <ChevronRight size={20} className={`transition-all duration-[0.2s]  ${collapse ? '' : 'transform rotate-180'}`}/>
         </button>
       </div>
