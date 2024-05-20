@@ -66,7 +66,7 @@ const CourseId: React.FC<Props> = async ({courseId}) => {
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
-  const hasEmptyURL = course.chapter.some(chapter => chapter.Lesson.some(lesson => !lesson.videoUrl));
+  const hasEmptyURL = course.chapter.some(chapter => chapter.Lesson.some(lesson => !lesson.isDraft && !lesson.videoUrl));
   const isComplete = requiredFields.every(Boolean)
 
     return (
@@ -81,7 +81,7 @@ const CourseId: React.FC<Props> = async ({courseId}) => {
                 <AlertBanner
                     className='sticky top-[73px] z-10'
                     variant={'warning'}
-                    label={'This course c contains chapters with lessons which have empty URLs'}
+                    label={'This course contains chapters with lessons which have empty URLs'}
                 />
             ) : !course.isAvailable ? (
                 <AlertBanner
