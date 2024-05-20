@@ -49,19 +49,7 @@ const ChapterActions = ({isAvailable, courseId, chapterId, disabled, chapter}: P
     try {
       
       setIsLoading(true);
-     {/**
-    
-         if (chapter.Lesson.length) {
-        for(const lesson of chapter.Lesson) {
-            try {
-                const res = await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}/lessons/${lesson.id}`);
-                console.log("finished", res)
-            } catch (error) {
-                console.error(`Failed to delete lesson ${lesson.id}:`, error);
-                throw new Error(`Failed to delete lesson ${lesson.id}`);
-            }   }    
-     }
-    */}
+     
       await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
       toast.success("Chapter deleted");
       router1.refresh();

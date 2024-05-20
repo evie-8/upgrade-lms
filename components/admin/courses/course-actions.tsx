@@ -1,5 +1,6 @@
 "use client";
 
+import { themeContext } from '@/components/theme';
 import { Button } from '@/components/ui/button'
 import ConfirmAction from '@/components/ui/confirm-action';
 import { Chapter, Lesson } from '@prisma/client';
@@ -7,7 +8,7 @@ import axios from 'axios';
 import { Trash } from 'lucide-react'
 import { useRouter } from 'next-nprogress-bar';
 import { useRouter as useRouter1 } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import toast from 'react-hot-toast';
 interface Props {
     isAvailable: boolean;
@@ -20,6 +21,7 @@ const CourseActions = ({isAvailable, courseId, disabled}: Props) => {
   const router = useRouter();
   const router1 = useRouter1();
   const [isLoading, setIsLoading] = useState(false);
+  const {theme} = useContext(themeContext)
 
   const onClick = async() => {
     try {
@@ -48,20 +50,7 @@ const CourseActions = ({isAvailable, courseId, disabled}: Props) => {
     try {
       
       setIsLoading(true);
-      {
-        /**
-         * if (chapter.Lesson.length) {
-        for(const lesson of chapter.Lesson) {
-            try {
-                const res = await axios.delete(`/api/courses/${courseId}`);
-                console.log("finished", res)
-            } catch (error) {
-                console.error(`Failed to delete lesson ${lesson.id}:`, error);
-                throw new Error(`Failed to delete lesson ${lesson.id}`);
-            }   }    
-     }
-         */
-      }
+     
       await axios.delete(`/api/courses/${courseId}`);
       toast.success("Course deleted");
       router1.refresh();
@@ -77,7 +66,7 @@ const CourseActions = ({isAvailable, courseId, disabled}: Props) => {
   }
   return (
     <div className='flex items-center gap-x-2'>
-         <Button size={"sm"} variant={"outline"} disabled={disabled || isLoading } onClick={onClick} className='font-normal bg-black2 border-transparent text-white hover:bg-black2/90'>
+         <Button size={"sm"} variant={"outline"} disabled={disabled || isLoading } onClick={onClick} className={`font-normal bg-black2 border-transparent text-white hover:bg-black2/90`}>
             {isAvailable ? 'Unpublish': 'Publish'}
         </Button>
        <ConfirmAction onConfirm={onDelete}>

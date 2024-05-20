@@ -156,7 +156,7 @@ model Lesson {
   name      String
   videoUrl  String?
   chapterId String
-  chapter   Chapter  @relation(fields: [chapterId], references: [id])
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   position  Int
   isDraft   Boolean  @default(true)
   muxData   MuxData?

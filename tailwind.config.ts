@@ -111,10 +111,10 @@ module.exports = withUt({
         gray: '#fff',
         primary:'#007BFF',
         transparent: 'transparent',
-        white:'#242424',
-        white1: '#2C2C2C',
+        white:'#1E1F20',
+        white1: '#131314',
         black: "#F4F5F7",
-        black2: '#0E0F0D',
+        black2: '#121212',
         danger: '#f33066',
         destructive: "#F54438",
         warning: '#ff9b20',
@@ -131,7 +131,7 @@ module.exports = withUt({
         blue1: '#00ADFF',
         grey2: '#C0C0C0',
         grey3: '#F3F3F3',
-        yellow: "#fefcbf",
+        yellow: "#B59F3B",
       },
 
     }, {

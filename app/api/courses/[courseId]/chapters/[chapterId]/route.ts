@@ -60,6 +60,7 @@ export async function DELETE(
          for (const lesson of chapter.Lesson) {
             if (lesson.muxData?.assetId) {
                 await mux.video.assets.delete(lesson.muxData.assetId);
+               
             }
          }
 
@@ -96,7 +97,7 @@ export async function DELETE(
               }
             
           
-            console.log('[CHAPTER_DELETE]', JSON.stringify(error));
+            console.log('[CHAPTER_DELETE]', error);
         return new NextResponse("Internal Error", {status:500})
             
         }
