@@ -55,7 +55,8 @@ export async function PATCH(
                     id: params.courseId,
                     tutorId: user.id
                 }, data: {
-                    isAvailable: false
+                    isAvailable: false,
+                    courseStatus: 'Closed'
                 }
             });
 
@@ -76,7 +77,8 @@ export async function PATCH(
                     tutorId: user.id
                 },
                 data: {
-                    isAvailable: true
+                    isAvailable: true,
+                    courseStatus: 'Open'
                 }
             });
             return NextResponse.json(publishedCourse);

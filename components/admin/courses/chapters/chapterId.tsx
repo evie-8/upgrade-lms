@@ -60,7 +60,7 @@ const ChapterIdCard = async ({chapterId, courseId}: Props) => {
       const totalFields = requiredFields.length;
       const completedFields = requiredFields.filter(Boolean).length;
       const isComplete = requiredFields.every(Boolean);
-      const hasEmptyURL = chapter.Lesson.some((lesson: any) =>  lesson.i !lesson.videoUrl);
+      const hasEmptyURL = chapter.Lesson.some((lesson: any) =>  !lesson.isDraft && !lesson.videoUrl);
        
     
 

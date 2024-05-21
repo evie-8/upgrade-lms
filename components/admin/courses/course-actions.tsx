@@ -3,6 +3,7 @@
 import { themeContext } from '@/components/theme';
 import { Button } from '@/components/ui/button'
 import ConfirmAction from '@/components/ui/confirm-action';
+import { useConfettiModal } from '@/hooks/use-confetti';
 import { Chapter, Lesson } from '@prisma/client';
 import axios from 'axios';
 import { Trash } from 'lucide-react'
@@ -21,7 +22,9 @@ const CourseActions = ({isAvailable, courseId, disabled}: Props) => {
   const router = useRouter();
   const router1 = useRouter1();
   const [isLoading, setIsLoading] = useState(false);
-  const {theme} = useContext(themeContext)
+  const {theme} = useContext(themeContext);
+  const confetti = useConfettiModal();
+    
 
   const onClick = async() => {
     try {
@@ -32,10 +35,13 @@ const CourseActions = ({isAvailable, courseId, disabled}: Props) => {
         });
         if (isAvailable) {
           toast.success("Course unpublished");
-          router1.refresh();
+          
         } else {
           toast.success('Course published');
-          router1.refresh();
+          confetti.onOpen();
+         
+
+         
         }
        
     } catch  {
@@ -43,6 +49,7 @@ const CourseActions = ({isAvailable, courseId, disabled}: Props) => {
       
     }   finally{
       setIsLoading(false);
+      router1.refresh();
     }
   }
 

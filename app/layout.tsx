@@ -5,6 +5,7 @@ import "./styles/auth.modules.css"
 import ProgressLoader from "@/components/progress-bar";
 import {Toaster} from "react-hot-toast"
 import { ThemeProvider } from "@/components/theme";
+import { ConfettiProvider } from "@/components/confetti-provider";
 
 
 
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body >
         <SessionProvider>
         <ProgressLoader/>
+        <ConfettiProvider/>
         <Toaster/>
       
             {children}
