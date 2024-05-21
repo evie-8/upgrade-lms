@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button'
 import ConfirmAction from '@/components/ui/confirm-action';
 import axios from 'axios';
-import { Trash } from 'lucide-react'
+import { Trash, Trash2 } from 'lucide-react'
 import { useRouter } from 'next-nprogress-bar';
 import { useRouter as useRouter1 } from 'next/navigation';
 import { useState } from 'react'
@@ -67,7 +67,7 @@ const LessonActions = ({ courseId, chapterId, lessonId, isDraft, disabled}: Prop
         </Button>
         <ConfirmAction onConfirm={onDelete}>
         <Button size={"sm"} variant={"destructive"} className='px-1' disabled={isLoading}>
-            <Trash/>
+            <Trash2/>
         </Button>
         </ConfirmAction>
     </div>

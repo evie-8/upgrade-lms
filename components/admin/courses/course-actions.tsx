@@ -6,7 +6,7 @@ import ConfirmAction from '@/components/ui/confirm-action';
 import { useConfettiModal } from '@/hooks/use-confetti';
 import { Chapter, Lesson } from '@prisma/client';
 import axios from 'axios';
-import { Trash } from 'lucide-react'
+import { Trash, Trash2 } from 'lucide-react'
 import { useRouter } from 'next-nprogress-bar';
 import { useRouter as useRouter1 } from 'next/navigation';
 import React, { useContext, useState } from 'react'
@@ -78,7 +78,7 @@ const CourseActions = ({isAvailable, courseId, disabled}: Props) => {
         </Button>
        <ConfirmAction onConfirm={onDelete}>
        <Button size={"sm"} variant={"destructive"} className='px-1' disabled={isLoading}>
-            <Trash/>
+            <Trash2/>
         </Button>
        </ConfirmAction>
     </div>

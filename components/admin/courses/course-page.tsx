@@ -1,19 +1,15 @@
 "use client"
 import { themeContext } from '@/components/theme'
 import Container from '@/components/ui/container'
-import {  MoreHorizontal, Pencil, PlusCircle, Trash2 } from 'lucide-react'
+import {   PlusCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useContext, useState} from 'react'
 
-import {GridRowsProp, GridColDef, DataGrid} from "@mui/x-data-grid";
-import { Chapter, Course, Lesson } from '@prisma/client'
-import prismadb from '@/lib/db'
+import {GridToolbar , GridColDef, DataGrid} from "@mui/x-data-grid";
+import { Chapter, Course, } from '@prisma/client'
 import { formatter } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-import ConfirmAction from '@/components/ui/confirm-action'
-import axios from 'axios'
-import toast from 'react-hot-toast'
+import ActionCell from '../data-grid-action'
 
 interface Props {
   data: Course[]
@@ -23,7 +19,7 @@ const columns: GridColDef<Course & {chapter: Chapter[]}>[] = [
   {
     field: 'name',
     headerName: 'Name',
-    flex: 1
+    flex: 1,
   }, 
   
     {
@@ -34,6 +30,20 @@ const columns: GridColDef<Course & {chapter: Chapter[]}>[] = [
       renderCell: (params) => formatter(params.row.price)
     },
     {
+      field: 'duration',
+      headerName: 'Duration',
+      flex: 1,
+      renderCell: (params) => params.row.duration
+    },
+
+    {
+      field: 'chapter',
+      headerName: 'Chapters',
+      flex: 1,
+      renderCell: (params) => params.row.chapter.length
+    },
+
+    {
       field: 'difficulty',
       headerName: 'Diffficulty',
       flex: 1,
@@ -42,6 +52,7 @@ const columns: GridColDef<Course & {chapter: Chapter[]}>[] = [
       </Badge>  
       
     },
+   
 
     {
       field: 'courseStatus',
@@ -52,71 +63,22 @@ const columns: GridColDef<Course & {chapter: Chapter[]}>[] = [
       
     },
 
-    {
-      field: 'chapter',
-      headerName: 'Chapters',
-      flex: 1,
-      renderCell: (params) => params.row.chapter.length
-    },
+   
   
     {
       field: 'isAvailable',
       headerName: 'Published',
       flex: 1,
       renderCell: (params) => <Badge className={`pointer-events-none font-normal ${params.row.isAvailable ? 'bg-success/10 text-success': 'bg-destructive/10 text-destructive'}`}>{params.row.isAvailable ? 'published': 'draft'}</Badge>      
-    }, {
-      field: 'id',
+    }, 
+    {
+      field: 'action',
       headerName: 'Action',
-      width: 70,
-      renderCell: (params) => {
-        const [isLoading, setIsLoading] = useState(false);
-        const onDelete = async() => {
-          try {
-            
-            setIsLoading(true);
-           
-            await axios.delete(`/api/courses/${params.row.id}`);
-            toast.success("Course deleted");
-          } catch {
-            toast.error("Something went wrong")
-            
-          } finally {
-            setIsLoading(false);
-          }
-        }
-        return (
-         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className='inline-flex items-center justify-center h-8 w-8 p-0'>
-              <MoreHorizontal className='h-4 w-4'/>
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className='border-grey bg-white' align='end'>
-            <Link href={`/tutor/courses/${params.row.id}`}>
-              <DropdownMenuItem className='hover:text-destructive'>
-                <Pencil className='h-4 w-4 mr-2'/>
-                Edit
-              </DropdownMenuItem>
-            </Link>
-            
-              <ConfirmAction onConfirm={onDelete}>
-              <button className='flex items-start justify-center' disabled={isLoading}>
-              <DropdownMenuItem className='hover:text-destructive'>
-                <Trash2 className='h-4 w-4 mr-2'/>
-                Delete
-              </DropdownMenuItem>
-            </button>
-              </ConfirmAction>
-            
-
-          </DropdownMenuContent>
-          
-         </DropdownMenu>
-        )
-      }
+      width: 100,
+      sortable: false,
+      renderCell: (params) => <ActionCell id={params.row.id}/> 
+  
     }
-  
-  
 ]
 
 const CoursePage = ({data}: Props) => {
@@ -137,16 +99,73 @@ const CoursePage = ({data}: Props) => {
     </div>
     <div className='mt-16'>
       <DataGrid  
-     className='!border-grey  !text-gray !font-poppins'
+     className='!border-grey  !text-gray !font-poppins !rounded-xl !bg-white'
       columns={columns} 
       rowSelection={false}
       rows={data}
+      
       initialState={{
         pagination: {
-          paginationModel: {page: 0, pageSize: 5}
-        }
+          paginationModel: {page: 0, pageSize: 5},
+        },
+        
+      }}
+      sx={{
+      
+         '& .css-1pmk00y-MuiDataGrid-columnHeaders': {
+          backgroundColor: "#C3DDF9",
+          borderRadius: '12px'
+         },
+         '.MuiDataGrid-topContainer': {
+          borderRadius: '12px'
+         },
+
+         '& .MuiDataGrid-columnHeader': {
+          backgroundColor: "#007bff",
+          color: '#fff'
+         },
+
+        '& .MuiDataGrid-row': {
+          borderColor: theme === 'dark' ? '#E5E8F3' : '#333'
+        
+
+        },
+
+        '& .MuiDataGrid-row:nth-child(2n + 1)': {
+            backgroundColor: theme === 'light' ? '#f4f5f7' : '#131314'
+        },
+        '& .MuiDataGrid-row:nth-child(2n):hover': {
+          backgroundColor: theme === 'light' ? '#fff' : '#1E1F20'
+      },
+
+          '& .MuiDataGrid-footerContainer': {
+            color: theme === 'light' ? "#3c4852" : '#fff',
+            fontFamily: 'Poppins'
+          },
+          '& .MuiTablePagination-root': {
+            color: theme === 'light' ? "#3c4852" : '#fff',
+            fontFamily: 'Poppins'
+          },
+          '& .MuiDataGrid-menu': {
+            color: theme === 'light' ? "#3c4852" : '#fff',
+            backgroundColor: theme === 'light' ? '#fff' : '#1E1F20'
+          },
+          '.MuiDataGrid-iconButtonContainer': {
+            visibility: 'visible',
+          },
+          '.MuiDataGrid-sortIcon': {
+            opacity: 'inherit !important',
+            color: "#fff"
+          }, 
+         
+          '.MuiDataGrid-menuIcon':{
+            display: 'none'
+
+          }
+        
       }}
       pageSizeOptions={[5,10,20]}/>
+      
     </div>
    </Container>
    </>

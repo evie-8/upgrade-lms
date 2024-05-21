@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import ConfirmAction from '@/components/ui/confirm-action';
 import { Chapter, Lesson } from '@prisma/client';
 import axios from 'axios';
-import { Trash } from 'lucide-react'
+import { Trash, Trash2 } from 'lucide-react'
 import { useRouter } from 'next-nprogress-bar';
 import { useRouter as useRouter1 } from 'next/navigation';
 import React, { useState } from 'react'
@@ -70,7 +70,7 @@ const ChapterActions = ({isAvailable, courseId, chapterId, disabled, chapter}: P
         </Button>
        <ConfirmAction onConfirm={onDelete}>
        <Button size={"sm"} variant={"destructive"} className='px-1' disabled={isLoading}>
-            <Trash/>
+            <Trash2/>
         </Button>
        </ConfirmAction>
     </div>
