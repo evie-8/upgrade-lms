@@ -3,13 +3,16 @@ import { themeContext } from '@/components/theme'
 import Container from '@/components/ui/container'
 import {   PlusCircle } from 'lucide-react'
 import Link from 'next/link'
-import { useContext, useState} from 'react'
+import { useContext, useMemo, useState} from 'react'
 
-import {GridToolbar , GridColDef, DataGrid} from "@mui/x-data-grid";
+import {GridColDef, DataGrid} from "@mui/x-data-grid";
 import { Chapter, Course, } from '@prisma/client'
 import { formatter } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import ActionCell from '../data-grid-action'
+import CustomNoRowsOverlay from '@/components/ui/no-data'
+import { Input } from '@/components/ui/input'
+import { useDebouncedValue } from '@/hooks/use-debounce'
 
 interface Props {
   data: Course[]
@@ -83,35 +86,88 @@ const columns: GridColDef<Course & {chapter: Chapter[]}>[] = [
 
 const CoursePage = ({data}: Props) => {
   const {theme} = useContext(themeContext);
-  
+  const [searchText, setSearchText] =useState(''); 
+  const debouncedValue = useDebouncedValue(searchText, 4000);
+
+  const VISIBLE_FIELDS = ['name', 'duration', 'price', 'chapter', 'isAvailable', 'courseStatus', 'difficulty']
+ 
+  const handleSearch = (event: any) => {
+    const query = event.target.value;
+   
+  if (event.keyCode === 13 && query.length) {
+       setSearchText(query.toLowerCase())
+       
+    }
+}
+  const filteredData = useMemo(() => {
+    if (!searchText) {
+      return data;
+    }
+    const searchTextLower = searchText.toLowerCase();
+    return data.filter((row) => 
+      columns.some((column) => {
+        if (VISIBLE_FIELDS.includes(column.field)) {
+          const value = row[column.field]?.toString()?.toLowerCase() || '';
+          return value.includes(searchTextLower);
+        }
+        return false;
+      })
+    );
+  }, [data, searchText]);
+
+
+  const CustomToolbar = () => (
+   
+      <Input
+        placeholder="Search courses..."
+        onKeyDown={handleSearch}
+        className='max-w-sm'
+      />
+
+    
+  );
+
+
+
   return (
    <>
    <Container>
     <div className='flex items-center justify-between'>
+    
+    <h2 className='text-2xl font-bold'>Our Courses</h2>
+
     <Link href={"/tutor/courses/create"} className='ml-auto'>
        <button className={`button1 bg-success ${theme === 'dark' && 'text-gray'}`}>
         <PlusCircle className='h-4 w-4 mr-2'/>
             New course
         </button>
        </Link>
- 
-
+     
     </div>
-    <div className='mt-16'>
-      <DataGrid  
+    <div className='flex items-center py-4 w-full'>
+       <CustomToolbar/>
+      </div>
+    <div className=''>
+      <DataGrid 
      className='!border-grey  !text-gray !font-poppins !rounded-xl !bg-white'
       columns={columns} 
       rowSelection={false}
-      rows={data}
+      rows={filteredData.length ? filteredData : []}
+      autoHeight
+      slots={{
+        noRowsOverlay: CustomNoRowsOverlay,
+        noResultsOverlay: CustomNoRowsOverlay
+      }}
       
       initialState={{
         pagination: {
           paginationModel: {page: 0, pageSize: 5},
         },
+
         
       }}
       sx={{
-      
+        
          '& .css-1pmk00y-MuiDataGrid-columnHeaders': {
           backgroundColor: "#C3DDF9",
           borderRadius: '12px'
