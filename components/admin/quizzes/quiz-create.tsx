@@ -18,9 +18,14 @@ import { LinearProgress } from '@mui/material';
 import Container from '@/components/ui/container';
 import { Button } from '@/components/ui/button';
 import { themeContext } from '@/components/theme';
+import { Quiz } from '@prisma/client';
+import QuizTable from './quiz-table';
 
+interface Props {
+  quizzes: Quiz[]
+}
 
-const QuizCreateCard = () => {
+const QuizCreateCard = ({quizzes}: Props) => {
   const [pending, setPending] = useTransition();
   const router = useRouter();
   const {theme} = useContext(themeContext);
@@ -54,6 +59,8 @@ const QuizCreateCard = () => {
   
       <Container>
         <div className='flex items-center justify-between'>
+        <h2 className='text-2xl font-bold'>Evalauation Quizzes</h2>
+
         <Dialog>
          
          <DialogTrigger asChild  className='ml-auto'>
@@ -179,6 +186,8 @@ const QuizCreateCard = () => {
  
         </Dialog>
         </div>
+        <QuizTable data={quizzes}/>
+
       </Container>
     
   )

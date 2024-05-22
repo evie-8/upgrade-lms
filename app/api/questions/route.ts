@@ -29,11 +29,10 @@ export const POST = async (req: Request, res: Response) => {
                 apiKey: process.env.QUIZ_API_KEY,
                 limit: Number(length),
                 difficulty: difficulty,
-                category: "Code",
                 tags: topic
             }
         });
-
+ ``
         const transformQuestion = (question: any) => {
             let options: any = {};
 
@@ -45,6 +44,7 @@ export const POST = async (req: Request, res: Response) => {
                 }
             }
             const correctAnswerKey = Object.keys(question.correct_answers).find(key => question.correct_answers[key] === 'true');
+            //@ts-ignore
             const correctAnswer = correctAnswerKey.replace('_correct', '');
            
             return {
@@ -59,6 +59,7 @@ export const POST = async (req: Request, res: Response) => {
         const quiz = await prismadb.quiz.create({
             data: {
                 name,
+                topic: topic,
                 Question: {
                     createMany: {
                         data: transformedQuestions.map((question: any) => ({

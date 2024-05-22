@@ -1,93 +1,84 @@
-"use client"
-import { themeContext } from '@/components/theme'
-import Container from '@/components/ui/container'
-import {   PlusCircle } from 'lucide-react'
-import Link from 'next/link'
+"use client";
+import { Quiz } from '@prisma/client'
 import { useContext, useMemo, useState} from 'react'
-
 import {GridColDef, DataGrid} from "@mui/x-data-grid";
-import {  Course, } from '@prisma/client'
-import { formatter } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
-import ActionCell from '../data-grid-action'
+import ActionCell from '@/components/admin/quizzes/data-grid-action'
 import CustomNoRowsOverlay from '@/components/ui/no-data'
 import { Input } from '@/components/ui/input'
-
-interface Props {
-  data: Course[]
-}
+import { themeContext } from '@/components/theme';
 const columns: GridColDef<any>[] = [
  
-  {
-    field: 'name',
-    headerName: 'Name',
-    flex: 1,
-  }, 
-  
     {
-      field: 'price',
-      headerName: 'Price',
+      field: 'name',
+      headerName: 'Name',
       flex: 1,
-      
-      renderCell: (params) => formatter(params.row.price)
-    },
-    {
-      field: 'duration',
-      headerName: 'Duration',
-      flex: 1,
-      renderCell: (params) => params.row.duration
-    },
-
-    {
-      field: 'chapter',
-      headerName: 'Chapters',
-      flex: 1,
-      renderCell: (params) => params.row.chapter.length
-    },
-
-    {
-      field: 'difficulty',
-      headerName: 'Diffficulty',
-      flex: 1,
-      renderCell: (params) => <Badge className={`pointer-events-none bg-primary text-white font-normal`}>
-        {params.row.difficulty}
-      </Badge>  
-      
-    },
-   
-
-    {
-      field: 'courseStatus',
-      headerName: 'Status',
-      flex: 1,
-      renderCell: (params) => <Badge className={`pointer-events-none font-normal text-white ${params.row.courseStatus === 'Open' ? 'bg-success': 'bg-destructive'}`}>{params.row.courseStatus  === 'Open'? 'open':'closed' }</Badge>
-  
-      
-    },
-
-   
-  
-    {
-      field: 'isAvailable',
-      headerName: 'Published',
-      flex: 1,
-      renderCell: (params) => <Badge className={`pointer-events-none font-normal text-white ${params.row.isAvailable ? 'bg-success': 'bg-destructive'}`}>{params.row.isAvailable ? 'published': 'draft'}</Badge>      
     }, 
-    {
-      field: 'action',
-      headerName: 'Action',
-      width: 100,
-      sortable: false,
-      renderCell: (params) => <ActionCell id={params.row.id}/> 
-  
-    }
-]
 
-const CoursePage = ({data}: Props) => {
-  const {theme} = useContext(themeContext);
-  const [searchText, setSearchText] =useState(''); 
+    {
+        field: 'duration',
+        headerName: 'Duration',
+        flex: 1,
+        renderCell: (params) =>  <span>{params.row.duration} minutes</span>
+      }, 
+
+    {
+        field: 'topic',
+        headerName: 'Topic',
+        flex: 1,
+        renderCell: (params) => {
+            return (
+                
+                  params.row.topic ?
+                    <Badge className='pointer-events-none bg-blue1 text-white font-normal'>{params.row.topic}</Badge> :
+                    <Badge className='pointer-events-none bg-danger text-white font-normal'>No topic</Badge>
   
-  const VISIBLE_FIELDS = ['name', 'duration', 'price', 'chapter', 'isAvailable', 'courseStatus', 'difficulty']
+
+                
+            )
+        }
+      }, 
+     
+    {
+        field: 'Question',
+        headerName: 'Questions',
+        flex: 1,
+        renderCell: (params) =>  {
+            return (
+               <Badge className='pointer-events-none bg-warning text-white font-normal'>{params.row.Question.length}</Badge>
+            )
+        }
+    },
+    {
+        field: 'Chapter',
+        headerName: 'Assigned to a chapter',
+        flex: 1,
+        renderCell: (params) =>
+            {
+                return (
+                    <Badge className={`pointer-events-none text-white font-normal ${!params.row.Chapter ? 'bg-danger' : 'bg-success'}`}>{params.row.Chapter ? 'yes' : 'no'}</Badge>
+                )
+            }
+            
+           
+    },
+    
+      
+      {
+        field: 'action',
+        headerName: 'Action',
+        width: 100,
+        sortable: false,
+        renderCell: (params) => <ActionCell id={params.row.id}/> 
+    
+      }
+  ]
+
+const QuizTable = ({data}: {data: Quiz[]}) => {
+    const {theme} = useContext(themeContext);
+    const [searchText, setSearchText] =useState(''); 
+  
+  const VISIBLE_FIELDS = ['name', 'duration', 'topic', 'Chapter', 'Question']
  
   const handleSearch = (event: any) => {
     const query = event.target.value;
@@ -118,7 +109,7 @@ const CoursePage = ({data}: Props) => {
   const CustomToolbar = () => (
    
       <Input
-        placeholder="Search courses..."
+        placeholder="Search quizzes..."
         onKeyDown={handleSearch}
         className='max-w-sm'
       />
@@ -126,24 +117,10 @@ const CoursePage = ({data}: Props) => {
     
   );
 
-
-
   return (
-   <>
-   <Container>
-    <div className='flex items-center justify-between'>
     
-    <h2 className='text-2xl font-bold'>Our Courses</h2>
-
-    <Link href={"/tutor/courses/create"} className='ml-auto'>
-       <button className={`button1 bg-success ${theme === 'dark' && 'text-gray'}`}>
-        <PlusCircle className='h-4 w-4 mr-2'/>
-            New course
-        </button>
-       </Link>
-     
-    </div>
-    <div className='flex items-center py-4 w-full'>
+    <>
+     <div className='flex items-center py-4 w-full'>
        <CustomToolbar/>
       </div>
     <div>
@@ -223,9 +200,8 @@ const CoursePage = ({data}: Props) => {
       pageSizeOptions={[5,10,20]}/>
       
     </div>
-   </Container>
-   </>
+    </>
   )
 }
 
-export default CoursePage
+export default QuizTable

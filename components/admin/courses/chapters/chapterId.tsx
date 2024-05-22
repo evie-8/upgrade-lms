@@ -32,7 +32,11 @@ const ChapterIdCard = async ({chapterId, courseId}: Props) => {
                     position: 'asc'
                 }
             },
-            quiz: true,
+            quiz: {
+                include: {
+                    Question: true,
+                }
+            },
             courses: true
         }
     });

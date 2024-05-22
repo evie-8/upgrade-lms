@@ -122,6 +122,8 @@ model Quiz {
   id        String     @id @default(uuid())
   name      String
   Question  Question[]
+  topic    String?
+  duration  Int?        @default(30)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 

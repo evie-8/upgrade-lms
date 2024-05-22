@@ -3,7 +3,7 @@
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { Pencil } from "lucide-react";
+import { Eye, Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -12,10 +12,12 @@ import * as z from "zod";
 import { Combobox } from "@/components/ui/combobox";
 import { Chapter, Quiz } from "@prisma/client";
 import prismadb from "@/lib/db";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import QuizPreview from "../../quizzes/quiz-preview";
 
 
 interface Props {
-    chapter: Chapter;
+    chapter: Chapter & {quiz: Quiz};
     options: { label: string, value: string}[]
 }
 
@@ -60,7 +62,20 @@ const onSubmit = (values: z.infer<typeof formschema>) => {
   return (
     <div className="mt-6  bg-primary/10 rounded-md p-4">
        <div className="font-semibold  flex items-center justify-between">
-            Chapter quiz
+           <span className="flex items-center justify-between ">
+           Chapter quiz
+          {
+            chapter.quizId &&
+            <Dialog>
+            <DialogTrigger>
+            <Eye className="text-primary h-4 w-4 ml-4"/>
+            </DialogTrigger>
+            <DialogContent className="w-full max-w-7xl  overflow-y-auto  max-h-[600px] p-8">
+              <QuizPreview  data={chapter.quiz}/>
+            </DialogContent>
+          </Dialog>
+          }
+           </span>
             <button onClick={toggle} className="inline-flex whitespace-nowrap items-center justify-center gap-1 text-sm">
                {
                 editing ? <> Cancel</> : <>
