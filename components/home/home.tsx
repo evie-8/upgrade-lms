@@ -3,14 +3,16 @@ import Link from 'next/link';
 import Container from '@/components/ui/container';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBusinessTime, faJournalWhills, faLayerGroup} from '@fortawesome/free-solid-svg-icons';
-
-import { CourseCard }from '@/components/courses/course-card';
 import ReviewCard from '@/components/review-card';
 import Banner from '@/components/ui/banner';
 import Steps from './steps';
 import StepsImage from './steps-image';
 
-const Home = () => {
+import CourseSectionHomePage from './home-courses-section';
+import prismadb from '@/lib/db';
+
+const Home =  async () => {
+ const categories = await prismadb.category.findMany();
   return (
    <>
 
@@ -73,56 +75,7 @@ const Home = () => {
      </div>
       </Container>
         
-    <div className='course-section'>
-      <div className=' h-[10vh] bg-white'>
-      </div>
-     <div className='flex items-center justify-center bg-white h-[13vh] '>
-     <Container>
-       <div className='category-name'>
-              <p className='active'>All</p>
-              <p>Web Development</p>
-              <p>Programming</p>
-             
-            
-            </div>
-     </Container>
-     </div>
-      
-      <Container>
-       
-       <div className='heading'>
-         <h3>Explore Featured <span>Courses</span></h3>
-          <p>Unlock Your Potential, Anytime, Anywhere: Explore Limitless Learning with Our Online Courses.</p>
-       </div>
-        <div className='courses-wrapper'>
-         <CourseCard 
-          image='/images/program.jpg' category='Web Development' 
-          status='Open' duration='6 Weeks' level='Beginner'
-          name='Front-End Development'
-          />
-
-        <CourseCard 
-          image='/images/program1.jpg' category='Programming' 
-          status='Closed' duration='2 Months' level='Expert'
-          name='Python Programming'
-          />
-
-        <CourseCard 
-          image='/images/program2.jpg' category='Data' 
-          status='Coming Soon' duration='3 Months' level='Intermediate'
-          name='Data AI and Machine Learning'cost='UGX 150,000'
-          />
-
-        <CourseCard 
-          image='/images/program3.jpg' category='Software' 
-          status='Open' duration='3 Months' level='Beginner'
-          name='Introduction To JavaScript'
-          />
-
-          
-        </div>
-      </Container>
-    </div>
+    <CourseSectionHomePage categories={categories}/>
 
   <Banner image={'images/banner1.jpg'} title='Need help finding a course?' action='Find Your Programme'
   slogan='Discover your perfect course! Explore our diverse range of offerings and start your learning journey today. Let us guide you to success' /> 

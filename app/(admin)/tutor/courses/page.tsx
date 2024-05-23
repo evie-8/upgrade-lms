@@ -13,11 +13,8 @@ const TutorCoursesPage = async () => {
     orderBy: {
       createdAt: 'desc'
     }, include: {
-      chapter: {
-        include: {
-          Lesson: true
-        }
-      }
+      
+      category: true
     }
   })
   return (

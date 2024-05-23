@@ -39,10 +39,10 @@ const columns: GridColDef<any>[] = [
     },
 
     {
-      field: 'chapter',
-      headerName: 'Chapters',
+      field: 'categoryId',
+      headerName: 'Category',
       flex: 1,
-      renderCell: (params) => params.row.chapter.length
+      renderCell: (params) => <span> {params.row.categoryId ? params.row.category.name : 'No category'}</span>
     },
 
     {
@@ -87,7 +87,7 @@ const CoursePage = ({data}: Props) => {
   const {theme} = useContext(themeContext);
   const [searchText, setSearchText] =useState(''); 
   
-  const VISIBLE_FIELDS = ['name', 'duration', 'price', 'chapter', 'isAvailable', 'courseStatus', 'difficulty']
+  const VISIBLE_FIELDS = ['name', 'duration', 'price', 'category', 'isAvailable', 'courseStatus', 'difficulty']
  
   const handleSearch = (event: any) => {
     const query = event.target.value;
@@ -136,7 +136,7 @@ const CoursePage = ({data}: Props) => {
     <h2 className='text-2xl font-bold'>Our Courses</h2>
 
     <Link href={"/tutor/courses/create"} className='ml-auto'>
-       <button className={`button1 bg-success ${theme === 'dark' && 'text-gray'}`}>
+       <button className={`button1 bg-black2 ${theme === 'dark' && 'text-gray'}`}>
         <PlusCircle className='h-4 w-4 mr-2'/>
             New course
         </button>

@@ -59,12 +59,12 @@ const QuizCreateCard = ({quizzes}: Props) => {
   
       <Container>
         <div className='flex items-center justify-between'>
-        <h2 className='text-2xl font-bold'>Evalauation Quizzes</h2>
+        <h2 className='text-2xl font-bold'>Evaluation Quizzes</h2>
 
         <Dialog>
          
          <DialogTrigger asChild  className='ml-auto'>
-               <button className={`button1 bg-success ${theme === 'dark' && 'text-gray'}`}><PlusCircle className='w-4 h-4 mr-2'/> <span>New quiz</span></button>
+               <button className={`button1 bg-black2 ${theme === 'dark' && 'text-gray'}`}><PlusCircle className='w-4 h-4 mr-2'/> <span>New quiz</span></button>
          </DialogTrigger>
          
          <DialogContent className='max-sm:max-w-[330px]'>
