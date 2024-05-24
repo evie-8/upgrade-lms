@@ -67,6 +67,7 @@ const CourseSectionHomePage = ({categories}: Props) => {
                         courses.map((course: any) => (
                             <CourseCard
                                 key={course.id}
+                                id={course.id}
                                 image={course.imageUrl}
                                 category={course.category?.name}
                                 status={course.courseStatus}

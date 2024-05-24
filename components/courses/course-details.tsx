@@ -6,10 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Book, Calendar,  Check,  CircleHelp,  GraduationCap,  Languages, Signal, TimerIcon } from "lucide-react";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { faFacebook, faLinkedin, faSquareXTwitter } from "@fortawesome/free-brands-svg-icons";
-import { CourseCard } from "./course-card";
 import { useEffect, useState } from "react";
 import CourseViewButton from "./button-course";
-
 import CurriculumDetails from "./curriculum";
 import { Progress } from "../ui/progress";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi,
@@ -17,15 +15,31 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import ReviewCard from "../review-card";
 import Ratings from "./ratings";
 import { Badge } from "../ui/badge";
+import { formatter } from "@/lib/utils";
+import "react-quill/dist/quill.bubble.css"
 
-const CourseDetails = () => {
+const CourseDetails = ({course}: {course: any}) => {
   const [selected, setSelected] = useState("Overview");
   const [view, setView] = useState(0);
 
   /**new */
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+  let numberOfLessons = 0
+  let numberOfQuizzes = 0
+
+  for (const chapter of course.chapter) {
+    for (const lesson of chapter.Lesson) {
+     if (lesson) {
+      numberOfLessons = numberOfLessons + 1;
+     }
+    }
+   if (chapter.quizId) {
+    numberOfQuizzes = numberOfQuizzes  + 1;
+   }
+  }
  
   useEffect(() => {
     if (!api) {
@@ -42,28 +56,29 @@ const CourseDetails = () => {
 
   return (
     <>
-      <div className="courses-banner" style={{width:'100%', backgroundRepeat:'no-repeat', backgroundSize:'cover',  backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(images/course-details.jpg)`, backgroundPosition: 'center'}}>
+      <div className="courses-banner" style={{width:'100%', backgroundRepeat:'no-repeat', backgroundSize:'cover',  backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${course.imageUrl})`, backgroundPosition: 'center'}}>
         <Container>
           <div className="flex flex-col md:flex-row  items-center md:justify-between  justify-center gap-5 my-5">
               <div className="flex flex-col items-center justify-center md:items-start md:justify-start gap-5">
                   <div className="flex gap-2 flex-nowrap">
-                    <p className="rounded-full py-2 px-4 bg-primary/10 text-primary text-sm">Software</p>
-                    <p className="rounded-full py-2 px-4 bg-primary/10 text-primary text-sm">Web Designing</p>
+                    <p className="rounded-full py-2 px-4 bg-primary/10 text-primary text-sm">{course.category.name}</p>
+                   
                    
                   </div>
-                  <h2 className=" text-white text-center md:text-start font-extrabold text-2xl md:text-3xl ">Introduction to Front-End Development</h2>
+                  <h2 className=" text-white text-center md:text-start font-extrabold text-2xl md:text-3xl ">{course.name}</h2>
                   <div className="flex gap-4 flex-nowrap">
                    <p className="text-white flex items-center justify-center gap-2 flex-nowrap">
                    <Calendar className="w-4 h-4 mb-1 text-danger"/>
-                    <span className="text-sm ">6 Weeks</span>
+                    <span className="text-sm ">{course.duration}</span>
                    </p>
                    <p className="text-white flex items-center justify-center gap-2 flex-nowrap">
                    <Signal className="w-4 h-4 mb-1 text-warning"/>
-                    <span className="text-sm ">Intermediate</span>
+                    <span className="text-sm ">{course.difficulty}</span>
                    </p>
                   </div>
                  
                  <p className="flex items-center gap-2 flex-nowrap">
+                  {/**upafe later */}
                    <span className="flex gap-2 flex-nowrap ">
                       <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-ranking"/>
                         <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-ranking"/>
@@ -108,12 +123,16 @@ const CourseDetails = () => {
 
              {
               selected === 'Overview' && 
-              <article className="bg-white p-8 rounded-lg text-[16px]">
+              <article className="bg-white p-8 rounded-lg !text-[16px]">
               <h2 className="text-lg font-bold font-poppins">Course Overview</h2>
-              <p className="my-4 font-light leading-7">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
-              <p className="my-4 font-light leading-7">Aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto. Sam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-              <p className="my-4 font-light leading-7">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+          
+              <div className="quill">
+                <div className="ql-container ql-bubble">
+                <div className="desc mt-2 ql-editor  !leading-[1.5] !text-[16px]" dangerouslySetInnerHTML={{__html: course.description}}/>
+                </div>
 
+              </div>
+            
             </article>
              }
 
@@ -122,15 +141,13 @@ const CourseDetails = () => {
               <article className="bg-white p-8 rounded-lg text-lg">
               <h2 className=" font-bold font-poppins">Curriculum</h2>
              <div className="my-3 flex flex-col gap-4">
-                <CurriculumDetails title="Introduction to HTML" index={1} view={view} setView={setView}/>
-                <CurriculumDetails title="HTML Basics" index={2} view={view} setView={setView}/>
-                <CurriculumDetails title="Links and Images" index={3} view={view} setView={setView}/>
-                <CurriculumDetails title="Tables and Forms" index={4} view={view} setView={setView}/>
-                <CurriculumDetails title="Semantic HTML" index={5} view={view} setView={setView}/>
-                <CurriculumDetails title="HTML5 Features" index={6} view={view} setView={setView}/>
-                <CurriculumDetails title="Responsive Design with HTML" index={7} view={view} setView={setView}/>
-                <CurriculumDetails title="Project: Building Your First Web Page" index={8} view={view} setView={setView}/>
-
+               {
+                course.chapter && course.chapter.length &&
+                course.chapter.map((chapter: any) => (
+                  <CurriculumDetails key={chapter.id} chapter={chapter} index={chapter.position} view={view} setView={setView}/>
+                
+                ))
+               }
 
              </div>
             </article>
@@ -236,17 +253,10 @@ const CourseDetails = () => {
               <div>
               <h2 className="text-lg font-bold font-poppins">Related Courses</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 my-4" >
-              <CourseCard 
-          image='/images/program.jpg' category='Web Development' 
-          status='Open' duration='6 Weeks' level='Beginner'
-          name='Front-End Development'
-          />
-
-        <CourseCard 
-          image='/images/program1.jpg' category='Programming' 
-          status='Closed' duration='2 Months' level='Expert'
-          name='Python Programming'
-          />
+              {
+                /**courses that relate
+                 */
+              }
               </div>
               </div>
             </section>
@@ -258,7 +268,7 @@ const CourseDetails = () => {
                   <img src="/images/program2.jpg" alt='details' className="rounded-t-lg w-full h-full"/>
                 </div>
                 
-                  <p className="px-8 my-3 pb-2 text-3xl font-extrabold text-primary border-b border-grey">Free</p>
+                  <p className="px-8 my-3 pb-2 text-3xl font-extrabold text-primary border-b border-grey">{course.paymentStatus === 'Free' ? 'Free' : formatter(course.price)}</p>
               </div>
               <div className="py-3 px-8">     
                
@@ -270,7 +280,7 @@ const CourseDetails = () => {
                           <span className="text-sm">Duration</span>
                         </div>
 
-                        <p className="font-semibold text-sm">12 Weeks</p>
+                        <p className="font-semibold text-sm">{course.duration}</p>
                  </div>
                  <div className="flex items-center justify-between gap-4">
                         <div className="flex gap-2 items-center">
@@ -278,7 +288,7 @@ const CourseDetails = () => {
                           <span className="text-sm">Lessons</span>
                         </div>
 
-                        <p className="font-semibold text-sm">5</p>
+                        <p className="font-semibold text-sm">{numberOfLessons}</p>
                  </div>
                  <div className="flex items-center justify-between gap-4">
                         <div className="flex gap-2 items-center">
@@ -286,7 +296,7 @@ const CourseDetails = () => {
                           <span className="text-sm">Quizzes</span>
                         </div>
 
-                        <p className="font-semibold text-sm">5</p>
+                        <p className="font-semibold text-sm">{numberOfQuizzes}</p>
                  </div>
                  <div className="flex items-center justify-between gap-4">
                         <div className="flex gap-2 items-center">
@@ -302,7 +312,7 @@ const CourseDetails = () => {
                           <span className="text-sm">Skill Level</span>
                         </div>
 
-                        <p className="font-semibold text-sm">Beginner</p>
+                        <p className="font-semibold text-sm">{course.difficulty}</p>
                  </div>
                  <div className="flex items-center justify-between gap-4">
                         <div className="flex gap-2 items-center">

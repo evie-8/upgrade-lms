@@ -4,6 +4,7 @@ import { faClock, faSignal } from '@fortawesome/free-solid-svg-icons';
 
 
 interface Props {
+    id: string;
     category: string;
     name: string;
     duration: string;
@@ -15,6 +16,7 @@ interface Props {
 
 const CourseCard: React.FC<Props> = (
     {
+        id,
         category, 
         name,
         duration,
@@ -37,7 +39,7 @@ const CourseCard: React.FC<Props> = (
            <p className='category'><span>{category}</span></p>
 
 
-             <p className='course-title'><Link href={'/courses/details'}>{name}</Link></p>
+             <p className='course-title'><Link href={`/courses/${id}/details`}>{name}</Link></p>
 
              <div className='icon-wrapper'>
               <p>
@@ -62,7 +64,7 @@ const CourseCard: React.FC<Props> = (
 }
 
 
-const CourseCardList: React.FC<Props> = ({status, level, category, name, duration, cost='Free', image}) => {
+const CourseCardList: React.FC<Props> = ({status, level, category, name, duration, cost='Free', image, id}) => {
 
   return (
     
@@ -75,7 +77,7 @@ const CourseCardList: React.FC<Props> = ({status, level, category, name, duratio
      
       <p className='category'><span>{category}</span></p>
 
-          <p className='course-title whitespace-nowrap'><Link href={'/courses/details'}>{name}</Link></p>
+          <p className='course-title whitespace-nowrap'><Link href={`/courses/${id}/details`}>{name}</Link></p>
           <div className='icon-wrapper'>
             <p >
               <FontAwesomeIcon icon={faClock} fontSize={18} className='text-danger w-4 h-4'/>

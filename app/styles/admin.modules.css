@@ -16,7 +16,9 @@
     
 }
 
-.ql-container .ql-bubble, .ql-container .ql-snow, .ql-editor{
+
+
+  ql-container .ql-bubble, .ql-container .ql-snow, .ql-editor{
   
   font-size: 0.875rem !important;
     line-height: 1.25rem !important;

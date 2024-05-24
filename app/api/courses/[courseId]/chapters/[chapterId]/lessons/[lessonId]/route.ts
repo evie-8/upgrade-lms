@@ -159,11 +159,13 @@ export async function PATCH(
 
             });
 
-            await prismadb.muxData.create({
+           
+             await prismadb.muxData.create({
                 data: {
                     lessonId: params.lessonId,
                     assetId: asset.id,
-                    placybackId: asset.playback_ids?.[0]?.id
+                    placybackId: asset.playback_ids?.[0]?.id,
+                    duration: asset.duration
                 }
             })
          }
