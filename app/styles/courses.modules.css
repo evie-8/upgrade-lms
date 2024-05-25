@@ -183,7 +183,7 @@
      /*main section*/
     
      .all-courses-container main {
-      @apply relative col-span-1 lg:col-span-8 mx-auto gap-3 
+      @apply relative col-span-1 lg:col-span-8 mx-auto gap-3 w-full
      }
 
 
@@ -191,7 +191,7 @@
       @apply lg:col-span-12
      }
      .all-courses-container main .title-bar {
-      @apply flex items-center justify-between shadow-md bg-white rounded-lg  py-2 px-4 
+      @apply flex items-center justify-between shadow-md bg-white rounded-lg w-full py-2 px-4 
      }
 
      .title-bar .title {

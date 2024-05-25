@@ -4,33 +4,111 @@ import Container from "@/components/ui/container"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars,  faFilter,  faSearch, faThLarge } from '@fortawesome/free-solid-svg-icons';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {CourseCard, CourseCardList} from "./course-card";
 import FilterContainer from "./filter-card";
 import { SidebarClose,  SidebarOpen } from "lucide-react";
 import Banner from "@/components/ui/banner";
+import { Course } from "@prisma/client";
+import { formatter } from "@/lib/utils";
 
+interface Props {
+  courses: Course[]
+}
 
-
-const Courses = () => {
+const Courses = ({courses}: Props) => {
+      const [selectedCategory, setSelectedCategory] = useState<string>('All');
+      const [selectedSkillLevel, setSelectedSkillLevel] = useState<string>('All');
+      const [selectedPrice, setSelectedPrice] = useState<string>('All');
+      const [selectedRating, setSelectedRating] = useState<string>('');
  
   const [show, setShow] = useState(false);
   const [view, setView] = useState(false);
+  const [selected, setSelected] = useState("asc");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredData, setFilteredData] = useState<Course[] | null>(courses);
+
 
   const [sideBar, setSideBar] = useState(false);
 
   const handleSideBar = () => {
     setSideBar(prev => !prev)
-  }
+  };
  
   const handleClick = () => {
     setShow(prev => !prev);
-  }
+  };
 
   const handleView = () => {
     setView(prev => !prev);
-  }
+  };
+
+  const handleSearch = (event: any) => {
+    const query =  event.target.value;
+    setSearchQuery(query);
+    
+  };
+
+  const filterCourses = () => {
+    let newData = courses;
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      newData = newData.filter((course: any) =>
+        course.name.toLowerCase().includes(query) ||
+        course.category.name.toLowerCase().includes(query) ||
+        course.courseStatus.toLowerCase().includes(query) ||
+        course.duration.toLowerCase().includes(query) ||
+        course.difficulty.toLowerCase().includes(query)
+      );
+    }
+
+    if (selectedCategory && selectedCategory !== 'All') {
+      newData = newData.filter((course: any) => course.category.name === selectedCategory);
+    }
+
+    if (selectedSkillLevel && selectedSkillLevel !== 'All') {
+      newData = newData.filter(course => course.difficulty === selectedSkillLevel);
+    }
+
+    if (selectedPrice && selectedPrice !== 'All') {
+      newData = newData.filter(course => course.paymentStatus === selectedPrice);
+    }
+
+   {
+    /**
+     *  if (selectedRating && selectedRating !== 'All') {
+      // Assuming ratings are stored as numbers and 'Ratings' filter values match these numbers.
+      newData = newData.filter(course => course.rating === parseInt(selectedRating, 10));
+    }
+     */
+   }
+
+    setFilteredData(newData);
+  };
+
+  /**sort */
+  const sortBySelected = (order: string) => {
+    if (order === 'asc') {
+      if (filteredData) {
+        filteredData.sort((a,b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      }
+    } else {
+      if (filteredData) {
+        filteredData.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      }
+    }
+  } ;
   
+  const handleSort = (event: any) => {
+    const order = event.target.value;
+    setSelected(order);
+    sortBySelected(order);
+  }
+
+  useEffect(() => {
+    filterCourses();
+  }, [searchQuery, selectedCategory, selectedPrice, selectedSkillLevel, selectedRating ]);
   return (
     <section className="relative">
   <div className={`overlay ${sideBar ? 'block' :'hidden'}`} />
@@ -52,7 +130,7 @@ const Courses = () => {
               <div className="sidebar">
             
                     <section className="search">
-                      <input placeholder="Search courses..." />
+                      <input  onChange={handleSearch} placeholder="Search courses..." />
                     
                     <FontAwesomeIcon icon={faSearch} className="icon"/>
                     
@@ -86,7 +164,11 @@ const Courses = () => {
                   }
                     </div>
 
-                    <FilterContainer/>
+                    <FilterContainer
+                    selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}
+                    selectedSkillLevel={selectedSkillLevel}  setSelectedSkillLevel={setSelectedSkillLevel}
+                    selectedPrice={selectedPrice} setSelectedPrice={setSelectedPrice}
+                    selectedRating={selectedRating} setSelectedRating={setSelectedRating}/>
              
                 
               </div>
@@ -102,15 +184,14 @@ const Courses = () => {
                      }
                     </button>  
                     <span>
-                       10 courses
+                       {filteredData ? filteredData.length : 0 } courses
                     </span></div>
                   <div className="menu-items">
                     <div className="select-wrapper">
                       <p>Sort By :</p>
-                        <select  name="" id="">
-                          <option  value="Default">Default</option>
-                          <option value="Newest">Newest</option>
-                          <option  value="Oldest">Oldest</option>
+                        <select value={selected}  onChange={handleSort} name="" id="">
+                          <option value="desc">Newest</option>
+                          <option  value="asc">Oldest</option>
                         </select>
                       
                     </div>
@@ -128,60 +209,56 @@ const Courses = () => {
               </div>
               </div>
              
-               { view ?
+               {
+                !filteredData || !filteredData.length ?
+               
+                <div className="w-full flex items-center justify-center mt-16  font-medium">
+                  <p> No courses found</p>
+              </div>
+               
+               :
+               view ?
                <section className='list-view'>
-                   <CourseCardList 
-          image='/images/program.jpg' category='Web Development' 
-          status='Open' duration='6 Weeks' level='Beginner'
-          name='Front-End Development'
-          />
+                 
+                 {
+                  filteredData && filteredData.length && 
+                  filteredData.map((course: any) => (
+                    <CourseCardList
+                    key={course.id}
+                    id={course.id}
+                    image={course.imageUrl}
+                    category={course.category?.name}
+                    status={course.courseStatus}
+                    duration={course.duration}
+                    level={course.difficulty}
+                    name={course.name}
+                    cost={course.paymentStatus === 'Free' ? 'Free' : formatter(course.price?.toString())}
+                />
+                  )) 
+                  }
 
-        <CourseCardList 
-          image='/images/program1.jpg' category='Programming' 
-          status='Closed' duration='2 Months' level='Expert'
-          name='Python Programming'
-          />
-
-        <CourseCardList
-          image='/images/program2.jpg' category='Data' 
-          status='Coming Soon' duration='3 Months' level='Intermediate'
-          name='Data AI and Machine Learning'cost='UGX 150,000'
-          />
-
-        <CourseCardList 
-          image='/images/program3.jpg' category='Software' 
-          status='Open' duration='3 Months' level='Beginner'
-          name='Introduction To JavaScript'
-          />
 
               </section>
               :
               <section className='grid-view'>
-                   <CourseCard 
-          image='/images/program.jpg' category='Web Development' 
-          status='Open' duration='6 Weeks' level='Beginner'
-          name='Front-End Development'
-          />
-
-        <CourseCard 
-          image='/images/program1.jpg' category='Programming' 
-          status='Closed' duration='2 Months' level='Expert'
-          name='Python Programming'
-          />
-
-        <CourseCard 
-          image='/images/program2.jpg' category='Data' 
-          status='Coming Soon' duration='3 Months' level='Intermediate'
-          name='Data AI and Machine Learning'cost='UGX 150,000'
-          />
-
-        <CourseCard 
-          image='/images/program3.jpg' category='Software' 
-          status='Open' duration='3 Months' level='Beginner'
-          name='Introduction To JavaScript'
-          />
+              {
+                  filteredData && filteredData.length && 
+                  filteredData.map((course: any) => (
+                    <CourseCard
+                    key={course.id}
+                    id={course.id}
+                    image={course.imageUrl}
+                    category={course.category?.name}
+                    status={course.courseStatus}
+                    duration={course.duration}
+                    level={course.difficulty}
+                    name={course.name}
+                    cost={course.paymentStatus === 'Free' ? 'Free' : formatter(course.price?.toString())}
+                />
+                  ))  }
 
               </section>
+               
 
                }
           </main>

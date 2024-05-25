@@ -2,13 +2,15 @@ import React, { useEffect, useState, useRef } from 'react';
 
 const VideoDuration = ({ videoSrc }: {videoSrc: string}) => {
     const [duration, setDuration] = useState(0);
-    const videoRef = useRef(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         const videoElement = videoRef.current;
 
         const handleLoadedMetadata = () => {
-            setDuration(videoElement.duration);
+            if (videoElement) {
+                setDuration(videoElement.duration);
+            }
         };
 
         if (videoElement) {

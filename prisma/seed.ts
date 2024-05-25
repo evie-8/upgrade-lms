@@ -9,7 +9,6 @@ async function main() {
             {name: 'Programming'},
             {name: 'Web Development'},
             {name: 'Data'}, 
-            {name: 'Software'}
         ]
     });
 

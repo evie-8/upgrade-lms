@@ -48,7 +48,9 @@ const CourseDetails = ({course}: {course: any}) => {
   const fetchRelatedCourses = async () => {
     let data = await fetchCourseByCategoryName(course.category.name);
     const newData = data?.filter((courseItem) => courseItem.id !== course.id);
+   if (newData) {
     setRelatedCourses(newData);
+   }
 
   }
   fetchRelatedCourses();

@@ -134,7 +134,7 @@ const QuizPreview: React.FC<Props> = ({ data }) => {
                 <div className="flex items-center justify-between">
                     <p>
                     {/*<span className="text-gray/60 text-sm mx-2">Topics</span>*/}
-                        <Badge className="bg-primary/10 text-primary rounded-full font-normal hover">{data.topic.length ? data.topic : 'no topic'}</Badge>
+                        <Badge className="bg-primary/10 text-primary rounded-full font-normal hover">{data.topic ? data.topic : 'no topic'}</Badge>
                     </p>
                     <div className="flex items-center justify-center gap-1  text-gray/60">
                     {
