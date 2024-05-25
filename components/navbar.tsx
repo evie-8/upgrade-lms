@@ -20,7 +20,7 @@ const NavBar = () => {
         {
             link: '/courses',
             name: 'Courses',
-            active: pathname === '/courses'
+            active: pathname === '/courses' || pathname.startsWith("/courses")
           },
         {
           link: '/about-us',

@@ -131,6 +131,7 @@
     @apply  text-primary  after:w-full after:bg-primary
   }
 
+
   .courses-wrapper {
     @apply flex sm:grid sm:grid-cols-2 xl:grid-cols-4 flex-col items-center justify-center gap-8 my-6
   }

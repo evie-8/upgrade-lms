@@ -33,9 +33,9 @@ const CourseSectionHomePage = ({categories}: Props) => {
     return (
         <div className='course-section'>
             <div className='h-[10vh] bg-white'></div>
-            <div className='flex items-center justify-center bg-white h-[13vh] '>
+            <div className='flex items-center justify-center bg-white h-[13vh]'>
                 <Container>
-                    <div className='category-name'>
+                <div className='category-name'>
                         <p
                             className={categoryName === 'All' ? 'active' : ''}
                             onClick={() => setCategoryName('All')}

@@ -17,10 +17,14 @@ import Ratings from "./ratings";
 import { Badge } from "../ui/badge";
 import { formatter } from "@/lib/utils";
 import "react-quill/dist/quill.bubble.css"
+import { Course } from "@prisma/client";
+import { fetchCourseByCategoryName } from "@/action-server/courses";
+import { CourseCard } from "./course-card";
 
 const CourseDetails = ({course}: {course: any}) => {
   const [selected, setSelected] = useState("Overview");
   const [view, setView] = useState(0);
+  const [relatedCourses, setRelatedCourses] = useState<Course[]>([]);
 
   /**new */
   const [api, setApi] = useState<CarouselApi>()
@@ -40,7 +44,16 @@ const CourseDetails = ({course}: {course: any}) => {
     numberOfQuizzes = numberOfQuizzes  + 1;
    }
   }
- 
+ useEffect(() => {
+  const fetchRelatedCourses = async () => {
+    let data = await fetchCourseByCategoryName(course.category.name);
+    const newData = data?.filter((courseItem) => courseItem.id !== course.id);
+    setRelatedCourses(newData);
+
+  }
+  fetchRelatedCourses();
+ }, [])
+
   useEffect(() => {
     if (!api) {
       return
@@ -56,7 +69,7 @@ const CourseDetails = ({course}: {course: any}) => {
 
   return (
     <>
-      <div className="courses-banner" style={{width:'100%', backgroundRepeat:'no-repeat', backgroundSize:'cover',  backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${course.imageUrl})`, backgroundPosition: 'center'}}>
+      <div className="courses-banner " style={{width:'100%', backgroundRepeat:'no-repeat', backgroundSize:'cover',  backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${course.imageUrl})`, backgroundPosition: 'center'}}>
         <Container>
           <div className="flex flex-col md:flex-row  items-center md:justify-between  justify-center gap-5 my-5">
               <div className="flex flex-col items-center justify-center md:items-start md:justify-start gap-5">
@@ -256,6 +269,22 @@ const CourseDetails = ({course}: {course: any}) => {
               {
                 /**courses that relate
                  */
+
+                relatedCourses && relatedCourses.length ?
+                relatedCourses.map((item: any) => (
+                  <CourseCard
+                  key={item.id}
+                  id={item.id}
+                  image={item.imageUrl}
+                  category={item.category?.name}
+                  status={item.courseStatus}
+                  duration={item.duration}
+                  level={item.difficulty}
+                  name={item.name}
+                  cost={item.paymentStatus === 'Free' ? 'Free' : formatter(item.price?.toString())}
+              />
+                )) : 
+                <div className=" rounded-full p-2 text-center border border-transparent bg-grey2/30">No related Courses Found</div>
               }
               </div>
               </div>

@@ -1,4 +1,5 @@
 import { CircleHelp, Lock, Video } from 'lucide-react'
+import VideoDuration from './video-duration';
 
 interface Props {
     view: number;
@@ -33,7 +34,7 @@ console.log(chapter)
                                 <span className="text-sm">{lesson.name}</span>
                               </p>
                               <p className="flex max-sm:flex-col items-center max-sm:items-end gap-3">
-                                <button className="py-1  px-2 bg-grey2 rounded-md  text-white text-sm">10 mins</button>
+                                <VideoDuration videoSrc={lesson.videoUrl}/>
                                 <button className="py-1  px-2 bg-blue1 rounded-md text-white text-sm">Preview</button>
 
                               </p>
