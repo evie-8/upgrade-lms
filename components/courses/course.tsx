@@ -28,6 +28,20 @@ const Courses = ({courses}: Props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState<Course[] | null>(courses);
 
+ const getLength = () => {
+  let coursesLength = '';
+  if (filteredData && filteredData?.length !== 0) {
+    if (filteredData?.length === 1) {
+      coursesLength = `${filteredData.length} course`
+    } else {
+      coursesLength = `${filteredData.length} courses`
+    }
+  } else {
+    coursesLength = `0 courses`
+  }
+
+  return coursesLength
+ }
 
   const [sideBar, setSideBar] = useState(false);
 
@@ -183,9 +197,8 @@ const Courses = ({courses}: Props) => {
                       show &&  <SidebarOpen/>
                      }
                     </button>  
-                    <span>
-                       {filteredData ? filteredData.length : 0 } courses
-                    </span></div>
+                    <span> {getLength()}</span>
+                  </div>
                   <div className="menu-items">
                     <div className="select-wrapper">
                       <p>Sort By :</p>
