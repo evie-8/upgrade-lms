@@ -31,7 +31,7 @@ const QuizForm: React.FC<Props> = ({chapter, options}) => {
   }
 
   const formschema = z.object({
-    quizId: z.string().min(1, 'quiz required'),
+    quizId: z.optional(z.string()),
 });
 
 
@@ -94,12 +94,10 @@ const onSubmit = (values: z.infer<typeof formschema>) => {
                             name='quizId'
                             render={({field}) => (
                                 <FormItem >
-                                <FormControl >
-                                  <Combobox  options={options} {...field} />
-                                </FormControl>
-                                  
-                                <FormMessage/>
-                                  
+                                  <FormControl >
+                                    <Combobox  options={options} {...field} />
+                                  </FormControl>     
+                                  <FormMessage/>   
                                 </FormItem>
                                 )}
                             />

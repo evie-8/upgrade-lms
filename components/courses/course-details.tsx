@@ -265,31 +265,30 @@ const CourseDetails = ({course}: {course: any}) => {
              
              }
 
-              <div>
-              <h2 className="text-lg font-bold font-poppins">Related Courses</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 my-4" >
               {
-                /**courses that relate
-                 */
-
-                relatedCourses && relatedCourses.length ?
-                relatedCourses.map((item: any) => (
-                  <CourseCard
-                  key={item.id}
-                  id={item.id}
-                  image={item.imageUrl}
-                  category={item.category?.name}
-                  status={item.courseStatus}
-                  duration={item.duration}
-                  level={item.difficulty}
-                  name={item.name}
-                  cost={item.paymentStatus === 'Free' ? 'Free' : formatter(item.price?.toString())}
-              />
-                )) : 
-                <div className=" rounded-full p-2 text-center border border-transparent bg-grey2/30">No related Courses Found</div>
+                relatedCourses  && relatedCourses.length > 0 &&
+                <div>
+                <h2 className="text-lg font-bold font-poppins">Related Courses</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 my-4" >
+              
+                  {
+                    relatedCourses.map((item: any) => (
+                      <CourseCard
+                      key={item.id}
+                      id={item.id}
+                      image={item.imageUrl}
+                      category={item.category?.name}
+                      status={item.courseStatus}
+                      duration={item.duration}
+                      level={item.difficulty}
+                      name={item.name}
+                      cost={item.paymentStatus === 'Free' ? 'Free' : formatter(item.price?.toString())}
+                  />
+                    ))
+                  }
+                </div>
+                </div>
               }
-              </div>
-              </div>
             </section>
 
             <section className="xl:col-span-4 lg:col-span-5 ">

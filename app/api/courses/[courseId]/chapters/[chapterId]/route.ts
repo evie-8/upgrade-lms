@@ -111,7 +111,7 @@ export async function PATCH(
         try {
             const role = await currentRole();
             const user = await currentUser();
-            const {isAvailable, ...values} = await req.json();
+            const {isAvailable, quizId, ...values} = await req.json();
             
          if (!user) {
             return new NextResponse("Unauthorized", {status: 401});
@@ -138,9 +138,12 @@ export async function PATCH(
                 courseId: params.courseId
             },
             data: {
-                ...values
+                ...values,
+                quizId: quizId && quizId.length > 0 ? quizId : null,
             }
          });
+
+        
          return NextResponse.json(chapter)
             
         } catch (error) {

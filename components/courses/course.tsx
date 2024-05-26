@@ -179,10 +179,10 @@ const Courses = ({courses}: Props) => {
                     </div>
 
                     <FilterContainer
-                    selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}
-                    selectedSkillLevel={selectedSkillLevel}  setSelectedSkillLevel={setSelectedSkillLevel}
-                    selectedPrice={selectedPrice} setSelectedPrice={setSelectedPrice}
-                    selectedRating={selectedRating} setSelectedRating={setSelectedRating}/>
+                        selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}
+                        selectedSkillLevel={selectedSkillLevel}  setSelectedSkillLevel={setSelectedSkillLevel}
+                        selectedPrice={selectedPrice} setSelectedPrice={setSelectedPrice}
+                        selectedRating={selectedRating} setSelectedRating={setSelectedRating}/>
              
                 
               </div>
