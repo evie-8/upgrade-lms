@@ -15,7 +15,7 @@ const CoursesPage =  async () => {
   })
   return (
    <>
-   <MetaData title='upgrade-courses' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
+   <MetaData title='upgrade | courses' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
      <Courses courses={courses}/>
    </>
   )

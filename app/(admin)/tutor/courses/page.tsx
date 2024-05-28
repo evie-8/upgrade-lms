@@ -1,7 +1,7 @@
 import CoursePage from '@/components/admin/courses/course-page'
+import MetaData from '@/components/ui/meta-data'
 import { currentUser } from '@/lib/auth'
 import prismadb from '@/lib/db'
-import React from 'react'
 
 const TutorCoursesPage = async () => {
   const user = await currentUser();
@@ -18,8 +18,11 @@ const TutorCoursesPage = async () => {
     }
   })
   return (
+    <>
+    <MetaData title='upgrade-admin | Courses' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
    
       <CoursePage data={data}/>
+      </>
   )
 }
 

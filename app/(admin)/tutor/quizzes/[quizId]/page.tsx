@@ -1,4 +1,5 @@
 import QuizPreview from "@/components/admin/quizzes/quiz-preview"
+import MetaData from "@/components/ui/meta-data"
 import prismadb from "@/lib/db"
 
 const QuizIdPage =  async ({params}: {params: {quizId: string}}) => {
@@ -17,8 +18,11 @@ const QuizIdPage =  async ({params}: {params: {quizId: string}}) => {
   }
  })
   return (
-  
-     <QuizPreview data={data}/>
+   <>
+     <MetaData title='upgrade-admin | Quizpreviview' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
+   
+   <QuizPreview data={data}/>
+   </>
   
    
   )

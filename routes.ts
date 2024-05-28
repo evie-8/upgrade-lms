@@ -2,6 +2,8 @@
  * routes that don't need authentication 
  */
 
+import { currentRole, currentUser } from "./lib/auth";
+
 export const publicRoutes = [
     "/",
     "/about-us",
@@ -31,4 +33,8 @@ export const authRoutes = [
  */
 export const apiAuthPrefix = ["/api/auth", "/api/uploadthing"]
 
-export const DEFAULT_LOGIN_REDIRECT = "/tutor/dashboard";
+
+export const DEFAULT_LOGIN_REDIRECT = '/student/dashboard';
+export const DEFAULT_LOGIN_REDIRECT_2 = '/tutor/dashboard';
+
+

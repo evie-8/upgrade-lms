@@ -102,7 +102,7 @@ const FilterContainer = ({
             
             </div> ]}
             selectedValue={selectedRating}
-            onFilterChange={handleFilterChange}/>,
+            onFilterChange={handleFilterChange}/>
   
        
     </section>

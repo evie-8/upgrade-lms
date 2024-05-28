@@ -6,11 +6,14 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import logo from "../public/logo.svg"
 import { LogIn } from "lucide-react";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import ProfileImage from "@/components/admin/avartar";
 
 const NavBar = () => {
     const pathname = usePathname();
     const [scroll, setScroll] = useState(false);
-    const [menu, setMenu] = useState(false)
+    const [menu, setMenu] = useState(false);
+    const user = useCurrentUser();
 
     const links = [
         {
@@ -68,9 +71,14 @@ const NavBar = () => {
                         
                     </ul>
 
+               {
+                user ?
+                <ProfileImage/> :
+
                 <Link href={'/auth/sign-in'}>
                 <button className="inline-flex items-center justify-center flex-nowrap "> <LogIn className="w-5 h-5 mr-2 font-bold"/> Sign In</button>            
                 </Link>
+               }
         </div>
 
           <p className={`menu ${menu ? 'active' : ''}`} onClick={handleClick}>

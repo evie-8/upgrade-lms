@@ -40,7 +40,7 @@ const CourseDetailPage = async ({params}: {params: {courseId: string}}) => {
   })
   return (
   <>
-    <MetaData title='upgrade-course-details' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
+    <MetaData title='upgrade | Course Details' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
    
    <CourseDetails course={course}/>
   </>

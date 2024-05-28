@@ -1,12 +1,14 @@
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
-import { DEFAULT_LOGIN_REDIRECT, apiAuthPrefix, authRoutes, publicPrefix, publicRoutes } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT, DEFAULT_LOGIN_REDIRECT_2, apiAuthPrefix, authRoutes, publicPrefix, publicRoutes } from "@/routes";
 
 const { auth } = NextAuth(authConfig);
 
 export default auth ((req) => {
   const {nextUrl} = req;
   const isLoggedIn = !!req.auth;
+  const user =  req.auth;
+ const role = user?.user.role
   
   const isApiRoute = apiAuthPrefix.some(prefix => nextUrl.pathname.startsWith( `${prefix}`));
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
@@ -19,7 +21,11 @@ export default auth ((req) => {
 
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+      if (role === 'USER') {
+        return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+      } else if (role === 'TUTOR') {
+        return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT_2, nextUrl))
+      }
     }
     return;
   }

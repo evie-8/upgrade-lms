@@ -4,16 +4,18 @@ import { signIn } from "@/auth";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
 import { getUserByEmail } from "@/data/user";
+import { currentRole } from "@/lib/auth";
 import prismadb from "@/lib/db";
 import { sendTwoFactorEmail, sendVerificationEmail } from "@/lib/mail";
 import { generateTwoFactorToken, generateVerificationToken } from "@/lib/tokens";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT, DEFAULT_LOGIN_REDIRECT_2 } from "@/routes";
 import { SignInSchema } from "@/schemas";
 import { compare } from "bcryptjs";
 import { AuthError } from "next-auth";
 import * as z  from "zod";
 
 export const logIn = async (values: z.infer<typeof SignInSchema>, callbackUrl?: string | null) => {
+    const role = await currentRole();
     const validateFields = SignInSchema.safeParse(values);
 
     if (!validateFields.success) {
@@ -105,7 +107,7 @@ export const logIn = async (values: z.infer<typeof SignInSchema>, callbackUrl?: 
         await signIn("credentials", {
             email,
             password,
-            redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+            redirectTo: callbackUrl || role === 'USER' ? DEFAULT_LOGIN_REDIRECT : DEFAULT_LOGIN_REDIRECT_2,
         })
         
     } catch (error) {

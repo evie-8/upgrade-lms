@@ -15,7 +15,7 @@ const ProfileImage =   () => {
     }
   return (
     <div className='flex items-center justify-between ml-auto'>
-      <button onClick={changeTheme} className=' inline-flex items-center justify-center mr-2'>
+      <button onClick={changeTheme} className=' hidden items-center justify-center mr-2'>
         {
           theme === 'light' ? <MoonStar className='w-4 h-4'/> : <Sun className='h-4 w-4'/>
         }

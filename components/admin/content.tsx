@@ -4,7 +4,7 @@ import { useContext, useState } from 'react'
 import SideBar from '@/components/admin/admin-sidebar'
 import Header from '@/components/admin/header'
 import { ChevronRight } from 'lucide-react';
-import Container from '@/components/ui/container';
+
 import Animation from '@/components/ui/animation';
 import { themeContext } from '@/components/theme';
 

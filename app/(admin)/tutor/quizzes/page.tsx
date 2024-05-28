@@ -1,4 +1,5 @@
 import QuizCreateCard from "@/components/admin/quizzes/quiz-create"
+import MetaData from "@/components/ui/meta-data"
 import prismadb from "@/lib/db"
 
 
@@ -13,8 +14,12 @@ const Quiz = async () => {
   })
   return (
    
-      <QuizCreateCard quizzes={quizzes}/>
-     
+  <>
+      <MetaData title='upgrade-admin | Quizzes' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
+   
+   <QuizCreateCard quizzes={quizzes}/>
+  
+  </>
   )
 }
 

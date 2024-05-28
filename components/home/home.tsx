@@ -77,7 +77,7 @@ const Home =  async () => {
         
     <CourseSectionHomePage categories={categories}/>
 
-  <Banner image={'images/banner1.jpg'} title='Need help finding a course?' action='Find Your Programme'
+  <Banner image={'images/banner1.jpg'} link='/courses' title='Need help finding a course?' action='Find Your Programme'
   slogan='Discover your perfect course! Explore our diverse range of offerings and start your learning journey today. Let us guide you to success' /> 
    
 
@@ -97,7 +97,7 @@ const Home =  async () => {
       </Container>
     </div>
 
-    <Banner action={'Browse Our Courses'} title={'Start your learning journey today'}  image={'images/banner.jpg'}
+    <Banner action={'Browse Our Courses'} link='/courses' title={'Start your learning journey today'}  image={'images/banner.jpg'}
     slogan={'Start your learning journey with our expert online courses! Dive into a world of knowledge from home and elevate your skills. Join us today!'}/>
    
 

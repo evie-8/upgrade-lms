@@ -1,8 +1,13 @@
-import React from 'react'
+import AboutUs from '@/components/home/about-us'
+import MetaData from '@/components/ui/meta-data'
 
 const AboutUsPage = () => {
   return (
-    <div>AboutUsPage</div>
+  
+   <>
+   <MetaData title="upgrade | About Us" description="upgrade is an elearning platform " keywords="programming,alx"/>
+   <AboutUs/>
+   </>
   )
 }
 

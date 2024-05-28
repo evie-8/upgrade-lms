@@ -1,12 +1,15 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT, DEFAULT_LOGIN_REDIRECT_2 } from "@/routes";
+import { useCurrentRole } from "@/hooks/use-current-role";
+
 
 const SocialButtons = () => {
+    const role = useCurrentRole();
     const onClick = (provider: 'google' | 'github') => {
         signIn(provider, {
-            callbackUrl: DEFAULT_LOGIN_REDIRECT
+            callbackUrl: role === 'USER' ? DEFAULT_LOGIN_REDIRECT : DEFAULT_LOGIN_REDIRECT_2
         })
     }
   return (

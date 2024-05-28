@@ -280,7 +280,7 @@ const Courses = ({courses}: Props) => {
        
       </Container>
 
-      <Banner image={'images/banner1.jpg'} title='Need help finding a course?' action='Find Your Programme'
+      <Banner image={'images/banner1.jpg'} link="/courses" title='Need help finding a course?' action='Find Your Programme'
   slogan='Discover your perfect course! Explore our diverse range of offerings and start your learning journey today. Let us guide you to success' /> 
    
 

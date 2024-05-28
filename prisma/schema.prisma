@@ -154,34 +154,35 @@ model Resource {
 }
 
 model Lesson {
-  id        String   @id @default(uuid())
-  name      String
-  videoUrl  String?
-  chapterId String
-  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  position  Int
-  isDraft   Boolean  @default(true)
-  muxData   MuxData?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Chapter {
   id           String         @id @default(uuid())
   name         String
-  description  String?
-  courseId     String
-  courses      Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  Lesson       Lesson[]
-  quizId       String?
-  quiz         Quiz?          @relation(fields: [quizId], references: [id])
+  videoUrl     String?
+  chapterId    String
+  chapter      Chapter        @relation(fields: [chapterId], references: [id], onDelete: Cascade)
   position     Int
-  isAvailable  Boolean        @default(false)
-  isFree       Boolean        @default(false)
+  isDraft      Boolean        @default(true)
+  muxData      MuxData?
   userProgress UserProgress[]
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
+}
 
+model Chapter {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  courseId    String
+  courses     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  Lesson      Lesson[]
+  quizId      String?
+  quiz        Quiz?    @relation(fields: [quizId], references: [id])
+  position    Int
+  isAvailable Boolean  @default(false)
+  isFree      Boolean  @default(false)
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  
   @@unique([quizId])
 }
 
@@ -199,13 +200,24 @@ model MuxData {
 model UserProgress {
   id          String   @id @default(uuid())
   userId      String
-  chapterId   String
-  chapter     Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  lessonId    String
+  lesson     Lesson  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   isCompleted Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+ 
+  @@unique([userId, lessonId])
+}
 
-  @@unique([userId, chapterId])
+model Order {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
 }
 
 model Course {
@@ -225,6 +237,7 @@ model Course {
   price         Float?
   chapter       Chapter[]
   resources     Resource[]
+  orders        Order[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 }

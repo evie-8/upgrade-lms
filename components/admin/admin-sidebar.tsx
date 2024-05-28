@@ -5,7 +5,8 @@ import SideBarRoutes from "./sidebar-routes";
 
 import MenuItem from "./menu-item";
 import logo from "../../public/logo.svg";
-import { BookOpen, Database, HelpCircle, Home, LogOut, Receipt, Settings, Users2 } from 'lucide-react'
+import { BookOpen, Database, FilesIcon, HelpCircle, Home, LogOut, Receipt, Settings, Users2 } from 'lucide-react'
+import { useCurrentRole } from "@/hooks/use-current-role";
 
 interface Props {
   collapse?: boolean;
@@ -53,8 +54,42 @@ const routes1 = [
   
 ]
 
+const studentRoutes = [
+  {
+      icon: Home,
+      label: 'Home',
+      href:'/student/dashboard',
+  },
+
+  {
+      icon: BookOpen,
+      label: 'Courses',
+      href:'/student/courses',
+  },
+  {
+      icon: HelpCircle,
+      label: 'Quizzes',
+      href:'/student/quizzes',
+  },
+ 
+  
+]
+
+const studentRoutes1 = [
+  {
+      icon: FilesIcon,
+      label: 'Resources',
+      href:'/student/resources',
+  },
+
+  
+  
+]
+
 const SideBar:React.FC<Props> =  ({collapse}) => {
   
+  const role = useCurrentRole();
+
   return (
 
   
@@ -68,10 +103,10 @@ const SideBar:React.FC<Props> =  ({collapse}) => {
      </div>
 
       <div className="flex flex-col w-full overflow-y-auto   bg-white" >
-          < SideBarRoutes collapse={collapse} routes={routes}/>
+          < SideBarRoutes collapse={collapse} routes= { role === 'TUTOR'? routes : studentRoutes}/>
          
          <hr  className="text-grey"/>
-        < SideBarRoutes collapse={collapse} routes={routes1}/>
+        < SideBarRoutes collapse={collapse} routes={role === 'TUTOR'? routes1 : studentRoutes1}/>
          
       </div>
       

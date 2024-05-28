@@ -1,6 +1,6 @@
 import "../styles/admin.modules.css"
 import RoleGate from "@/components/auth/role-gate";
-import Content from "../../components/admin/content";
+import Content from "@/components/admin/content";
 
 export default function RootLayout({
   children,
