@@ -50,10 +50,10 @@ const CourseLayout = async ({
     <section className='bg-white1 '>
       
         <div className='relative grid grid-cols-12 h-screen'>
-            <article className='col-span-8'>
+            <article className='lg:col-span-8 col-span-12'>
                {children}
             </article>
-            <article className='col-span-4 w-full'>
+            <article className='max-lg:hidden lg:col-span-4  bg-white shadow-md p-8 fixed right-0'>
                 <CourseSidebar course={course}/>
             </article>
         </div>

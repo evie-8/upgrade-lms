@@ -3,11 +3,13 @@
 import { formatDuration } from "@/lib/duration";
 import { Check, CheckCheck, Lock, Play } from "lucide-react";
 import { useRouter } from "next-nprogress-bar";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const SideBarItem = ({chapter, isLocked}: {chapter: any, isLocked: boolean}) => {
   const [view, setView] = useState(false);
-  const router  = useRouter()
+  const router  = useRouter();
+  const pathname = usePathname();
 
   const [duration, setDuration] = useState(0);
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -40,7 +42,7 @@ const SideBarItem = ({chapter, isLocked}: {chapter: any, isLocked: boolean}) => 
               <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center justify-start gap-4">
                    {/* <p className="flex items-center justify-center rounded-full bg-primary/10 text-primary w-5 h-5"><span className="m-1">1</span></p>*/}
-                    <h2 className="font-semibold">{chapter.name}</h2>
+                    <h2 className={`font-medium ${pathname.includes(chapter.id) ? 'text-warning': ''}`}>{chapter.name}</h2>
                   </div>
                 {
                   isLocked ? 
@@ -61,8 +63,10 @@ const SideBarItem = ({chapter, isLocked}: {chapter: any, isLocked: boolean}) => 
                     chapter.Lesson && chapter.Lesson.length && 
 
                     chapter.Lesson.map((lesson: any) => (
-                      <div key={lesson.id} onClick={() => router.push(`/student/courses/${chapter.courseId}/chapter/${chapter.id}/lesson/${lesson.id}`) } className="cursor-pointer flex items-center justify-between gap-2 border-b border-grey pb-2 ml-2 my-2">
+                      <div key={lesson.id} onClick={() => router.push(`/student/courses/${chapter.courseId}/chapter/${chapter.id}/lesson/${lesson.id}`) } 
+                      className={ `cursor-pointer flex items-center justify-between gap-2 border-b border-grey p-2 ml-2 my-2 ${pathname.includes(lesson.id) && 'bg-purple/20 rounded-md'}`}>
                       {/**lessons name -title */}
+                      
                      <div className="flex items-center justify-center gap-3">
                     
                      {

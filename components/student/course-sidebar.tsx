@@ -30,7 +30,7 @@ const CourseSidebar = async ({course}: {course: any}) => {
   const progressData = await getProgress(String(user?.id), course.id);
   return (
 
-    <div className="h-screen shadow-md bg-white p-6 overflow-y-auto fixed min-w-[330px] lg:min-w-[380px] right-0">
+    <div className="max-lg:hidden h-screen  bg-white max-lg:p-6 max-lg:overflow-y-auto w-full">
         <h2 className="font-bold text-lg">Your Courses Progress</h2>
         <div className="p-4 rounded-md border-border-transparent bg-primary/10 my-4 flex flex-col gap-3 ">
             <p className="flex justify-between  text-xs">
