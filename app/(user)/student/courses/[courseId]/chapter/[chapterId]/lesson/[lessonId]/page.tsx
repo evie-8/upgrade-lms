@@ -44,10 +44,10 @@ const LessonPlayer = async ({params}: {params: {lessonId: string, chapterId: str
       )
     }
        <LessonView 
-       level={course.difficulty}
-       category={course.category?.name}
-       title={course.name}
-       lessonId={params.lessonId} 
+       
+       purchase={purchase}
+       course={course!}
+       resources={attachments}
        lesson={lesson}
        nextLessonId={nextLesson?.id}
        courseId={params.courseId}

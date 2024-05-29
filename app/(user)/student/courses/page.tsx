@@ -1,8 +1,10 @@
-import React from 'react'
+import SearchPage from '@/components/student/search-page'
+import prismadb from '@/lib/db'
 
-const Courses = () => {
+const Courses = async() => {
+  const categories = await prismadb.category.findMany();
   return (
-    <div>Courses</div>
+    <SearchPage categories={categories}/>
   )
 }
 

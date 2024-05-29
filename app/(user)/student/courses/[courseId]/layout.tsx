@@ -12,7 +12,7 @@ const CourseLayout = async ({
     }) => {
         
         const user = await currentUser();
-
+        
         const course = await prismadb.course.findUnique({
             where: {
                 id: params.courseId
@@ -47,13 +47,13 @@ const CourseLayout = async ({
         })
   return (
    
-    <section className='bg-white1 '>
+    <section className='bg-white1'>
       
-        <div className='relative grid grid-cols-12 h-screen'>
+        <div className='grid grid-cols-12 h-auto'>
             <article className='lg:col-span-8 col-span-12'>
                {children}
             </article>
-            <article className='max-lg:hidden lg:col-span-4  bg-white shadow-md p-8 fixed right-0'>
+            <article className={`relative max-lg:hidden lg:col-span-4 p-2 bg-white shadow-md `}>
                 <CourseSidebar course={course}/>
             </article>
         </div>

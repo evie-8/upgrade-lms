@@ -75,12 +75,17 @@ const studentRoutes = [
   
 ]
 
-const studentRoutes1 = [
-  {
+const studentRoutes1: any[] = [
+
+  
+   /**
+     * {
       icon: FilesIcon,
       label: 'Resources',
       href:'/student/resources',
   },
+
+     */
 
   
   
@@ -105,9 +110,13 @@ const SideBar:React.FC<Props> =  ({collapse}) => {
       <div className="flex flex-col w-full overflow-y-auto   bg-white" >
           < SideBarRoutes collapse={collapse} routes= { role === 'TUTOR'? routes : studentRoutes}/>
          
-         <hr  className="text-grey"/>
+        {
+          (routes1.length > 0 && role==='TUTOR')  && <>
+           <hr  className="text-grey"/>
         < SideBarRoutes collapse={collapse} routes={role === 'TUTOR'? routes1 : studentRoutes1}/>
          
+          </>
+        }
       </div>
       
     

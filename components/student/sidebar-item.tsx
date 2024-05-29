@@ -38,7 +38,7 @@ const SideBarItem = ({chapter, isLocked}: {chapter: any, isLocked: boolean}) => 
     }, []);
  
   return (
-    <div className="flex flex-col my-3  border border-grey rounded-md p-3">
+    <div className="flex flex-col my-3  border border-grey rounded-md p-3 w-full">
               <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center justify-start gap-4">
                    {/* <p className="flex items-center justify-center rounded-full bg-primary/10 text-primary w-5 h-5"><span className="m-1">1</span></p>*/}
@@ -58,13 +58,13 @@ const SideBarItem = ({chapter, isLocked}: {chapter: any, isLocked: boolean}) => 
                 }
                 </div>
                 {/**lessons */}
-                <div className={`flex-col my-3 ${view ? 'flex': 'hidden'}`}>
+                <div className={`flex-col my-3 w-full ${view ? 'flex': 'hidden'}`}>
                   {
                     chapter.Lesson && chapter.Lesson.length && 
 
                     chapter.Lesson.map((lesson: any) => (
                       <div key={lesson.id} onClick={() => router.push(`/student/courses/${chapter.courseId}/chapter/${chapter.id}/lesson/${lesson.id}`) } 
-                      className={ `cursor-pointer flex items-center justify-between gap-2 border-b border-grey p-2 ml-2 my-2 ${pathname.includes(lesson.id) && 'bg-purple/20 rounded-md'}`}>
+                      className={ `w-full cursor-pointer flex items-center justify-between gap-2 border-b border-grey p-2 ml-2 my-2 ${pathname.includes(lesson.id) && 'bg-purple/20 rounded-md'}`}>
                       {/**lessons name -title */}
                       
                      <div className="flex items-center justify-center gap-3">

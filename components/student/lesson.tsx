@@ -1,18 +1,20 @@
 "use client"
 
+import "react-quill/dist/quill.bubble.css";
 import { cn } from "@/lib/utils";
 import MuxPlayer from "@mux/mux-player-react";
-import { Chapter, Lesson } from "@prisma/client";
-import { Group, Loader2, Lock, Signal, Star, Users2 } from "lucide-react";
+import { Category, Chapter, Course, Lesson, Order, Resource } from "@prisma/client";
+import { File, Info, Loader2, Lock, MessageCircleIcon, Paperclip, Signal, Star, Users2 } from "lucide-react";
 import { useState } from "react";
-import { Badge } from "../ui/badge";
+
 import { Button } from "../ui/button";
+import EnrollButton from "./enroll-button";
 
 interface Props {
-  category: string | undefined;
-  level: string;
-  title: string;
-lessonId: string;
+
+resources : Resource[];
+purchase: Order | null;
+course: Course & {category: Category} ;
 lesson: Lesson & {chapter: Chapter};
 nextLessonId: string | undefined;
 courseId: string;
@@ -21,25 +23,48 @@ completeOnEnd: boolean | undefined;
 playbackId: string ;
 }
 
+const buttons = [
+  {
+   'title': 'Information',
+   icon: Info,
+  },
+
+  {
+    'title': 'Resources',
+    icon: Paperclip,
+   },
+   {
+    'title': 'Reviews',
+    icon: MessageCircleIcon,
+   },
+   {
+    'title': 'Quiz',
+    icon: Lock
+   },
+
+]
 const LessonView = ({
-  lessonId,
+  
   lesson,
-  title,
-  category,
-  level,
+  course,
+  resources,
   nextLessonId,
   courseId,
   isLocked,
+  purchase,
   completeOnEnd,
   playbackId
 }: Props) => {
   const [isReady, setIsReady]  = useState(false);
+  const [click, setClick] = useState('Information');
+ 
+ 
   
   return (
  
      <section className="p-4 md:p-8">
         <h2 className="font-semibold"><span className="text-primary">Course</span> 
-        <span className=""> &gt; {title} </span>
+        <span className=""> &gt; {course.name} </span>
 
         <span className="text-primary">&gt; Chapter</span> 
         <span className=""> &gt; {lesson.chapter.name} </span>
@@ -64,7 +89,7 @@ const LessonView = ({
             {
               !isLocked && (
                 <MuxPlayer
-               
+                accentColor="#007bff"
                  title={lesson.name}
                  className={cn(!isReady && "hidden")}
                  onCanPlay={() => setIsReady(true)}
@@ -76,13 +101,22 @@ const LessonView = ({
             }
         </div>
 
-        <div className="flex flex-col items-start justify-start gap-y-3">
-            <button className="inline text-sm px-4 py-1 bg-primary/20 rounded-md text-primary">
-              {category}
+        <div className="flex flex-col  gap-y-3">
+            <div className="flex items-start justify-start">
+            <button className="inline  text-sm px-4 py-1 bg-primary/20 rounded-md text-primary">
+              {course.category.name}
             </button>
-            <h2 className="text-xl font-semibold">{lesson.name}</h2>
+            </div>
+            <div className="flex justify-between flex-wrap gap-4">
+            <h2 className="text-xl font-semibold max-sm:basis-full">{lesson.name}</h2>
+            {
+              !purchase && course.paymentStatus !== 'Free' && 
+              <EnrollButton courseId={courseId} price={course.price!}/>
+            }
+           
 
-            <div className="flex justify-between gap-5">
+            </div>
+            <div className="flex gap-5 flex-wrap">
               <p className="text-sm">Course by <span className="font-semibold underline">Nafula Evelyn Ouma</span></p>
               <p className="flex items-center justify-center gap-2">
                 <Star className="w-4 h-4 text-ranking"/>
@@ -93,14 +127,81 @@ const LessonView = ({
               </p>
               <p className="flex items-center justify-center gap-3">
               <Signal className="w-4 h-4 text-danger"/>
-              <span className="font-medim text-sm">{level}</span>
+              <span className="font-medim text-sm">{course.difficulty}</span>
               </p>
               <p className="flex items-center justify-center gap-3">
               <Users2 className="w-4 h-4 text-purple"/>
               <span className="font-medim text-sm">12 students</span>
               </p>
 
+              
             </div>
+
+            <div className="flex items-start justify-start gap-3 flex-wrap">
+                
+                {
+                  buttons.map((button) => (
+                    <Button onClick={() => setClick(button.title)} key={button.title}  variant={click ? 'default': 'outline'}  className={`${click !== button.title && 'bg-white text-gray border-white hover:bg-white/90' } `}>
+                      <button.icon  className="w-4 h-4 mr-2"/>
+                      { button.title}
+                  </Button>
+                  ))
+                }
+               
+
+
+            </div>
+            <div className="flex flex-col mt-2">
+              {
+                click === 'Information' &&
+
+                <>
+                  <h2 className="font-bold">About Course</h2>
+                  <div className="quill">
+                    <div className="ql-container ql-bubble">
+                    <div className="desc mt-2 ql-editor  !leading-[1.5] !text-[16px]" dangerouslySetInnerHTML={{__html: String(course.description)}}/>
+                  </div>
+
+                  </div>
+
+                  <h2 className="font-bold">Chapter description</h2>
+                  <div className="quill">
+                    <div className="ql-container ql-bubble">
+                    <div className="desc mt-2 ql-editor  !leading-[1.5] !text-[16px]" dangerouslySetInnerHTML={{__html: String(lesson.chapter.description)}}/>
+                  </div>
+
+                  </div>
+                </>
+              }
+              {
+                click === 'Resources' && 
+                !!resources.length && (
+                  <div>
+                    <h2 className="font-bold">Useful material for this course</h2>
+                    {
+                      resources.map((resource) => (
+                        <a href={resource.url}
+                          target="_blank"
+                          key={resource.id}
+                          className="flex items-center  p-3 hover:underline"
+                          >
+                            <File className="w-4 h-4 mr-2"/>
+                            <p className="line-clamp-1 text-sm">
+                              {
+                                resource.name
+                              }
+                            </p>
+
+                          </a>
+                      ))
+                    }
+                  </div>
+                )
+              }
+              {/**do later for quiz and reviews */}
+
+            </div>
+
         </div>
 
     </section>

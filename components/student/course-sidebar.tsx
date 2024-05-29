@@ -30,18 +30,18 @@ const CourseSidebar = async ({course}: {course: any}) => {
   const progressData = await getProgress(String(user?.id), course.id);
   return (
 
-    <div className="max-lg:hidden h-screen  bg-white max-lg:p-6 max-lg:overflow-y-auto w-full">
-        <h2 className="font-bold text-lg">Your Courses Progress</h2>
+    <div className="max-lg:hidden h-screen bg-white p-4 overflow-y-auto w-full">
+        <h2 className="font-bold text-lg w-full">Your Courses Progress</h2>
         <div className="p-4 rounded-md border-border-transparent bg-primary/10 my-4 flex flex-col gap-3 ">
             <p className="flex justify-between  text-xs">
                 <span className="font-bold">{progressData.percentageCompleted}%</span>
                 <span><span className="font-bold">{progressData.completedLessons}</span>/{numberOfLessons} lessons</span>
             </p>
-            <Progress value={progressData.percentageCompleted} className="h-2 bg-white"/>
+            <Progress value={progressData.percentageCompleted} className="h-2 bg-white w-full"/>
 
         </div>
 
-        <div className="my-4">
+        <div className="my-4 w-full">
         <h2 className="font-bold text-lg">Chapters & Lessons</h2>
         {
           course.chapter && course.chapter.length && 

@@ -31,7 +31,9 @@ export const getLesson = async({userId, courseId, chapterId, lessonId}: GetLesso
                  price: true,
                  name: true,
                  category: true,
-                 difficulty: true
+                 difficulty: true,
+                 description: true,
+                 paymentStatus: true,
             }
         });
 
@@ -55,7 +57,7 @@ export const getLesson = async({userId, courseId, chapterId, lessonId}: GetLesso
         let attachments: Resource[] = [];
         let nextLesson: Lesson | null = null;
 
-        if (purchase) {
+        if (purchase || course.paymentStatus === 'Free') {
             attachments = await prismadb.resource.findMany({
                 where: {
                     courseId: courseId
