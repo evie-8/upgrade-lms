@@ -12,39 +12,39 @@ const CourseLayout = async ({
     }) => {
         
         const user = await currentUser();
-        
         const course = await prismadb.course.findUnique({
             where: {
                 id: params.courseId
-            },
+            }, 
             include: {
                 chapter: {
                     where: {
                         isAvailable: true
                     },
-                    orderBy:{
+                    orderBy: {
                         position: 'asc'
                     },
                     include: {
                         Lesson: {
                             where: {
-                                isDraft:false
+                                isDraft: false
+                            },
+                            orderBy: {
+                                position: 'asc'
                             },
                             include: {
                                 userProgress: {
                                     where: {
                                         userId: String(user?.id)
-                                    },
+                                    }
                                 }
-                            },
-                            orderBy: {
-                                position: 'asc'
-                            },
+                            }
                         }
                     }
                 }
             }
         })
+        
   return (
    
     <section className='bg-white1'>

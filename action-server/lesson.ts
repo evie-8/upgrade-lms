@@ -27,13 +27,26 @@ export const getLesson = async({userId, courseId, chapterId, lessonId}: GetLesso
                 id: courseId,
             },
 
-            select: {
-                 price: true,
-                 name: true,
+            include: {
+                
+                 chapter: {
+                    include: {
+                        Lesson: {
+                            include: {
+                                userProgress: true
+                            },
+                        },
+                    quiz: true,
+                    },
+                 },
+                 orders: true,
                  category: true,
-                 difficulty: true,
-                 description: true,
-                 paymentStatus: true,
+                 tutor: true,
+                 reviews: {
+                    include: {
+                        reviewer: true
+                    }
+                 },
             }
         });
 
@@ -45,7 +58,16 @@ export const getLesson = async({userId, courseId, chapterId, lessonId}: GetLesso
             },
 
             include: {
-                chapter: true
+                chapter: {
+                    include: {
+                        Lesson: {
+                            include: {
+                                userProgress: true
+                            }
+                        },
+                        quiz: true
+                    }
+                }
             }
         });
 

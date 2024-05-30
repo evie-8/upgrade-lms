@@ -28,8 +28,7 @@ const LessonPlayer = async ({params}: {params: {lessonId: string, chapterId: str
   }
 
   const isLocked = !lesson.chapter.isFree && !purchase;
-  const completeOnEnd = !!purchase && userProgress?.isCompleted;
-
+  const completeOnEnd = (!!purchase && !userProgress?.isCompleted) || (course.paymentStatus === 'Free' && !userProgress?.isCompleted);
 
   return (
     <>
@@ -47,11 +46,14 @@ const LessonPlayer = async ({params}: {params: {lessonId: string, chapterId: str
        <LessonView 
        
        purchase={purchase}
+       //@ts-ignore
        course={course}
        resources={attachments}
        lesson={lesson}
        userProgress={userProgress!}
+       //@ts-ignore
        nextLesson={nextLesson}
+       //@ts-ignore
        prevLesson={prevLesson}
        courseId={params.courseId}
        isLocked={isLocked}

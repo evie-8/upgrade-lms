@@ -8,7 +8,7 @@ const alertBannerVariants = cva("border text-center  p-4 text-sm flex items-cent
         variants: {
             variant: {
                 warning: 'bg-yellow border-yellow text-gray',
-                success: 'bg-success/20 border-success text-gray'
+                success: 'bg-success border-success text-white'
             }
         },
         defaultVariants: {

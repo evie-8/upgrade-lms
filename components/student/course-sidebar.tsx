@@ -4,15 +4,16 @@ import SideBarItem from "@/components/student/sidebar-item";
 import prismadb from "@/lib/db";
 import { currentUser } from "@/lib/auth";
 import getProgress from "@/action-server/get-progress";
+import { Chapter, Course, Lesson, UserProgress } from "@prisma/client";
 
-const CourseSidebar = async ({course}: {course: any}) => {
+const CourseSidebar = async ({course}: {course: Course & {chapter: Chapter[] | null & {Lesson: Lesson[] | null & {userProgress: UserProgress[]| null} | null} | null} | null} | null) => {
 
   const user = await currentUser();
   const purchased = await prismadb.order.findUnique({
     where: {
      userId_courseId: {
       userId: String(user?.id),
-      courseId: course.id
+      courseId: String(course.id),
      }
     }
   });
@@ -27,17 +28,17 @@ const CourseSidebar = async ({course}: {course: any}) => {
     }
   }
   
-  const progressData = await getProgress(String(user?.id), course.id);
+  const {completedLessons, percentageCompleted} = await getProgress(String(user?.id), course.id);
   return (
 
     <div className="max-lg:hidden h-full bg-white p-4 overflow-y-auto w-full">
         <h2 className="font-bold text-lg w-full">Your Courses Progress</h2>
         <div className="p-4 rounded-md border-border-transparent bg-primary/10 my-4 flex flex-col gap-3 ">
             <p className="flex justify-between  text-xs">
-                <span className="font-bold">{progressData.percentageCompleted}%</span>
-                <span><span className="font-bold">{progressData.completedLessons}</span>/{numberOfLessons} lessons</span>
+                <span className="font-bold">{Math.round(percentageCompleted)}%</span>
+                <span><span className="font-bold">{completedLessons}</span>/{numberOfLessons} lessons</span>
             </p>
-            <Progress value={progressData.percentageCompleted} className="h-2 bg-white w-full"/>
+            <Progress variant={percentageCompleted === 100 ? 'success': 'default'} value={Math.round(percentageCompleted)} className="h-2 bg-white w-full"/>
 
         </div>
 
@@ -46,7 +47,7 @@ const CourseSidebar = async ({course}: {course: any}) => {
         {
           course.chapter && course.chapter.length && 
 
-          course.chapter.map((item: any) => (
+          course.chapter.map((item: Chapter & {Lesson: Lesson[] & {userProgress: UserProgress[]| null}}) => (
             <SideBarItem key={item.id}  chapter={item} isLocked={!item.isFree && !purchased }/>
           ))
         }

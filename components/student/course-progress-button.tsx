@@ -7,28 +7,46 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { CheckCircle, XCircle } from 'lucide-react';
+import { useRouter } from 'next-nprogress-bar';
+import { useRouter as useRouter1 } from 'next/navigation';
+import { useConfettiModal } from '@/hooks/use-confetti';
+import { Chapter, Lesson } from '@prisma/client';
 
 interface Props {
   courseId: string;
   chapterId: string;
-  nextLessonId: string | undefined;
+  nextLesson: Lesson & {chapter: Chapter};
   isCompleted: boolean;
   lessonId: string;
   
 }
 
-const CourseProgressButton = ({courseId, chapterId, lessonId, nextLessonId, isCompleted}: Props) => {
+const CourseProgressButton = ({courseId, chapterId, lessonId, nextLesson, isCompleted}: Props) => {
 
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const router1 = useRouter1();
+  const confetti = useConfettiModal();
+
   const onClick = async() => {
     try {
       setIsLoading(true);
 
-      const response = await axios.post(`/api/courses/${courseId}/checkout`, {
-        url: window.location.pathname
+      await axios.put(`/api/courses/${courseId}/chapters/${chapterId}/lessons/${lessonId}/progress`, {
+      isCompleted: !isCompleted
       });
 
-      window.location.assign(response.data.url);
+      if (!isCompleted && !nextLesson) {
+        confetti.onOpen();
+      }
+      
+      if (!isCompleted && nextLesson) {
+        router.push(`/student/courses/${courseId}/chapter/${nextLesson.chapterId}/lesson/${nextLesson.id}`, {}, {showProgressBar: true});
+      }
+
+      toast.success("Your course progress has been updated");
+      router1.refresh();
+    
     } catch  {
       toast.error("Something went wrong")
     } finally {
@@ -36,13 +54,15 @@ const CourseProgressButton = ({courseId, chapterId, lessonId, nextLessonId, isCo
     }
   }
   return (
-    <Button variant={isCompleted ? 'default': 'success'}  disabled={isLoading}>
+    <Button onClick={onClick}
+    variant={isCompleted ? 'destructive': 'success'}
+    disabled={isLoading}>
    {
     isCompleted ? 
     <>
      
       <XCircle className='h-4 w-4 mr-2'/>
-      Not completed
+      Mark as incomplete
     </> :
     <>
    

@@ -51,6 +51,7 @@ model User {
   Course                Course[]
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
+  reviews               Review[]
 }
 
 model Account {
@@ -227,7 +228,22 @@ model StripeCustomer {
   stripeCustomerId String @unique
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt  
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id                String   @id @default(uuid())
+  reviewerId        String
+  reviewer          User     @relation(fields: [reviewerId], references: [id])
+  courseId          String
+  courses           Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  rating            Int
+  review            String
+  ratingDescription String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([reviewerId, courseId])
 }
 
 model Course {
@@ -250,6 +266,7 @@ model Course {
   orders        Order[]
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  reviews       Review[]
 
   @@index([categoryId])
 }

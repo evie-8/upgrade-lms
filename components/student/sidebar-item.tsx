@@ -1,12 +1,13 @@
 "use client";
 
 import { formatDuration } from "@/lib/duration";
-import { Check, CheckCheck, Lock, Play } from "lucide-react";
+import { Chapter, Lesson, UserProgress } from "@prisma/client";
+import { Check, Lock, Play } from "lucide-react";
 import { useRouter } from "next-nprogress-bar";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const SideBarItem = ({chapter, isLocked}: {chapter: any, isLocked: boolean}) => {
+const SideBarItem = ({chapter, isLocked}: {chapter: Chapter & {Lesson: Lesson[] | null & {userProgress: UserProgress[]| null} | null} | null, isLocked: boolean}) => {
   const [view, setView] = useState(false);
   const router  = useRouter();
   const pathname = usePathname();
@@ -42,7 +43,7 @@ const SideBarItem = ({chapter, isLocked}: {chapter: any, isLocked: boolean}) => 
               <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center justify-start gap-4">
                    {/* <p className="flex items-center justify-center rounded-full bg-primary/10 text-primary w-5 h-5"><span className="m-1">1</span></p>*/}
-                    <h2 className={`font-medium ${pathname.includes(chapter.id) ? 'text-warning': ''}`}>{chapter.name}</h2>
+                    <h2 className={`font-medium ${pathname.includes(String(chapter?.id)) ? 'text-warning': ''}`}>{chapter?.name}</h2>
                   </div>
                 {
                   isLocked ? 
@@ -60,9 +61,9 @@ const SideBarItem = ({chapter, isLocked}: {chapter: any, isLocked: boolean}) => 
                 {/**lessons */}
                 <div className={`flex-col my-3 w-full ${view ? 'flex': 'hidden'}`}>
                   {
-                    chapter.Lesson && chapter.Lesson.length && 
+                   chapter && chapter.Lesson && chapter.Lesson.length && 
 
-                    chapter.Lesson.map((lesson: any) => (
+                    chapter.Lesson.map((lesson) => (
                       <div key={lesson.id} onClick={() => router.push(`/student/courses/${chapter.courseId}/chapter/${chapter.id}/lesson/${lesson.id}`) } 
                       className={ `w-full cursor-pointer flex items-center justify-between gap-2 border-b border-grey p-2 ml-2 my-2 ${pathname.includes(lesson.id) && 'bg-purple/20 rounded-md'}`}>
                       {/**lessons name -title */}
@@ -70,7 +71,7 @@ const SideBarItem = ({chapter, isLocked}: {chapter: any, isLocked: boolean}) => 
                      <div className="flex items-center justify-center gap-3">
                     
                      {
-                      lesson.userProgress?.isCompleted ? 
+                      lesson.userProgress?.[0]?.isCompleted ? 
                       <button className=" flex items-center justify-center p-1 rounded-full border border-success">
                       <Check className="w-3 h-3 text-success"/>
                     </button> :
@@ -84,7 +85,7 @@ const SideBarItem = ({chapter, isLocked}: {chapter: any, isLocked: boolean}) => 
                      </div>
 
                      <video ref={videoRef} style={{ display: 'none' }}>
-                        <source src={lesson.videoUrl} type="video/mp4" />
+                        <source src={String(lesson?.videoUrl)} type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                      <p className="text-sm ">{formatDuration(duration)}</p>
