@@ -12,6 +12,7 @@ const LessonPlayer = async ({params}: {params: {lessonId: string, chapterId: str
     muxData,
     attachments,
     nextLesson,
+    prevLesson,
     userProgress,
     purchase
   } = await getLesson({
@@ -46,10 +47,12 @@ const LessonPlayer = async ({params}: {params: {lessonId: string, chapterId: str
        <LessonView 
        
        purchase={purchase}
-       course={course!}
+       course={course}
        resources={attachments}
        lesson={lesson}
-       nextLessonId={nextLesson?.id}
+       userProgress={userProgress!}
+       nextLesson={nextLesson}
+       prevLesson={prevLesson}
        courseId={params.courseId}
        isLocked={isLocked}
        playbackId={muxData?.placybackId!}

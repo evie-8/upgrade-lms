@@ -3,12 +3,14 @@
 import "react-quill/dist/quill.bubble.css";
 import { cn } from "@/lib/utils";
 import MuxPlayer from "@mux/mux-player-react";
-import { Category, Chapter, Course, Lesson, Order, Resource } from "@prisma/client";
-import { File, Info, Loader2, Lock, MessageCircleIcon, Paperclip, Signal, Star, Users2 } from "lucide-react";
+import { Category, Chapter, Course, Lesson, Order, Resource, UserProgress } from "@prisma/client";
+import { ArrowLeft, ArrowRight, File, Info, Loader2, Lock, MessageCircleIcon, Paperclip, Signal, Star, Users2 } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "../ui/button";
 import EnrollButton from "./enroll-button";
+import CourseProgressButton from "./course-progress-button";
+import { useRouter } from "next-nprogress-bar";
 
 interface Props {
 
@@ -16,7 +18,9 @@ resources : Resource[];
 purchase: Order | null;
 course: Course & {category: Category} ;
 lesson: Lesson & {chapter: Chapter};
-nextLessonId: string | undefined;
+nextLesson: Lesson & {chapter: Chapter};
+prevLesson: Lesson & {chapter: Chapter};
+userProgress: UserProgress;
 courseId: string;
 isLocked: boolean;
 completeOnEnd: boolean | undefined;
@@ -48,7 +52,9 @@ const LessonView = ({
   lesson,
   course,
   resources,
-  nextLessonId,
+  nextLesson,
+  prevLesson,
+  userProgress,
   courseId,
   isLocked,
   purchase,
@@ -57,7 +63,7 @@ const LessonView = ({
 }: Props) => {
   const [isReady, setIsReady]  = useState(false);
   const [click, setClick] = useState('Information');
- 
+ const router = useRouter();
  
   
   return (
@@ -102,7 +108,16 @@ const LessonView = ({
         </div>
 
         <div className="flex flex-col  gap-y-3">
-            <div className="flex items-start justify-start">
+          <div className="flex justify-between gap-2 mb-3">
+          <Button disabled={prevLesson === null ? true: false}
+           onClick={() => router.push(`/student/courses/${courseId}/chapter/${prevLesson.chapterId}/lesson/${prevLesson.id}`, {}, {showProgressBar: true})}>  <ArrowLeft className="w-4 h-4 mr-2"/>Previous</Button>
+        
+          <Button  disabled={nextLesson === null ? true: false}
+          onClick={() => router.push(`/student/courses/${courseId}/chapter/${nextLesson.chapterId}/lesson/${nextLesson.id}`, {}, {showProgressBar: true})}>Next <ArrowRight className="w-4 h-4 ml-2"/></Button>
+        
+
+          </div>
+             <div className="flex items-start justify-start">
             <button className="inline  text-sm px-4 py-1 bg-primary/20 rounded-md text-primary">
               {course.category.name}
             </button>
@@ -110,8 +125,14 @@ const LessonView = ({
             <div className="flex justify-between flex-wrap gap-4">
             <h2 className="text-xl font-semibold max-sm:basis-full">{lesson.name}</h2>
             {
-              !purchase && course.paymentStatus !== 'Free' && 
+              !purchase && course.paymentStatus !== 'Free' ? 
               <EnrollButton courseId={courseId} price={course.price!}/>
+              : <CourseProgressButton
+                  nextLessonId={nextLesson?.id} 
+                  lessonId={lesson.id} 
+                  courseId={course.id} 
+                  chapterId={lesson.chapterId} 
+                  isCompleted={!!userProgress?.isCompleted}/>
             }
            
 

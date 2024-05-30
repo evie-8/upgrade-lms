@@ -66,7 +66,8 @@ export async function POST(req: Request,
 
         if (!stripeCustomer) {
             const customer = await stripe.customers.create({
-                email: user.email  
+                email: user.email,
+                name: user.name! , 
             });
 
             stripeCustomer = await prismadb.stripeCustomer.create({
