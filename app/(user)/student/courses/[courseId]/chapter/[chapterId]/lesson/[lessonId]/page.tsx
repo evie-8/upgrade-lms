@@ -34,13 +34,13 @@ const LessonPlayer = async ({params}: {params: {lessonId: string, chapterId: str
     <>
     {
       userProgress?.isCompleted && (
-        <AlertBanner variant={'success'} label='You already completed this lesson.'/>
+        <AlertBanner variant={'success'} className='z-10 sticky top-[71px]' label='You already completed this lesson.'/>
       )
     }
 
 {
       isLocked && (
-        <AlertBanner variant={'warning'} label='You need to buy this course to watch this lesson.'/>
+        <AlertBanner variant={'warning'}  className='z-10 sticky top-[71px]' label='You need to buy this course to watch this lesson.'/>
       )
     }
        <LessonView 
