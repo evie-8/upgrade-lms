@@ -27,17 +27,7 @@ const VideoDuration = ({ videoSrc }: {videoSrc: string}) => {
         };
     }, [videoSrc]);
 
-    const formatDuration = (duration: number) => {
-        if (duration < 60) {
-            return `${Math.round(duration)} secs`;
-        } else {
-            const minutes = Math.floor(duration / 60);
-            const seconds = Math.round(duration % 60);
-            return seconds === 0
-                ? `${minutes} min${minutes > 1 ? 's' : ''}`
-                : `${minutes} min${minutes > 1 ? 's' : ''} ${seconds} secs`;
-        }
-    };
+    
 
     return (
         <div>
@@ -50,6 +40,18 @@ const VideoDuration = ({ videoSrc }: {videoSrc: string}) => {
             </button>
         </div>
     );
+};
+
+export const formatDuration = (duration: number) => {
+    if (duration < 60) {
+        return `${Math.round(duration)} secs`;
+    } else {
+        const minutes = Math.floor(duration / 60);
+        const seconds = Math.round(duration % 60);
+        return seconds === 0
+            ? `${minutes} min${minutes > 1 ? 's' : ''}`
+            : `${minutes} min${minutes > 1 ? 's' : ''} ${seconds} secs`;
+    }
 };
 
 export default VideoDuration;

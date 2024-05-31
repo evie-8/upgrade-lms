@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faStar } from '@fortawesome/free-solid-svg-icons';
 import MuxPlayer from "@mux/mux-player-react";
 import { Category, Chapter, Course, Lesson, Order, Quiz, Resource, Review, User, UserProgress } from "@prisma/client";
-import { ArrowLeft, ArrowRight, File, Info, Loader2, Lock, MessageCircleIcon, Paperclip, Signal, Star, Users2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, File, HelpCircle, Info, Loader2, Lock, MessageCircleIcon, Paperclip, Signal, Star, Users2 } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "../ui/button";
@@ -54,7 +54,7 @@ const buttons = [
    },
    {
     'title': 'Quiz',
-    icon: Lock
+    icon: HelpCircle,
    },
 
 ]
@@ -82,7 +82,6 @@ const LessonView = ({
  for (const review of course.reviews) {
   reviewSum =  reviewSum + review.rating;
  }
- 
  const onvideoEnd = async () => {
   try {
     if (completeOnEnd) {
@@ -102,7 +101,7 @@ const LessonView = ({
       router.push(`/student/courses/${courseId}/chapter/${nextLesson.chapterId}/lesson/${nextLesson.id}`, {}, {showProgressBar: true});
     }
   } catch  {
-    
+    toast.error("Something went wrong");
   }
  }
   
@@ -149,14 +148,14 @@ const LessonView = ({
 
         <div className="flex flex-col  gap-y-3">
           <div className="flex items-center justify-between gap-5 mb-3">
-            <button className="flex items-center justify-center bg-primary/10 text-primary border border-primary w-8 h-8 rounded-full"
+            <button className="flex items-center justify-center bg-primary/10 text-primary border border-primary w-8 h-8 rounded-full disabled:opacity-50"
               disabled={prevLesson === null ? true: false}
               onClick={() => router.push(`/student/courses/${courseId}/chapter/${prevLesson.chapterId}/lesson/${prevLesson.id}`, {}, {showProgressBar: true})}> 
               <ArrowLeft className=""/>
             
             </button>
           
-            <button  className="flex items-center justify-center bg-primary/10 text-primary border border-primary w-8 h-8 rounded-full"
+            <button  className="flex items-center justify-center bg-primary/10 text-primary border border-primary w-8 h-8 rounded-full disabled:opacity-50"
               disabled={nextLesson === null ? true: false}
               onClick={() => router.push(`/student/courses/${courseId}/chapter/${nextLesson.chapterId}/lesson/${nextLesson.id}`, {}, {showProgressBar: true})}>
               <ArrowRight className=""/>

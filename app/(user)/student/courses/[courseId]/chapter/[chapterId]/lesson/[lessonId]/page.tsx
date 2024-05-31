@@ -49,6 +49,7 @@ const LessonPlayer = async ({params}: {params: {lessonId: string, chapterId: str
        //@ts-ignore
        course={course}
        resources={attachments}
+       //@ts-ignore
        lesson={lesson}
        userProgress={userProgress!}
        //@ts-ignore

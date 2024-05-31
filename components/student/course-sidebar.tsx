@@ -42,7 +42,7 @@ const CourseSidebar = async ({course}: {course: Course & {chapter: Chapter[] | n
 
         </div>
 
-        <div className="my-4 w-full">
+        <div className="my-4 w-full h-full">
         <h2 className="font-bold text-lg">Chapters & Lessons</h2>
         {
           course.chapter && course.chapter.length && 

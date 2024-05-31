@@ -184,7 +184,7 @@ const QuizPreview: React.FC<Props> = ({ data }) => {
                         disabled={timerRunning ? false : true} 
                             onClick={() => handleChoiceClick(i, option)}
                             key={i}
-                            className={`${selectedChoices[questionIndex] === i ? 'button1 ' : 'button2'} whitespace-normal rounded-lg justify-start w-full py-8 mb-4`}
+                            className={`${selectedChoices[questionIndex] === i ? 'button1 ' : 'button2'} whitespace-normal rounded-lg justify-start w-full h-full mb-4`}
                         >
                             <div className="flex items-center justify-start">
                                 <div className={`p-2 px-4 mr-5 border rounded-md ${selectedChoices[questionIndex] === i ? 'border-white': 'border-grey'}`}>

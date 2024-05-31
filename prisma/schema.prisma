@@ -52,6 +52,7 @@ model User {
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
   reviews               Review[]
+  quizProgress          QuizProgress[]
 }
 
 model Account {
@@ -129,7 +130,22 @@ model Quiz {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
-  Chapter Chapter?
+  Chapter       Chapter?
+  QuizProgress QuizProgress[]
+}
+
+model QuizProgress {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizId     String
+  quiz       Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  scores     Json
+  isComplete Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, quizId])
 }
 
 model Question {

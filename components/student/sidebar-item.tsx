@@ -39,7 +39,7 @@ const SideBarItem = ({chapter, isLocked}: {chapter: Chapter & {Lesson: Lesson[] 
     }, []);
  
   return (
-    <div className="flex flex-col my-3  border border-grey rounded-md p-3 w-full">
+    <div className="flex flex-col my-3  border-b border-grey  p-3 w-full">
               <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center justify-start gap-4">
                    {/* <p className="flex items-center justify-center rounded-full bg-primary/10 text-primary w-5 h-5"><span className="m-1">1</span></p>*/}
@@ -63,14 +63,17 @@ const SideBarItem = ({chapter, isLocked}: {chapter: Chapter & {Lesson: Lesson[] 
                   {
                    chapter && chapter.Lesson && chapter.Lesson.length && 
 
-                    chapter.Lesson.map((lesson) => (
+                    chapter.Lesson.map((lesson, i) => (
                       <div key={lesson.id} onClick={() => router.push(`/student/courses/${chapter.courseId}/chapter/${chapter.id}/lesson/${lesson.id}`) } 
-                      className={ `w-full cursor-pointer flex items-center justify-between gap-2 border-b border-grey p-2 ml-2 my-2 ${pathname.includes(lesson.id) && 'bg-purple/20 rounded-md'}`}>
+                      className={ `w-full cursor-pointer flex items-center justify-between gap-2 ${
+                        //@ts-ignore
+                        i !== (chapter.Lesson?.length) - 1 && 'border-b border-grey'} p-4 ${pathname.includes(lesson.id) && 'bg-purple/20 rounded-sm'}`}>
                       {/**lessons name -title */}
                       
                      <div className="flex items-center justify-center gap-3">
                     
                      {
+                      //@ts-ignore
                       lesson.userProgress?.[0]?.isCompleted ? 
                       <button className=" flex items-center justify-center p-1 rounded-full border border-success">
                       <Check className="w-3 h-3 text-success"/>
