@@ -53,7 +53,7 @@ const CourseLayout = async ({
             <article className='lg:pr-[400px] w-full'>
                {children}
             </article>
-            <article className={`h-screen max-lg:hidden p-2 bg-white shadow-md fixed right-0 w-[400px] `}>
+            <article className={`h-full max-lg:hidden p-2 bg-white shadow-md fixed right-0 w-[400px] `}>
                 <CourseSidebar course={course}/>
             </article>
         </div>

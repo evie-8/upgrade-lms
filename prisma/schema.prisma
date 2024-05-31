@@ -285,4 +285,5 @@ model Course {
   reviews       Review[]
 
   @@index([categoryId])
+  
 }

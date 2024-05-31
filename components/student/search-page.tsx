@@ -1,14 +1,21 @@
 "use client"
-import { Category } from '@prisma/client'
+import { Category, Course } from '@prisma/client'
 import React from 'react'
 import {FcDatabase, FcMultipleDevices, FcCommandLine } from "react-icons/fc"
 import { IconType } from 'react-icons'
 import Container from '@/components/ui/container'
 import CategoryItem from '@/components/student/category-item'
 import SearchButton from '@/components/student/search-button'
+import Link from 'next/link'
+import Image from 'next/image'
+import { Icon } from '@radix-ui/react-select'
+import { IconTag } from '../ui/icon'
+import { BookOpenText } from 'lucide-react'
+import SearchCourseCard from './search-course-card'
 
 interface Props {
-    categories: Category[]
+    categories: Category[],
+    courses: any
 }
 
 const iconMap: Record<Category["name"], IconType> = {
@@ -16,7 +23,8 @@ const iconMap: Record<Category["name"], IconType> = {
       "Web Development": FcMultipleDevices,
       "Programming": FcCommandLine
 }
-const SearchPage = ({categories}: Props) => {
+const SearchPage = ({categories, courses}: Props) => {
+    
   return (
     <Container>
         <div className='block sm:hidden mb-5'>
@@ -30,6 +38,22 @@ const SearchPage = ({categories}: Props) => {
                 ))
             }
        </div>
+       <div className='grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4'>
+            {
+                courses.map((course: any) => 
+                    <SearchCourseCard key={course.id} course={course}/>
+                )
+            }
+       </div> 
+       {
+        courses.length === 0 && (
+            <div className='tex-center text-sm mt-10'>
+                No courses found
+
+            </div>
+        )
+       }
+         
     </Container>
   )
 }
