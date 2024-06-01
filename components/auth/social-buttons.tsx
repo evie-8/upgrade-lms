@@ -9,9 +9,9 @@ const SocialButtons = () => {
     const role = useCurrentRole();
     const onClick = (provider: 'google' | 'github') => {
         signIn(provider, {
-            callbackUrl: role === 'USER' ? DEFAULT_LOGIN_REDIRECT : DEFAULT_LOGIN_REDIRECT_2
-        })
-    }
+            callbackUrl: role === 'TUTOR' ? DEFAULT_LOGIN_REDIRECT_2 : DEFAULT_LOGIN_REDIRECT,
+        }      
+    )}
   return (
     <>
     <div className="w-full h-auto flex items-center gap-7">

@@ -1,41 +1,44 @@
 import prismadb from "@/lib/db";
-import { Category, Course, Lesson } from "@prisma/client";
+import { Category, Course, Lesson, Review, User } from "@prisma/client";
 import getProgress from "./get-progress";
 
-type CourseWithProgressAndCategory = Course & {
+type CourseWithProgessWithCategory = Course & {
     category: Category | null;
     chapter : {Lesson : Lesson[]} [],
-    progress: number | null;
+    tutor: User | null,
+    progress: number | null,
 };
 
-type GetCourses = {
-    userId: string;
-    title?: string;
-    categoryId?: string; 
+type StudentDashboardCourses = {
+    completedCourses: CourseWithProgessWithCategory[];
+    coursesInProgress: CourseWithProgessWithCategory[];
+    reviews: Review[];
+    recommendedCourses: CourseWithProgessWithCategory[];
 }
 
-export const getCourses = async ({
-    userId,
-    title,
-    categoryId,
-}: GetCourses): Promise<CourseWithProgressAndCategory[ ]> => {
+export const getStudentDashboardCourses = async(userId: string): Promise<StudentDashboardCourses> => {
 
     try {
+        const reviews = await prismadb.review.findMany({
+            where: {
+                reviewerId: userId
+            }
+        })
+
         const courses = await prismadb.course.findMany({
             where: {
                 isAvailable: true,
-                name: {
-                    contains: title,        
-                },
-                categoryId: categoryId,
+               
             },
             include: {
                 category: true,
+                tutor: true,
                 chapter: {
                     where: {
                         isAvailable: true
                     },
                     include: {
+                        
                         Lesson: {
                             where: {
                                 isDraft: false
@@ -60,7 +63,8 @@ export const getCourses = async ({
             
         });
 
-        const courseWithProgress: CourseWithProgressAndCategory[] = await Promise.all(
+
+        const coursesFilter: CourseWithProgressAndCategory[] = await Promise.all(
             courses.map(
                 async course => {
                     if (course.orders.length === 0 && course.paymentStatus === 'Paid') {
@@ -79,11 +83,29 @@ export const getCourses = async ({
                 })
         );
 
-        return courseWithProgress;
+        const coursesInProgress = coursesFilter.filter((course) =>  
+           ((course.orders.length > 0) &&( (course.progress ?? 0) < 100)) || (course.paymentStatus === 'Free' &&   ((course.progress ?? 0) > 0 && (course.progress ?? 0) < 100)));
+        const completedCourses = coursesFilter.filter((course) => course.progress === 100);
+        const recommendedCourses = coursesFilter.filter(course => 
+            course.orders.length === 0 || 
+            (course.paymentStatus === 'Free' && (course.progress ?? 0) <= 0)
+        );
         
-        
+        return {
+            completedCourses,
+            coursesInProgress,
+            reviews,
+            recommendedCourses,
+        }
     } catch (error) {
-        console.log("search_get_courses", error);
-        return [];
+        console.log("Student_dasboard_courses", error);
+        return {
+            completedCourses: [],
+            coursesInProgress: [],
+            reviews: [],
+            recommendedCourses: [],
+        }
+        
     }
-} 
+
+}  

@@ -10,29 +10,25 @@ import { useEffect, useState } from "react";
 import CourseViewButton from "./button-course";
 import CurriculumDetails from "./curriculum";
 import { Progress } from "../ui/progress";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi,
-} from "../ui/carousel";
-import ReviewCard from "../review-card";
-import Ratings from "./ratings";
+
 import { Badge } from "../ui/badge";
 import { formatter } from "@/lib/utils";
 import "react-quill/dist/quill.bubble.css"
 import { Course } from "@prisma/client";
 import { fetchCourseByCategoryName } from "@/action-server/courses";
 import { CourseCard } from "./course-card";
+import AllReviews from "../student/all-review";
+import ReviewCreation from "../student/review-create";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 const CourseDetails = ({course}: {course: any}) => {
   const [selected, setSelected] = useState("Overview");
   const [view, setView] = useState(0);
   const [relatedCourses, setRelatedCourses] = useState<Course[]>([]);
-
-  /**new */
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
-  const [count, setCount] = useState(0);
-
-  let numberOfLessons = 0
-  let numberOfQuizzes = 0
+const user = useCurrentUser();
+  
+  let numberOfLessons = 0;
+  let numberOfQuizzes = 0;
 
   for (const chapter of course.chapter) {
     for (const lesson of chapter.Lesson) {
@@ -56,18 +52,6 @@ const CourseDetails = ({course}: {course: any}) => {
   fetchRelatedCourses();
  }, [])
 
-  useEffect(() => {
-    if (!api) {
-      return
-    }
- 
-    setCount(api.scrollSnapList().length)
-    setCurrent(api.selectedScrollSnap() + 1)
- 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1)
-    })
-  }, [api])
 
   return (
     <>
@@ -227,40 +211,15 @@ const CourseDetails = ({course}: {course: any}) => {
 
                   </div>
               </article>
+              <AllReviews reviews={course.reviews}/>
+
+              <ReviewCreation 
+                  
+                  courseId={course.id}  
+                  reviews={course.reviews.filter((review) => review.reviewerId === user?.id && course.id === review.courseId)[0]}/>
 
              
-             <article className="flex flex-col gap-4 mb-6">
-             <h2 className="text-lg font-bold font-poppins">3 Reviews</h2>
-             <Carousel opts={{ align: "start", loop: true,}}  setApi={setApi}
-                className="grid grid-cols-1 items-center justify-center relative mb-5">
-              <CarouselContent>
-                <CarouselItem>
-                <ReviewCard name={'Sarah Williams'} role={'Web Developer'}/>
-                </CarouselItem>
-                <CarouselItem>
-                <ReviewCard name={'Zendaya Jackie'} role={'Web Developer'}/>
-                </CarouselItem>
-                <CarouselItem>
-                <ReviewCard name={'Emma Watson'} role={'Web Developer'}/>
-                </CarouselItem>
-              </CarouselContent>
-              <div className="absolute -bottom-14 left-1/2  -translate-x-1/2 -translate-y-1/2 flex items-center flex-nowrap gap-5">
-              <CarouselPrevious/>
-              <p className="text-lg font-bold">{current} <span className="text-sm font-normal mx-2">of</span> {count}</p>
-              <CarouselNext/>
-              </div>
-             </Carousel>
-             </article>
-
-             <article className="bg-white p-8 rounded-lg">
-             <h2 className="text-lg font-semibold font-poppins">Add a review</h2>
-             <div className="flex flex-col gap-3  my-2">
-              <p className="text-sm ">How was the course?</p>
-              <Ratings/>
-             </div>
-             <textarea placeholder="Write a review" className="border border-grey rounded-lg outline-none my-2 p-4 w-full"></textarea>
-             <button className="whitespace-nowrap mx-auto px-10 py-3 border font-semibold text-sm  border-transparent bg-primary text-white rounded-md hover-button  transition-all ease-in duration-75">Submit Review</button>
-             </article>
+             
               </>
              
              }

@@ -1,5 +1,6 @@
 import { getCourses } from '@/action-server/get-courses';
 import SearchPage from '@/components/student/search-page'
+import MetaData from '@/components/ui/meta-data';
 import { currentUser } from '@/lib/auth';
 import prismadb from '@/lib/db'
 
@@ -19,7 +20,11 @@ const Courses = async({searchParams}: SearchProps) => {
      ...searchParams
   })
   return (
-    <SearchPage categories={categories} courses={courses}/>
+   <>
+     <MetaData title='upgrade-student | Courses search page' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
+  
+  <SearchPage categories={categories} courses={courses}/>
+   </>
   )
 }
 

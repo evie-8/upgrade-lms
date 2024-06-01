@@ -1,6 +1,7 @@
 import { getLesson } from '@/action-server/lesson';
 import LessonView from '@/components/student/lesson'
 import { AlertBanner } from '@/components/ui/alert-banner';
+import MetaData from '@/components/ui/meta-data';
 import { currentUser } from '@/lib/auth'
 import { redirect } from 'next/navigation';
 
@@ -32,6 +33,8 @@ const LessonPlayer = async ({params}: {params: {lessonId: string, chapterId: str
 
   return (
     <>
+     <MetaData title='upgrade-student | Lesson' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
+  
     {
       userProgress?.isCompleted && (
         <AlertBanner variant={'success'} className='z-10 sticky top-[71px]' label='You already completed this lesson.'/>

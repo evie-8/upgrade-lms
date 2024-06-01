@@ -1,4 +1,5 @@
 import ViewQuizzes from "@/components/student/view-quizzes";
+import MetaData from "@/components/ui/meta-data";
 import { currentUser } from "@/lib/auth"
 import prismadb from "@/lib/db"
 
@@ -19,7 +20,11 @@ const Quizzes = async () => {
    
   })
   return (
-    <ViewQuizzes quizProgresses={quizProgresses}/>
+    <>
+     <MetaData title='upgrade-student | All Quizzes' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
+     <ViewQuizzes quizProgresses={quizProgresses}/>
+    </>
+    
   )
 }
 

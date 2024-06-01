@@ -8,10 +8,10 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const SideBarItem = ({chapter, isLocked}: {chapter: Chapter & {Lesson: Lesson[] | null & {userProgress: UserProgress[]| null} | null} | null, isLocked: boolean}) => {
-  const [view, setView] = useState(false);
+  
   const router  = useRouter();
   const pathname = usePathname();
-
+  const [view, setView] = useState(false || pathname.includes(String(chapter?.id)) && true);
   const [duration, setDuration] = useState(0);
     const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -59,7 +59,7 @@ const SideBarItem = ({chapter, isLocked}: {chapter: Chapter & {Lesson: Lesson[] 
                 }
                 </div>
                 {/**lessons */}
-                <div className={`flex-col my-3 w-full ${view ? 'flex': 'hidden'}`}>
+                <div className={`flex-col  w-full  ${view ? 'flex': 'hidden'}`}>
                   {
                    chapter && chapter.Lesson && chapter.Lesson.length && 
 

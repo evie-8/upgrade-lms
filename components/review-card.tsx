@@ -6,13 +6,12 @@ import { User } from 'next-auth';
 import { getFullDay } from '@/lib/date';
 
 interface Props {
-  name?: String;
-  role?: String;
+  
  
   review?: Review & {reviewer: User}
 }
 
-const ReviewCard: React.FC<Props> = ({name, role, review}) => {
+const ReviewCard: React.FC<Props> = ({review}) => {
   return (
     <div className='min-w-[300px] bg-white shadow-custom rounded-lg p-8 '>
         <div className='flex justify-between gap-3'>
@@ -26,8 +25,8 @@ const ReviewCard: React.FC<Props> = ({name, role, review}) => {
                 <div className='flex items-center justify-center gap-2 mt-1'>
                         
 
-                  {[...Array(review?.rating)].map((_, index) => (
-                    <FontAwesomeIcon key={index} icon={faStar} className='w-3 h-3 text-ranking' />
+                  {[...Array(5)].map((_, index) => (
+                    <FontAwesomeIcon key={index} icon={faStar} className={`w-3 h-3  ${index < review?.rating ? 'text-ranking': 'text-grey'}  `} />
                   ))} 
 
                   <p className='text-sm font-semibold'>({review?.ratingDescription})</p>

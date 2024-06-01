@@ -26,7 +26,7 @@ const ProfileImage =   () => {
         {
         user && user.image ? 
           <Image src={user?.image} alt='profile image' width={32}  height={32} className='rounded-full'/> : 
-          <UserRound  className=''/>
+          <UserRound  className='text-white'/>
          }
        
       </div>

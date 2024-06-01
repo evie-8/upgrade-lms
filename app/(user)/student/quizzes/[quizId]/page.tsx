@@ -1,4 +1,5 @@
 import QuizPreview from "@/components/student/quiz-page"
+import MetaData from "@/components/ui/meta-data";
 import { currentUser } from "@/lib/auth";
 import prismadb from "@/lib/db"
 import { redirect } from "next/navigation";
@@ -43,7 +44,9 @@ const StudentQuizPage = async ({params}: {params: {quizId: string}}) => {
     }
   return (
     <>
-      
+    
+      <MetaData title='upgrade-student | Quizzes' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
+    
         <QuizPreview 
         //@ts-ignore
         quiz={quiz}/>

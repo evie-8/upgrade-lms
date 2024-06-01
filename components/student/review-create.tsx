@@ -5,10 +5,10 @@ import React, { useState } from 'react'
 import { Button } from '../ui/button';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Router } from 'lucide-react';
+
 import { useRouter } from 'next/navigation';
 import { Review } from '@prisma/client';
-import { getLesson } from '@/action-server/lesson';
+
 import { useCurrentUser } from '@/hooks/use-current-user';
 import getProgress from '@/action-server/get-progress';
 
@@ -25,7 +25,10 @@ const ReviewCreation = ({courseId, reviews}: {courseId: string, reviews: Review 
     const onSubmit = async() => {
         try {
 
+        
             const {percentageCompleted} =  await getProgress(String(user?.id), courseId)
+
+            console.log('tt', percentageCompleted);
 
             setIsLoading(true);
 

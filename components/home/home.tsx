@@ -13,6 +13,16 @@ import prismadb from '@/lib/db';
 
 const Home =  async () => {
  const categories = await prismadb.category.findMany();
+ const reviews = await prismadb.review.findMany({
+  select: {
+    reviewer: true,
+    review: true,
+    rating: true,
+    ratingDescription: true,
+    createdAt: true
+
+  }
+ })
   return (
    <>
 
@@ -110,16 +120,24 @@ const Home =  async () => {
         <div className='scroll'>
             <div className='inner' >
               
-              <ReviewCard name={'Sarah Williams'} role={'Web Developer'}/>
-              <ReviewCard name={'Sarah Williams'} role={'Web Developer'}/>
-               <ReviewCard name={'Sarah Williams'} role={'Web Developer'}/>
+             {
+              reviews?.length && (
+                reviews.map((review) => (
+                  <ReviewCard review={review}/>
+                ))
+              )
+             }
             </div>
 
             <div className='inner' >
               
-            <ReviewCard name={'Sarah Williams'} role={'Web Developer'}/>
-              <ReviewCard name={'Sarah Williams'} role={'Web Developer'}/>
-               <ReviewCard name={'Sarah Williams'} role={'Web Developer'}/>
+            {
+              reviews?.length && (
+                reviews.map((review) => (
+                  <ReviewCard review={review}/>
+                ))
+              )
+             }
             </div>
         </div>
       </Container>

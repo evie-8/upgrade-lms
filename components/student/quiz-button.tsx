@@ -48,7 +48,7 @@ const QuizButton = ({chapter}: Props) => {
                 {
                         
                          quizDone ?  
-                         <Button onClick={onclick} variant={'success'} className='bg-transparent border border-success hover:bg-transparent text-success'>
+                         <Button className='pointer-events-none' variant={'success'} >
                             <CheckCircle className='h-4 w-4 mr-2'/>
                            You have already attempted this quiz. 
                         </Button> : 

@@ -1,3 +1,4 @@
+"use server";
 import prismadb from "@/lib/db";
 
 const getProgress = async (userId: string, courseId: string) => {

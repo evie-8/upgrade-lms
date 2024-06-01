@@ -9,6 +9,11 @@ const CourseDetailPage = async ({params}: {params: {courseId: string}}) => {
     },
     include: {
       category: true,
+      reviews: {
+        include: {
+          reviewer: true,
+        },
+      },
       chapter: {
         where: {
           isAvailable: true,

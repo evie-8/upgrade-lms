@@ -1,7 +1,5 @@
 import {  Question, Quiz, QuizProgress } from "@prisma/client"
 import Container from "@/components/ui/container";
-import prismadb from "@/lib/db";
-import { Button } from "../ui/button";
 
 interface Props {
 
@@ -15,17 +13,17 @@ const ViewQuizzes = async({quizProgresses}: Props) => {
 
            
                 {
-                    !quizProgresses?.length &&
+                    (quizProgresses?.length  === 0) ?
 
                    <>
-                   <p>{ quizProgresses?.length}</p>
+                  
                     <div className="flex p-4 mt-5 rounded-md border border-transparent bg-white1 text-destructive w-full font-medium">
                         No evaluation quizzes yet
                     </div>
                    </>
                     
 
-                } 
+                :
             <div className="flex mt-5 flex-col rounded-md border border-grey max-w-5xl ">
                 {
                     quizProgresses?.map((progress, i) => (
@@ -39,6 +37,11 @@ const ViewQuizzes = async({quizProgresses}: Props) => {
 
                                     </div>
                                 </div>
+                                <div className="flex flex-col gap-2">
+                                    <p className="font-semibold">Completion time</p>
+                                 
+                                    <p className="">{progress?.scores?.time}</p>
+                                </div>
 
                                 <div className="flex flex-col gap-2">
                                     <p className="font-semibold">Score in %</p>
@@ -50,6 +53,7 @@ const ViewQuizzes = async({quizProgresses}: Props) => {
                 }
 
             </div>
+}
     </Container>
   )
 }
