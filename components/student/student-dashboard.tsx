@@ -25,12 +25,12 @@ const StudentDashboard = async () => {
   }
 
   return (
-    <section className='p-4 lg:p-6 bg-white1 min-h-screen'>
+    <section className='p-4 lg:p-6 bg-white1 h-auto'>
       <section className='flex flex-col-reverse md:grid grid-cols-12 gap-6 mb-6'>
         <article className=' md:col-span-9 w-full '>
            
             <table className='w-full rounded-lg p-4 bg-white overflow-x-auto'>
-              <thead className='w-full  '>
+              <thead className='w-full'>
                 <tr className='flex w-full justify-around p-3 border-b border-grey'>
                 <th scope='col' className='w-1/4 text-left line-clamp-1'>Course Name</th>
                 <th scope='col' className='w-1/4 text-left max-lg:hidden line-clamp-1'>Tutor</th>
@@ -43,7 +43,7 @@ const StudentDashboard = async () => {
 
               {coursesInProgress.length === 0 && (
                 <tr className='flex items-center p-5 justify-center text-sm'>
-                  <td colSpan={5}>You haven't enrolled into any course</td>
+                  <td colSpan={5}>You have completed all courses that you enrolled in</td>
                 </tr>
               )}
 
@@ -135,7 +135,7 @@ const StudentDashboard = async () => {
         </article>
       </section>
 
-    <section className='bg-white rounded-lg p-4'>
+    <section className='bg-white rounded-lg p-8'>
 
       <div className='flex justify-between mb-5'>
         <div className='flex flex-col'>
@@ -148,9 +148,17 @@ const StudentDashboard = async () => {
         
         </div>
         <Button>
-          View All
+         <Link href={"/student/courses"}>
+         View All</Link>
         </Button>
       </div>
+
+                {
+                  (recommendedCourses.length == 0) && 
+                  <div className='flex items-center justify-center text-sm'>
+                        You have enrolled in all courses
+                  </div>
+                }
       {
         (recommendedCourses.length > 0) && 
 

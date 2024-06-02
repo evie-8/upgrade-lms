@@ -87,7 +87,7 @@ export const getStudentDashboardCourses = async(userId: string): Promise<Student
            ((course.orders.length > 0) &&( (course.progress ?? 0) < 100)) || (course.paymentStatus === 'Free' &&   ((course.progress ?? 0) > 0 && (course.progress ?? 0) < 100)));
         const completedCourses = coursesFilter.filter((course) => course.progress === 100);
         const recommendedCourses = coursesFilter.filter(course => 
-            course.orders.length === 0 || 
+            (course.orders.length === 0  && (course.progress ?? 0) <= 0) || 
             (course.paymentStatus === 'Free' && (course.progress ?? 0) <= 0)
         );
         

@@ -5,7 +5,7 @@ import ConfirmAction from '@/components/ui/confirm-action'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { useState } from "react";
-import { Eye, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 const ActionCell = ({id}: {id: string}) => {

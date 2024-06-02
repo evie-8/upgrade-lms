@@ -35,7 +35,7 @@ const SearchCourseCard = ({course}: {course: any}) => {
                 </div>
             </div>
              {
-                (course.progress !== null && course.paymentStatuse === 'Paid') || (course.paymentStatus === 'Free' && course.progress > 0) ? (
+                (course.progress >  0 ) || (course.paymentStatus === 'Free' && course.progress > 0) ? (
                     <div className='fle flex-col gap-x-2'>
                         <Progress variant={course.progress === 100 ? 'success': 'default'} value={Math.round(course.progress)} className="h-2 w-full"/>
                         <span className={ `text-sm  ${course.progress === 100 ? 'text-success' : 'text-primary'}`}>{Math.round(course.progress)}% complete</span>

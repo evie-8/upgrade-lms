@@ -5,6 +5,7 @@ import prismadb from "./lib/db"
 import { getUserById } from "./data/user"
 import { Role } from "@prisma/client"
 import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation"
+import { getAccountByUserId } from "./data/account"
 
 export const {
   handlers: { GET, POST },
@@ -56,12 +57,12 @@ export const {
         async session({token, session}) {
             if (session.user) {
                 if (token.sub)  session.user.id = token.sub;
-                
-
+             
                 if (token.role) session.user.role = token.role as Role;
-                
-
+            
                 if (token.picture) session.user.image = token.picture;
+
+                if (token.isOAuth) session.user.isOAuth = token.isOAuth as boolean;
                 
             };
 
@@ -74,6 +75,9 @@ export const {
             }
 
             const existingUser = await getUserById(token.sub);
+            const existingAccount = await getAccountByUserId(token.sub)
+
+            token.isOAuth = !!existingAccount
             if (!existingUser) {
                 return token;
             }

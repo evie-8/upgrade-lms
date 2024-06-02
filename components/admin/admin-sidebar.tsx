@@ -35,11 +35,13 @@ const routes = [
 ]
 
 const routes1 = [
-  {
+  /**
+   * {
       icon: Database,
       label: 'Analytics',
       href:'/tutor/user-analytics',
   },
+   */
 
   {
       icon: Receipt,
