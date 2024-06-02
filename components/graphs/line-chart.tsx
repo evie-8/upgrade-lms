@@ -210,6 +210,7 @@ const LineChart = ({ isDashboard = false, ylabel = 'revenue', xlabel='months' })
           ],
         },
       ]}
+      
     />
     </Box>
     </Box>

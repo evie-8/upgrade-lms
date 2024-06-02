@@ -65,7 +65,7 @@ const TutorDashboard = () => {
        <section className='relative grid max-xl:grid-cols-1 xl:grid-cols-12 gap-6'>
        <article className='xl:col-span-7 w-full'>
          
-       <h2 className='text-center font-bold text-xl p-2 my-3'>Order Analytics</h2>
+       <h2 className='text-center font-bold text-xl p-2 my-3'>Revenue Analytics</h2>
        
          <div className=' bg-white  rounded-lg shadow-md'>
        
