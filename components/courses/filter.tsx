@@ -2,11 +2,16 @@
 import  { useState } from 'react'
 import {  ChevronDown, ChevronUp } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
+
+interface DataItem {
+  label: React.ReactNode;
+  value: string | number;
+}
 interface Props {
-    data: any[];
+    data: DataItem[];
     title: string;
-    selectedValue: string;
-    onFilterChange: (title: string, value: string) => void;
+    selectedValue: any;
+    onFilterChange: (title: string, value: any) => void;
 
 }
 const FilterCard: React.FC<Props> = ({data, title, onFilterChange, selectedValue}) => {
@@ -33,10 +38,12 @@ const FilterCard: React.FC<Props> = ({data, title, onFilterChange, selectedValue
         data.map((item:any, key: number) => {
           return <li key={key} >
                <Checkbox  id={`item${key + 1}`}
-               checked={selectedValue === item}
-               onCheckedChange={() => handleCheckboxChange(item)}/>
+               checked={selectedValue === item.value}
+               onCheckedChange={() => handleCheckboxChange(item.value)}/>
                <label id={`item${key + 1}`}>
-                {item}
+               
+               {item.label}
+               
                </label>
           </li>
         })

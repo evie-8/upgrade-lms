@@ -13,7 +13,7 @@ interface Props {
 
 const ReviewCard: React.FC<Props> = ({review}) => {
   return (
-    <div className='min-w-[300px] bg-white shadow-custom rounded-lg p-8 '>
+    <div className='min-w-[330px] bg-white shadow-custom rounded-lg p-8 '>
         <div className='flex justify-between gap-3'>
         <div className='flex items-start justify-start gap-3'>
             <div className=' flex  items-center justify-center w-12 h-12 rounded-full border-2 border-primary '> 
@@ -21,22 +21,24 @@ const ReviewCard: React.FC<Props> = ({review}) => {
               </div>
             <div className='my-auto flex flex-col'>
                 <p className='text-sm font-bold text-primary'>{review?.reviewer.name}</p>
-                        
-                <div className='flex items-center justify-center gap-2 mt-1'>
-                        
-
-                  {[...Array(5)].map((_, index) => (
-                    <FontAwesomeIcon key={index} icon={faStar} className={`w-3 h-3  ${index < review?.rating ? 'text-ranking': 'text-grey'}  `} />
-                  ))} 
-
-                  <p className='text-sm font-semibold'>({review?.ratingDescription})</p>
-                        
-
-                </div>
+                <p className='text-sm text-gray/60'>{getFullDay(review?.createdAt)}</p>
+                
+                
+                
             </div>
 
         </div>
-        <p className='text-sm text-gray/60'>{getFullDay(review?.createdAt)}</p>
+                
+
+        </div>
+
+        <div className='flex gap-2 items-center justify-center mt-1'>
+                        
+          {[...Array(5)].map((_, index) => (
+            <FontAwesomeIcon key={index} icon={faStar} className={`w-3 h-3  ${index < review?.rating ? 'text-ranking': 'text-grey'}  `} />
+        ))}  
+          <p className='text-sm font-semibold'>{review?.ratingDescription}</p>
+                             
         </div>
         <p className='text-sm font-normal my-3'>
                 {review?.review}

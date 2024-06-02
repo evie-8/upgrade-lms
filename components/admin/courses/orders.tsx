@@ -1,15 +1,11 @@
 "use client"
+
 import { themeContext } from '@/components/theme'
 import Container from '@/components/ui/container'
-import {   PlusCircle } from 'lucide-react'
-import Link from 'next/link'
 import { useContext, useMemo, useState} from 'react'
-
 import {GridColDef, DataGrid} from "@mui/x-data-grid";
 import {  Course, Order, User, } from '@prisma/client'
 import { formatter } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
-import ActionCell from '../data-grid-action'
 import CustomNoRowsOverlay from '@/components/ui/no-data'
 import { Input } from '@/components/ui/input'
 import { getFullDay } from '@/lib/date'
@@ -116,6 +112,7 @@ const OrdersCard = ({data}: Props) => {
     <div>
       <DataGrid 
      className='!border-grey  !text-gray !font-poppins !rounded-xl !bg-white'
+     //@ts-ignore
       columns={columns} 
      
       checkboxSelection

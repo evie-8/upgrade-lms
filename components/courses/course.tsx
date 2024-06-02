@@ -13,14 +13,14 @@ import { Course } from "@prisma/client";
 import { formatter } from "@/lib/utils";
 
 interface Props {
-  courses: Course[]
+  courses: any[]
 }
 
 const Courses = ({courses}: Props) => {
-      const [selectedCategory, setSelectedCategory] = useState<string>('All');
-      const [selectedSkillLevel, setSelectedSkillLevel] = useState<string>('All');
-      const [selectedPrice, setSelectedPrice] = useState<string>('All');
-      const [selectedRating, setSelectedRating] = useState<string>('');
+      const [selectedCategory, setSelectedCategory] = useState<string | number>('All');
+      const [selectedSkillLevel, setSelectedSkillLevel] = useState<string | number>('All');
+      const [selectedPrice, setSelectedPrice] = useState<string | number>('All');
+      const [selectedRating, setSelectedRating] = useState<number | number>(0);
  
   const [show, setShow] = useState(false);
   const [view, setView] = useState(false);
@@ -90,12 +90,12 @@ const Courses = ({courses}: Props) => {
     }
 
    {
-    /**
-     *  if (selectedRating && selectedRating !== 'All') {
+    
+       if (selectedRating && selectedRating !== 0) {
       // Assuming ratings are stored as numbers and 'Ratings' filter values match these numbers.
-      newData = newData.filter(course => course.rating === parseInt(selectedRating, 10));
+      newData = newData.filter(course => course.rating === selectedRating);
     }
-     */
+     
    }
 
     setFilteredData(newData);

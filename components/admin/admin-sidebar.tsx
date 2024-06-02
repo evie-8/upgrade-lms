@@ -41,6 +41,12 @@ const routes1 = [
       label: 'Analytics',
       href:'/tutor/user-analytics',
   },
+
+   {
+      icon: Users2,
+      label: 'Users',
+      href:'/tutor/users',
+  }, 
    */
 
   {
@@ -48,11 +54,7 @@ const routes1 = [
       label: 'Invoices',
       href:'/tutor/orders',
   },
-  {
-      icon: Users2,
-      label: 'Users',
-      href:'/tutor/users',
-  }, 
+ 
   
 ]
 
