@@ -32,7 +32,7 @@ const ReviewCard: React.FC<Props> = ({review}) => {
 
         </div>
 
-        <div className='flex gap-2 items-center justify-center mt-1'>
+        <div className='flex gap-2 items-center mt-1'>
                         
           {[...Array(5)].map((_, index) => (
             <FontAwesomeIcon key={index} icon={faStar} className={`w-3 h-3  ${index < review?.rating ? 'text-ranking': 'text-grey'}  `} />

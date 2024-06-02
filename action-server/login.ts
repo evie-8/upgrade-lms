@@ -8,7 +8,6 @@ import { currentRole } from "@/lib/auth";
 import prismadb from "@/lib/db";
 import { sendTwoFactorEmail, sendVerificationEmail } from "@/lib/mail";
 import { generateTwoFactorToken, generateVerificationToken } from "@/lib/tokens";
-import { DEFAULT_LOGIN_REDIRECT, DEFAULT_LOGIN_REDIRECT_2 } from "@/routes";
 import { SignInSchema } from "@/schemas";
 import { compare } from "bcryptjs";
 import { AuthError } from "next-auth";
@@ -107,7 +106,7 @@ export const logIn = async (values: z.infer<typeof SignInSchema>, callbackUrl?: 
         await signIn("credentials", {
             email,
             password,
-            redirectTo: callbackUrl || role === 'USER' ? DEFAULT_LOGIN_REDIRECT : DEFAULT_LOGIN_REDIRECT_2,
+            redirectTo: callbackUrl || '/role',
         })
         
     } catch (error) {
