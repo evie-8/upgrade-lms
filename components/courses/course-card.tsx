@@ -1,6 +1,13 @@
+"use client";
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock, faSignal } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { useCurrentUser } from '@/hooks/use-current-user';
+import { getPurchaseByUserId } from '@/action-server/get-purchase';
+import { Order } from '@prisma/client';
 
 
 interface Props {
@@ -12,6 +19,7 @@ interface Props {
     status: string;
     cost?: string;
     image: string;
+
 }
 
 const CourseCard: React.FC<Props> = (
@@ -26,6 +34,35 @@ const CourseCard: React.FC<Props> = (
         image
         }
 ) => {
+
+  const [purchase, setPurchase] = useState <Order | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const user = useCurrentUser();
+  const onClick = async() => {
+    try {
+      setIsLoading(true);
+
+      const response = await axios.post(`/api/courses/${id}/checkout`, {
+        url: window.location.pathname
+      });
+
+      window.location.assign(response.data.url);
+    } catch  {
+      toast.error("Something went wrong")
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    const getPurchase = async () => {
+      const order = await getPurchaseByUserId(id, String(user?.id));
+      setPurchase(order)
+    };
+
+    getPurchase()
+  }, 
+[user?.id, id])
   return (
     <div className='course-item'>
             <div className='img-wrapper' >
@@ -56,7 +93,10 @@ const CourseCard: React.FC<Props> = (
 
            <div className='course-pay'>
             <p className={`${cost !== 'Free' ? 'text-lg  whitespace-nowrap' : 'text-xl'} `}>{cost}</p>
-            <Link href={'/apply'} className='link'> {status == 'Open' ? 'Apply Now': 'Register'}</Link>
+          {
+            user   && !purchase && cost !== 'Free' &&
+            <button onClick={onClick} disabled={isLoading} className='link'> {status == 'Open' ? 'Enroll': ''}</button>
+          }
            </div>
 
           </div>
@@ -65,7 +105,33 @@ const CourseCard: React.FC<Props> = (
 
 
 const CourseCardList: React.FC<Props> = ({status, level, category, name, duration, cost='Free', image, id}) => {
+  const [purchase, setPurchase] = useState <Order | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const user = useCurrentUser();
+  const onClick = async() => {
+    try {
+      setIsLoading(true);
 
+      const response = await axios.post(`/api/courses/${id}/checkout`, {
+        url: window.location.pathname
+      });
+
+      window.location.assign(response.data.url);
+    } catch  {
+      toast.error("Something went wrong")
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  useEffect(() => {
+    const getPurchase = async () => {
+      const order = await getPurchaseByUserId(id, String(user?.id));
+      setPurchase(order)
+    };
+
+    getPurchase()
+  }, 
+[user?.id, id])
   return (
     
     <div className="course-item-list ">
@@ -92,7 +158,10 @@ const CourseCardList: React.FC<Props> = ({status, level, category, name, duratio
        
         <div className='course-pay'>
           <p className={`${cost !== 'Free' ? 'text-[16px]  whitespace-nowrap' : 'text-xl'} `}>{cost}</p>
-          <Link href={'/apply'} className='link'> {status == 'Open' ? 'Apply Now': 'Register'}</Link>
+          {
+            user   && !purchase && cost !== 'Free' &&
+            <button onClick={onClick} disabled={isLoading} className='link'> {status == 'Open' ? 'Enroll': ''}</button>
+          }
         </div>
       </div>
     </div>

@@ -11,7 +11,7 @@ const SideBarItem = ({chapter, isLocked}: {chapter: Chapter & {Lesson: Lesson[] 
   
   const router  = useRouter();
   const pathname = usePathname();
-  const [view, setView] = useState(false || pathname.includes(String(chapter?.id)) && true);
+  const [view, setView] = useState(false || (pathname.includes(String(chapter?.id)) && !isLocked) && true);
   const [duration, setDuration] = useState(0);
     const videoRef = useRef<HTMLVideoElement>(null);
 

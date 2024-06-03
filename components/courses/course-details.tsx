@@ -14,18 +14,29 @@ import { Progress } from "../ui/progress";
 import { Badge } from "../ui/badge";
 import { formatter } from "@/lib/utils";
 import "react-quill/dist/quill.bubble.css"
-import { Course } from "@prisma/client";
+import { Course, Order } from "@prisma/client";
 import { fetchCourseByCategoryName } from "@/action-server/courses";
 import { CourseCard } from "./course-card";
 import AllReviews from "../student/all-review";
 import ReviewCreation from "../student/review-create";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import getProgress from "@/action-server/get-progress";
+import Link from "next/link";
+import EnrollButton from "../student/enroll-button";
 
-const CourseDetails = ({course}: {course: any}) => {
+const CourseDetails = ({course, purchase}: {course: any, purchase: Order | null}) => {
+  const user = useCurrentUser();
   const [selected, setSelected] = useState("Overview");
   const [view, setView] = useState(0);
   const [relatedCourses, setRelatedCourses] = useState<Course[]>([]);
-const user = useCurrentUser();
+  
+  const [progress, setProgress] = useState(0);
+
+  const fiveStarReviews = course.reviews.filter((review: any) => review.rating === 5);
+  const fourStarReviews  = course.reviews.filter((review: any) => review.rating === 4);
+  const threeStarReviews= course.reviews.filter((review:any) => review.rating === 3);
+  const twoStarReviews = course.reviews.filter((review: any ) => review.rating === 2);
+  const oneStarReviews = course.reviews.filter((review: any) => review.rating === 1);
   
   let numberOfLessons = 0;
   let numberOfQuizzes = 0;
@@ -51,6 +62,15 @@ const user = useCurrentUser();
   }
   fetchRelatedCourses();
  }, [])
+
+ useEffect(() => {
+  const getProgressForUser = async() => {
+    const {percentageCompleted} = await getProgress(String(user?.id), course.id);
+    setProgress(percentageCompleted);
+  }
+
+  getProgressForUser()
+ }, [user?.id, course.id]);
 
 
   return (
@@ -79,21 +99,39 @@ const user = useCurrentUser();
                  <p className="flex items-center gap-2 flex-nowrap">
                   {/**upafe later */}
                    <span className="flex gap-2 flex-nowrap ">
-                      <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-ranking"/>
-                        <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-ranking"/>
-                        <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-ranking"/>
-                        <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-grey"/>
-                        <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-grey"/>
+                   {[...Array(5)].map((_, index) => (<FontAwesomeIcon key={index} icon={faStar} className={`w-4 h-4 ${index < course.rating ? 'text-ranking' : 'text-grey'}`} />))}
+                      
                     </span>
 
-                    <span className="text-sm text-white inline-flex">(4 Ratings)</span>
+                    <span className="text-sm text-white inline-flex">({course.reviews.length} Ratings)</span>
                   </p>
                    
                 
               </div>
 
               <div className="flex md:flex-col items-center justify-center gap-4">
-                <button className="border border-transparent  whitespace-nowrap rounded-md px-10 py-3 bg-primary text-white font-bold text-sm m m-2 hover:bg-primary/50">Start Now</button>
+                {
+                  ((course.paymentStatus === 'Paid' && purchase) || (course.paymentStatus === 'Free' && progress > 0)) &&
+                  <Link href={`/student/courses/${course.id}`}>
+                     <button className="border border-transparent  whitespace-nowrap rounded-md px-10 py-3 bg-primary text-white font-bold text-sm m m-2 hover:bg-primary/50">
+                     Continue
+                </button>
+                  </Link>
+                } 
+                { 
+                  (course.paymentStatus === 'Paid' && !purchase) && 
+                  <EnrollButton courseId={course.id} price={course.price}/>
+                }
+
+                {
+              ( (course.paymentStatus === 'Free' && progress <= 0)) &&
+                  <Link href={`/student/courses/${course.id}`} >
+                     <button className="border border-transparent  whitespace-nowrap rounded-md px-10 py-3 bg-primary text-white font-bold text-sm m m-2 hover:bg-primary/50">
+                     Start Now
+                </button>
+                  </Link>
+                } 
+               
               
                <HoverCard>
                   <HoverCardTrigger>
@@ -157,55 +195,51 @@ const user = useCurrentUser();
               <>
                <article className="grid grid-cols-1 xl:grid-cols-12  bg-white p-8 rounded-lg gap-5">
                   <div className="xl:col-span-3 flex flex-col items-center justify-center gap-2 xl:border-r xl:border-grey">
-                    <p className="text-6xl font-bold">3.0</p>
+                    <p className="text-6xl font-bold">{parseFloat(course.rating).toPrecision(2)}</p>
                     <p className="flex gap-2 flex-nowrap">
                   
-                        <FontAwesomeIcon icon={faStar} className="w-3 h-3 text-ranking"/>
-                        <FontAwesomeIcon icon={faStar} className="w-3 h-3 text-ranking"/>
-                        <FontAwesomeIcon icon={faStar} className="w-3 h-3 text-ranking"/>
-                        <FontAwesomeIcon icon={faStar} className="w-3 h-3 text-grey"/>
-                        <FontAwesomeIcon icon={faStar} className="w-3 h-3 text-grey"/>
-                   
+                    {[...Array(5)].map((_, index) => (<FontAwesomeIcon key={index} icon={faStar} className={`w-3 h-3 ${index < course.rating ? 'text-ranking' : 'text-grey'}`} />))}
+                      
                   </p>
 
-                    <p className="text-sm">2 ratings</p>
+                    <p className="text-sm">{course.reviews.length} ratings</p>
 
                   </div>
                   <div className="xl:col-span-9 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 px-5">
                     <div>
                       <span className="text-sm">5 Stars</span>
                       <p className="flex items-center justify-center gap-2">
-                        <Progress className="h-2" value={20}/>
-                       <Badge className="bg-grey ">20%</Badge>
+                        <Progress className="h-2" value={Math.floor(fiveStarReviews.length / course.reviews.length) * 100}/>
+                       <Badge className="bg-grey ">{Math.floor(fiveStarReviews.length/course.reviews.length) * 100}%</Badge>
                       </p>
                     </div>
 
                     <div>
                       <span className="text-sm">4 Stars</span>
                       <p className="flex items-center justify-center gap-2">
-                        <Progress className="h-2" value={30}/>
-                        <Badge className="bg-grey ">30%</Badge>
+                        <Progress className="h-2" value={Math.floor(fourStarReviews.length / course.reviews.length) * 100}/>
+                        <Badge className="bg-grey ">{Math.floor(fourStarReviews.length/course.reviews.length) * 100}%</Badge>
                       </p>
                     </div>
                     <div>
                       <span className="text-sm">3 Stars</span>
                       <p className="flex items-center justify-center gap-2">
-                        <Progress className="h-2" value={12}/>
-                        <Badge className="bg-grey ">12%</Badge>
+                        <Progress className="h-2" value={Math.floor(threeStarReviews.length/course.reviews.length) * 100}/>
+                        <Badge className="bg-grey ">{Math.floor(threeStarReviews.length/course.reviews.length) * 100}%</Badge>
                       </p>
                     </div>
                     <div>
                       <span className="text-sm">2 Stars</span>
                       <p className="flex items-center justify-center gap-2">
-                        <Progress className="h-2" value={25}/>
-                        <Badge className="bg-grey ">25%</Badge>
+                        <Progress className="h-2" value={Math.floor(twoStarReviews.length/course.reviews.length) * 100}/>
+                        <Badge className="bg-grey ">{Math.floor(twoStarReviews.length/course.reviews.length) * 100}%</Badge>
                       </p>
                     </div>
                     <div>
                       <span className="text-sm">1 Star</span>
                       <p className="flex items-center justify-center gap-2">
-                        <Progress className="h-2" value={13}/>
-                        <Badge className="bg-grey ">13%</Badge>
+                        <Progress className="h-2" value={Math.floor(oneStarReviews.length/course.reviews.length) * 100}/>
+                        <Badge className="bg-grey ">{Math.floor(oneStarReviews.length/course.reviews.length) * 100}%</Badge>
                       </p>
                     </div>
 
@@ -216,7 +250,7 @@ const user = useCurrentUser();
               <ReviewCreation 
                   
                   courseId={course.id}  
-                  reviews={course.reviews.filter((review) => review.reviewerId === user?.id && course.id === review.courseId)[0]}/>
+                  reviews={course.reviews.filter((review: any) => review.reviewerId === user?.id && course.id === review.courseId)[0]}/>
 
              
              
@@ -254,7 +288,7 @@ const user = useCurrentUser();
               <section className="rounded-lg bg-white sticky lg:top-[17.4%]">
               <div>
                 <div className="aspect-video rounded-t-lg">
-                  <img src="/images/program2.jpg" alt='details' className="rounded-t-lg w-full h-full"/>
+                  <img src={course.imageUrl} alt='details' className="rounded-t-lg w-full h-full"/>
                 </div>
                 
                   <p className="px-8 my-3 pb-2 text-3xl font-extrabold text-primary border-b border-grey">{course.paymentStatus === 'Free' ? 'Free' : formatter(course.price)}</p>
@@ -321,27 +355,29 @@ const user = useCurrentUser();
                              <span className="bg-primary/10 p-2 rounded-full border border-dashed border-primary"><Check size={18} className="text-primary w-4 h-4 font-bold"/></span>
                              <span className="text-sm">Full lifetime Access</span>
                    </div>
-                   <div className="flex gap-2 items-center">
-                             <span className="bg-primary/10 p-2 rounded-full border border-dashed border-primary"><Check size={18} className="text-primary w-4 h-4 font-bold"/></span>
-                             <span className="text-sm">Downloadable resources</span>
+                  {
+                    course.resources.length > 0 && 
+                    <div className="flex gap-2 items-center">
+                    <span className="bg-primary/10 p-2 rounded-full border border-dashed border-primary"><Check size={18} className="text-primary w-4 h-4 font-bold"/></span>
+                    <span className="text-sm">Downloadable resources</span>
                    </div>
+                  }
                    <div className="flex gap-2 items-center">
                              <span className="bg-primary/10 p-2 rounded-full border border-dashed border-primary"><Check size={18} className="text-primary w-4 h-4 font-bold"/></span>
                              <span className="text-sm">Certificate on Completion</span>
                    </div>
-                   <div className="flex gap-2 items-center">
-                             <span className="bg-primary/10 p-2 rounded-full border border-dashed border-primary"><Check size={18} className="text-primary w-4 h-4 font-bold"/></span>
-                             <span className="text-sm">Free Trial for 7 days</span>
-                   </div>
-
-
+                  {
+                    course.paymentStatus === 'Free' && 
+                    <div className="flex gap-2 items-center">
+                    <span className="bg-primary/10 p-2 rounded-full border border-dashed border-primary"><Check size={18} className="text-primary w-4 h-4 font-bold"/></span>
+                    <span className="text-sm">No payment required</span>
+          </div>
+                  }
 
 
               </div>
-              <button className="w-full py-3 bg-primary text-white mx-auto rounded-md font-medium">Start Now</button>
-            
              
-
+           
              </div>
               </section>
            

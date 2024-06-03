@@ -95,7 +95,7 @@ const data = [
       ]
     }
 ];
-const LineChart = ({ isDashboard = false, ylabel = 'revenue', xlabel='months' }) => {
+const LineChart = ({ isDashboard = false, xlabel = 'revenue', ylabel='months' }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 

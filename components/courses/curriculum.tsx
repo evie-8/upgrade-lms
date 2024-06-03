@@ -1,16 +1,23 @@
+"use client";
+
 import { CircleHelp, Lock, Video } from 'lucide-react'
 import VideoDuration from './video-duration';
+import { useCurrentRole } from '@/hooks/use-current-role';
+import Link from 'next/link';
 
 interface Props {
     view: number;
     setView: React.Dispatch<React.SetStateAction<number>>;  
     index: number;
-    chapter: any
+    chapter: any;
+    
 }
 
 
 const CurriculumDetails: React.FC<Props> = ({view, setView, index, chapter}) => {
-console.log(chapter)
+
+  const role = useCurrentRole();
+
   
   return (
     <div className="p-5 rounded-md border border-grey">
@@ -33,10 +40,16 @@ console.log(chapter)
                                 <Video size={18} className="text-primary"/>
                                 <span className="text-sm">{lesson.name}</span>
                               </p>
+                             
                               <p className="flex max-sm:flex-col items-center max-sm:items-end gap-3">
-                                <VideoDuration videoSrc={lesson.videoUrl}/>
-                                <button className="py-1  px-2 bg-blue1 rounded-md text-white text-sm">Preview</button>
-
+                              <VideoDuration videoSrc={lesson.videoUrl}/>
+                              {
+                              role === 'USER' && 
+                              <Link href={`/student/courses/${chapter.courseId}/chapter/${lesson.chapterId}/lesson/${lesson.id}`}>
+                              <button className="py-1  px-2 bg-blue1 rounded-md text-white text-sm">Preview</button>
+                              </Link>
+                           
+                             }
                               </p>
                         </div>
                           ))
