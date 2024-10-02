@@ -53,7 +53,7 @@ const Footer = () => {
                     <h3>Join Us!</h3>
                     <p>Join the Journey: Explore, Learn, and Grow with Us</p>
                    
-                    <button>Apply Now !</button>  
+                    <button className='hidden'>Apply Now !</button>  
                 </div>
               
             </div>

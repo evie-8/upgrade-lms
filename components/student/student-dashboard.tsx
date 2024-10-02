@@ -25,9 +25,9 @@ const StudentDashboard = async () => {
   }
 
   return (
-    <section className='p-4 lg:p-6 bg-white1 h-auto'>
+    <section className='p-4 lg:p-6 bg-white1 min-h-screen'>
       <section className='flex flex-col-reverse md:grid grid-cols-12 gap-6 mb-6'>
-        <article className=' md:col-span-9 w-full '>
+        <article className=' md:col-span-8 w-full lg:col-span-9 '>
            
             <table className='w-full rounded-lg p-4 bg-white overflow-x-auto'>
               <thead className='w-full'>
@@ -88,7 +88,7 @@ const StudentDashboard = async () => {
                          
         </article>
 
-        <article className=' md:col-span-3 md:bg-white md:rounded-lg md:p-3 w-full'>
+        <article className=' md:col-span-4 lg:col-span-3 md:bg-white md:rounded-lg md:p-3 w-full'>
 
            <nav className='md:flex flex-col max-md:grid grid-cols-2 grid-rows-2 gap-3  my-3'>
             <div className=' p-3 flex gap-4 shadow-lg w-full rounded-lg bg-white'>
@@ -142,7 +142,7 @@ const StudentDashboard = async () => {
           <h2 className='font-bold'>
             Recommended Courses
           </h2>
-          <p className=''>
+          <p className='text-sm'>
             Based on your learning, we have found courses you might like
           </p>
         

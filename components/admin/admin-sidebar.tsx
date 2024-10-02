@@ -98,6 +98,7 @@ const studentRoutes1: any[] = [
 const SideBar:React.FC<Props> =  ({collapse}) => {
   
   const role = useCurrentRole();
+  const href = role === 'TUTOR' ? '/tutor/settings': '/student/settings'
 
   return (
 
@@ -125,8 +126,12 @@ const SideBar:React.FC<Props> =  ({collapse}) => {
       
     
       <div className="flex flex-col w-full sticky bottom-0 left-0 border-t border-t-grey  p-2 bg-white mt-auto">
-        <MenuItem href="/settings" icon={Settings} label="Settings" collapse={collapse} />
-        <MenuItem href="/logout" icon={LogOut} label="Logout" collapse={collapse} signout={true}/>
+        <MenuItem href={href} icon={Settings} label="Settings" collapse={collapse} />
+       {
+        /**
+         *  <MenuItem href="/logout" icon={LogOut} label="Logout" collapse={collapse} signout={true}/>
+         */
+       }
       </div>
 
         

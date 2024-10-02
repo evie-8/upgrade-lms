@@ -83,3 +83,35 @@ export const QuizShema = z.object({
 ),
   difficulty: z.enum(["easy", "medium", "hard"])
 })
+
+
+export const EditProfileSchema = z.object({
+ 
+
+  email: z.optional(z.string().min(1, 'Email is required')),
+  name:  z.optional(z.string().min(1, 'Name is required').max(100)),
+ image: z.optional(z.string()),
+ 
+})
+
+export const ChangePasswordSchema = z.object({
+ 
+  currentPassword: z.string()
+  .min(1, 'Password is required')
+  .min(10, 'Password must have atleast 10 characters')
+  .regex(/[A-Z]/, 'Password must contain at least one capital letter')
+  .regex(/[0-9]/, 'Password must contain at least one number')
+ .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one symbol'),
+  password: z
+      .string()
+      .min(1, 'Password is required')
+      .min(10, 'Password must have atleast 10 characters')
+      .regex(/[A-Z]/, 'Password must contain at least one capital letter')
+      .regex(/[0-9]/, 'Password must contain at least one number')
+     .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one symbol'),
+     confirmPassword: z.string().min(1, 'Password confirmation is required'),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      path: ['confirmPassword'],
+      message: 'Password do not match',
+    });

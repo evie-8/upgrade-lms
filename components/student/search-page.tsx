@@ -1,16 +1,11 @@
 "use client"
-import { Category, Course } from '@prisma/client'
+import { Category } from '@prisma/client'
 import React from 'react'
 import {FcDatabase, FcMultipleDevices, FcCommandLine } from "react-icons/fc"
 import { IconType } from 'react-icons'
 import Container from '@/components/ui/container'
 import CategoryItem from '@/components/student/category-item'
 import SearchButton from '@/components/student/search-button'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Icon } from '@radix-ui/react-select'
-import { IconTag } from '../ui/icon'
-import { BookOpenText } from 'lucide-react'
 import SearchCourseCard from './search-course-card'
 
 interface Props {

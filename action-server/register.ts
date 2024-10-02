@@ -35,5 +35,5 @@ export const register = async (values:z.infer<typeof SignUpSchema>) => {
     const verificationToken = await generateVerificationToken(email);
     await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
-    return {success: 'You have been sent an email to verify your acount.'};
+    return {success: 'You have been sent an email to verify your account.'};
 };

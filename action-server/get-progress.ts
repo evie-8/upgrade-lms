@@ -35,6 +35,7 @@ const getProgress = async (userId: string, courseId: string) => {
     });
 
     const progressPercentage = (validCompletedLessons / publishedLessonsIds.length) * 100;  
+  
 
     return {completedLessons: validCompletedLessons, percentageCompleted: progressPercentage }
   } catch (error) {
@@ -43,5 +44,7 @@ const getProgress = async (userId: string, courseId: string) => {
     return {completedLessons: 0, percentageCompleted:0 }
   }
 }
+
+
 
 export default getProgress

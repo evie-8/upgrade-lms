@@ -1,4 +1,3 @@
-import "../styles/nav-footer.modules.css"
 import '../styles/courses.modules.css'
 import "../styles/about.modules.css"
 

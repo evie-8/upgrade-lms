@@ -31,8 +31,9 @@ const CourseSidebar = async ({course}: {course: Course & {chapter: Chapter[] | n
   const {completedLessons, percentageCompleted} = await getProgress(String(user?.id), course.id);
   return (
 
-    <div className="max-lg:hidden h-full bg-white p-4 overflow-y-auto w-full">
-        <h2 className="font-bold text-lg w-full">Your Courses Progress</h2>
+    <div className="h-full bg-white p-4 overflow-y-auto w-full">
+        <h2 className="max-lg:hidden font-bold text-lg w-full">Your Courses Progress</h2>
+        <h2 className="lg:hidden font-bold text-lg w-full line-clamp-1">{course.name}</h2>
         <div className="p-4 rounded-md border-border-transparent bg-primary/10 my-4 flex flex-col gap-3 ">
             <p className="flex justify-between  text-xs">
                 <span className="font-bold">{Math.round(percentageCompleted)}%</span>

@@ -4,9 +4,10 @@ import { auth } from "@/auth";
 import { getResetPasswordTokenByToken } from "@/data/reset-password-token";
 import { getUserByEmail } from "@/data/user";
 import prismadb from "@/lib/db";
-import { NewPasswordSchema} from "../schemas";
+import { ChangePasswordSchema, NewPasswordSchema} from "../schemas";
 import { compare, hash } from "bcryptjs";
 import * as z  from "zod";
+import { currentUser } from "@/lib/auth";
 
 
 
@@ -74,3 +75,55 @@ export const newPassword = async (values: z.infer<typeof NewPasswordSchema>, tok
     return {success: "Password updated!"}
 } 
 
+export const changePassword = async (values: z.infer<typeof ChangePasswordSchema>) => {
+
+    const user = await currentUser();
+        if (!user) {
+            return {error: 'No user session'}
+        }
+    
+        const validateFields = ChangePasswordSchema.safeParse(values);
+    
+        if (!validateFields.success) {
+            return {error: "invalid entries"}
+        }
+    
+        const { password, currentPassword } = validateFields.data;
+    
+      
+        const existingUser = await getUserByEmail(String(user?.email));
+    
+    
+        if (!existingUser) {
+            return {error: "Email does not exist!"}
+        }
+    
+        const oldPassword = existingUser.password;
+    
+        if (oldPassword ) {
+            const formerPassword = await compare(password, oldPassword);
+           
+            const similar   = await compare(currentPassword, oldPassword)
+            if (!similar) {
+                return {error: 'Invalid password'}
+            }
+            if (formerPassword) {
+                return {error: "Create a new password"}
+            }
+    
+        }
+     
+        const hashPassword = await hash(password, 10);
+        await prismadb.user.update({
+            where: {
+                id: existingUser.id,
+            },
+            data: {
+                password: hashPassword
+            }
+        })
+    
+      
+    
+        return {success: "Password updated!"}
+    } 

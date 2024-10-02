@@ -33,10 +33,8 @@ useEffect(() => {
 }, [theme])
     
   return (
-    <themeContext.Provider value={{theme, setTheme}}>
-        
+    <themeContext.Provider value={{theme, setTheme}}>    
         {children}
-   
     </themeContext.Provider>
    
   )

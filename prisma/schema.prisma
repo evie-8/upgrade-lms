@@ -130,7 +130,7 @@ model Quiz {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
-  Chapter       Chapter?
+  Chapter      Chapter?
   QuizProgress QuizProgress[]
 }
 
@@ -285,5 +285,4 @@ model Course {
   reviews       Review[]
 
   @@index([categoryId])
-  
 }
