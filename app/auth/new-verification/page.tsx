@@ -1,9 +1,16 @@
-import VerificationCard from '@/components/auth/verification'
-
+import VerificationCard from "@/components/auth/verification";
+import MetaData from "@/components/ui/meta-data";
 const VerificationPage = () => {
   return (
-    <VerificationCard/>
-  )
-}
+    <>
+      <MetaData
+        title="upgrade | verify account"
+        description="Verify your account"
+        keywords="e-learning platform,account"
+      />
+      <VerificationCard />
+    </>
+  );
+};
 
-export default VerificationPage
+export default VerificationPage;

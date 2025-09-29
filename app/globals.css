@@ -133,7 +133,7 @@
 
 
   .courses-wrapper {
-    @apply flex sm:grid sm:grid-cols-2 xl:grid-cols-4 flex-col items-center justify-center gap-8 my-6
+    @apply flex sm:grid sm:grid-cols-2 xl:grid-cols-4 flex-col  gap-8 my-6
   }
   
   /*steps section*/

@@ -33,5 +33,3 @@ export const apiAuthPrefix = ["/api/auth", "/api/uploadthing", "/api/webhook"]
 
 export const DEFAULT_LOGIN_REDIRECT = '/student/dashboard';
 export const DEFAULT_LOGIN_REDIRECT_2 = '/tutor/dashboard';
-
-

@@ -33,7 +33,7 @@ const LessonPlayer = async ({params}: {params: {lessonId: string, chapterId: str
 
   return (
     <>
-     <MetaData title='upgrade-student | Lesson' description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
+     <MetaData title={`upgrade-student | ${lesson.name}`} description='courses offered at upgrade e-learning platform' keywords="programming,alx"/>
   
     {
       userProgress?.isCompleted && (

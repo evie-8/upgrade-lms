@@ -41,7 +41,7 @@ const SearchCourseCard = ({course}: {course: any}) => {
                         <span className={ `text-sm  ${course.progress === 100 ? 'text-success' : 'text-primary'}`}>{Math.round(course.progress)}% complete</span>
                     </div>
                 ) : (
-                     <p className=' font-medium'>
+                     <p className='font-medium'>
                         {
                             course.paymentStatus === 'Paid' ? 
                             formatter(course.price) :

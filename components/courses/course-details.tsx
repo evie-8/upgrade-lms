@@ -431,7 +431,7 @@ const CourseDetails = ({
           <section className="xl:col-span-4 lg:col-span-5 ">
             <section className="rounded-lg bg-white sticky lg:top-[17.4%]">
               <div>
-                <div className="aspect-video rounded-t-lg">
+                <div className="aspect-video object-cover rounded-t-lg">
                   <img
                     src={course.imageUrl}
                     alt="details"
